@@ -1,0 +1,35 @@
+{
+  "name": "auto-media-type",
+  "version": "0.0.0-beta",
+  "author": {
+    "name": "AsherJingkongChen"
+  },
+  "description": "Complete any missing media type for you",
+  "devDependencies": {
+    "@types/bun": "^1.0.0",
+    "@types/lodash": "^4.14.202",
+    "bun-plugin-dts": "^0.2.1",
+    "lodash": "^4.17.21",
+    "npm-run-all2": "^6.1.1",
+    "prettier": "^3.1.1"
+  },
+  "exports": "./dist/index.js",
+  "homepage": "https://github.com/AsherJingkongChen/auto-media-type/",
+  "license": "MIT",
+  "peerDependencies": {
+    "typescript": "^5.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AsherJingkongChen/auto-media-type.git"
+  },
+  "scripts": {
+    "build": "NODE_ENV=production run-s format dev-build",
+    "dev-build": "bun run bun.config.ts",
+    "dev-test": "bun --watch test",
+    "format": "prettier --write .",
+    "test": "bun test --coverage"
+  },
+  "type": "module",
+  "types": "./dist/index.d.ts"
+}
