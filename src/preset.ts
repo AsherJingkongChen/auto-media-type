@@ -22,11 +22,12 @@ export const extensionToMediaTypes: Record<string, string[]> = {
   epub: ['application/zip'], // .zip
   docx: ['application/zip'], // .zip
   jar: ['application/zip'], // .zip
+  jpe: ['image/jpeg'], // .jpeg
   jpeg: ['image/jpeg'], // JPEG: https://www.w3.org/Graphics/JPEG/
   jpg: ['image/jpeg'], // .jpeg
   mp1: ['audio/mpeg'], // MPEG-1/2 Layer I: https://datatracker.ietf.org/doc/html/rfc3003#section-2
-  mp2: ['audio/mpeg'], // MPEG-1/2 Layer II
-  mp3: ['audio/mpeg'], // MPEG-1/2 Layer III
+  mp2: ['audio/mpeg'], // MPEG-1/2 Layer II: https://datatracker.ietf.org/doc/html/rfc3003#section-2
+  mp3: ['audio/mpeg'], // MPEG-1/2 Layer III: https://datatracker.ietf.org/doc/html/rfc3003#section-2
   mp4: ['application/mp4'], // MPEG-4 Part 14: https://datatracker.ietf.org/doc/html/rfc4337#section-3.1
   mpg4: ['application/mp4'], // .mp4
   odp: ['application/zip'], // .zip
@@ -55,7 +56,9 @@ export const extensionToMediaTypes: Record<string, string[]> = {
  * - `number` represents the magic numbers offset.
  *   If negative, the offset is counted from the end.
  * - `...number[]` represents the magic number array.
- *   An NaN magic number is always ignored.
+ *   If NaN, the comparison process is reset from the next number:
+ *   + The next number is the new magic number offset
+ *   + The second next number is the new first magic number
  *
  * ### Note
  * - The list should be sorted by media type for maintainability
@@ -76,51 +79,7 @@ export const mediaTypeAndMagicNumbersList: [string, number, ...number[]][] = [
   ['application/zip', 0, 0x50, 0x4b, 0x07, 0x08], // `PK\x07\x08` (PKZIP Split): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
   ['application/zip', 0, 0x50, 0x4b, 0x05, 0x06], // `PK\x05\x06` (PKZIP EOCD): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
   ['image/apng', 0, 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a], // `\x89PNG\r\n\x1a\n` (PNG): https://www.w3.org/TR/png/#image-apng
-  [
-    'image/jpeg',
-    0,
-    0xff,
-    0xd8,
-    0xff,
-    0xe1,
-    NaN,
-    NaN,
-    0x45,
-    0x78,
-    0x69,
-    0x66,
-    0x00,
-  ], // `\xff\xd8\xff\xe1`??`Exif\0` (Exif on JPEG): https://www.w3.org/Graphics/JPEG/
-  [
-    'image/jpeg',
-    0,
-    0xff,
-    0xd8,
-    0xff,
-    0xe0,
-    NaN,
-    NaN,
-    0x4a,
-    0x46,
-    0x49,
-    0x46,
-    0x00,
-  ], // `\xff\xd8\xff\xe0`??`JFIF\0` (JPEG/JFIF): https://www.w3.org/Graphics/JPEG/
-  [
-    'image/jpeg',
-    0,
-    0xff,
-    0xd8,
-    0xff,
-    0xe0,
-    NaN,
-    NaN,
-    0x4a,
-    0x46,
-    0x58,
-    0x58,
-    0x00,
-  ], // `\xff\xd8\xff\xe0`??`JFXX\0\0` (JPEG/JFIF Ext): https://www.w3.org/Graphics/JPEG/
+  ['image/jpeg', 0, 0xff, 0xd8, 0xff, NaN, -2, 0xff, 0xd9], // `\xff\xd8\xff`, `\xff\xd9` (JPEG SOI, APPn, EOI): https://www.w3.org/Graphics/JPEG/
   ['image/png', 0, 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a], //`\x89PNG\r\n\x1a\n` (PNG):  https://www.w3.org/TR/png/#image-png
   ['video/mp4', 4, 0x66, 0x74, 0x79, 0x70, 0x6d, 0x70, 0x34], // `ftypmp4`: https://www.ftyps.com/
   ['video/mp4', 4, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6f], // `ftypiso`: https://www.ftyps.com/

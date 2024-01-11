@@ -1,6 +1,6 @@
-import { BunFile, file as readFile } from 'bun';
+import { file as readFile } from 'bun';
 import { readdirSync } from 'fs';
-import { join, relative, dirname } from 'path';
+import { dirname, join, relative } from 'path';
 
 /**
  * ### Introduction
@@ -9,6 +9,7 @@ import { join, relative, dirname } from 'path';
  * ### References
  * - [Samples Files](https://samples-files.com/)
  * - [APNG Sample](https://apng.onevcat.com/assets/elephant.png)
+ * - [EXIF Samples](https://pixelpeeper.com/photos)
  */
 export namespace Data {
   /**
@@ -40,12 +41,11 @@ export namespace Data {
   export function* files(): Generator<File> {
     const assetsDir = join(import.meta.dir, 'assets');
     for (const path of paths(assetsDir)) {
-      const type = relative(assetsDir, dirname(path));
+      const dir = dirname(path);
+      const type = relative(assetsDir, dir);
       const file = readFile(path, { type });
       if (file.name === undefined) {
-        throw new Error(
-          `Requested file has no name. Check the path: ${path}`,
-        );
+        throw new Error(`Requested file has no name. Check the path: ${path}`);
       }
       yield file as File;
     }

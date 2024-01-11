@@ -61,7 +61,8 @@ export async function findMediaTypesByMagicNumbers(
 
   // 2. Match the magic numbers with the target bytes
   const matches = new Set<string>();
-  for (const item of mediaTypeAndMagicNumbersList) {
+  for (let i = 0; i < mediaTypeAndMagicNumbersList.length; i++) {
+    const item = mediaTypeAndMagicNumbersList[i]!;
     const mediaType = item[0];
     // Early exit if the media type is already matched
     if (matches.has(mediaType)) {
@@ -73,23 +74,22 @@ export async function findMediaTypesByMagicNumbers(
 
     console.assert(
       !Number.isNaN(magicOffset),
-      'Magic offset with NaN (dynamic offset) has not implemented yet',
+      'Initial magic offset cannot be NaN',
     );
 
     // Go through the magic numbers
     // Check if equals to the target byte
-    let index = magicOffset - 1;
+    let index = magicOffset;
     let matched = true;
-    for (const magicNumber of magicNumbers) {
-      // leading increment
-      index++;
-
-      // Skip the NaN magic number
+    for (let i = 0; i < magicNumbers.length; i++) {
+      let magicNumber = magicNumbers[i]!;
+      // Reset the index and magic number if NaN
       if (Number.isNaN(magicNumber)) {
-        continue;
+        index = magicNumbers[++i]!;
+        magicNumber = magicNumbers[++i]!;
       }
 
-      const targetByte = indexToTargetByte.get(index);
+      const targetByte = indexToTargetByte.get(index++);
       if (targetByte !== magicNumber) {
         matched = false;
         break;
