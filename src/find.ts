@@ -1,4 +1,8 @@
-import { Preset } from './preset';
+import {
+  extensionToMediaTypes,
+  indexRanges,
+  mediaTypeAndMagicNumbersList,
+} from './preset';
 
 /**
  * ### Introduction
@@ -13,7 +17,7 @@ import { Preset } from './preset';
 export function findMediaTypesByExtension(pathname: string): string[] {
   const extension = /\.([^\.]+)$/.exec(pathname)?.[1]?.toLowerCase();
   if (extension) {
-    return Preset.extensionToMediaTypes[extension] ?? [];
+    return extensionToMediaTypes[extension] ?? [];
   }
   return [];
 }
@@ -37,13 +41,13 @@ export async function findMediaTypesByMagicNumbers(
 ): Promise<string[]> {
   // 1. Get the target byte lookup table
   const indexToTargetByte = new Map<number, number>();
-  for (const [beginIndex, endIndex] of Preset.indexRanges) {
+  for (const [beginIndex, endIndex] of indexRanges) {
     const bytes = new Uint8Array(
       await blob.slice(beginIndex, endIndex).arrayBuffer(),
     );
 
     // Early exit if the blob is too small
-    // `Preset.indexRanges` should be strictly sorted
+    // `indexRanges` should be strictly sorted
     if (!bytes.length) {
       break;
     }
@@ -57,7 +61,7 @@ export async function findMediaTypesByMagicNumbers(
 
   // 2. Match the magic numbers with the target bytes
   const matches = new Set<string>();
-  for (const item of Preset.mediaTypeAndMagicNumbersList) {
+  for (const item of mediaTypeAndMagicNumbersList) {
     const mediaType = item[0];
     // Early exit if the media type is already matched
     if (matches.has(mediaType)) {
@@ -69,15 +73,23 @@ export async function findMediaTypesByMagicNumbers(
 
     console.assert(
       !Number.isNaN(magicOffset),
-      'Magic offset with NaN (no fixed offset) has not implemented yet',
+      'Magic offset with NaN (dynamic offset) has not implemented yet',
     );
 
     // Go through the magic numbers
     // Check if equals to the target byte
-    let index = magicOffset;
+    let index = magicOffset - 1;
     let matched = true;
     for (const magicNumber of magicNumbers) {
-      const targetByte = indexToTargetByte.get(index++);
+      // leading increment
+      index++;
+
+      // Skip the NaN magic number
+      if (Number.isNaN(magicNumber)) {
+        continue;
+      }
+
+      const targetByte = indexToTargetByte.get(index);
       if (targetByte !== magicNumber) {
         matched = false;
         break;
