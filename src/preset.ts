@@ -33,7 +33,7 @@ export const extensionToMediaTypes: Record<string, string[]> = {
   ods: ['application/zip'], // .zip
   odt: ['application/zip'], // .zip
   pdf: ['application/pdf'], // PDF: https://datatracker.ietf.org/doc/html/rfc8118#section-8
-  png: ['image/png'], // PNG: https://www.w3.org/TR/png/#image-png
+  png: ['image/apng', 'image/png'], // PNG: https://www.w3.org/TR/png/#image-png
   pptx: ['application/zip'], // .zip
   war: ['application/zip'], // .zip
   xlsx: ['application/zip'], // .zip
