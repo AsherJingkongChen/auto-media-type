@@ -12,8 +12,12 @@ import {
  * - [RFC 6838](https://datatracker.ietf.org/doc/html/rfc6838)
  */
 export namespace MediaType {
-  export async function guess(data: any): Promise<string[]> {
-    return guessFile(data);
+  export type Guessable = File;
+  export async function guess(data: Guessable): Promise<string[]> {
+    if (data instanceof File) {
+      return guessFile(data);
+    }
+    throw new Error('Not implemented yet');
   }
 
   /**
@@ -45,11 +49,6 @@ export namespace MediaType {
 }
 
 export async function completeMediaType(file: File): Promise<File> {
-  console.error('Not implemented yet');
-  return file;
+  file;
+  throw new Error('Not implemented yet');
 }
-
-export default completeMediaType;
-
-export type * from './find';
-export type * from './preset';

@@ -6,7 +6,7 @@
   },
   "description": "Complete any missing media type for you",
   "devDependencies": {
-    "@types/bun": "^1.0.0",
+    "@types/bun": "^1.0.1",
     "@types/lodash": "^4.14.202",
     "bun-plugin-dts": "^0.2.1",
     "lodash": "^4.17.21",

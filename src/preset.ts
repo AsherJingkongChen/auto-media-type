@@ -37,6 +37,10 @@ export const extensionToMediaTypes: Record<string, string[]> = {
   pptx: ['application/zip'], // .zip
   war: ['application/zip'], // .zip
   xlsx: ['application/zip'], // .zip
+  z00: ['application/zip'], // .zip
+  z01: ['application/zip'], // .zip
+  z02: ['application/zip'], // .zip
+  z03: ['application/zip'], // .zip
   zip: ['application/zip'], // PKZIP: https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
   zipx: ['application/zip'], // .zip
 } satisfies Record<string, SupportedMediaType[]>;
@@ -67,9 +71,7 @@ export const extensionToMediaTypes: Record<string, string[]> = {
 export const mediaTypeAndMagicNumbersList: [string, number, ...number[]][] = [
   ['application/pdf', 0, 0x25, 0x50, 0x44, 0x46, 0x2d], // `%PDF-` (PDF): https://datatracker.ietf.org/doc/html/rfc8118#section-8
   ['audio/mpeg', 0, 0x49, 0x44, 0x33], // `ID3` (ID3v2.*): https://id3lib.sourceforge.net/id3/id3v2.3.0.html
-  ['audio/mpeg', -128, 0x54, 0x41, 0x47], // `TAG` (ID3v1): https://id3lib.sourceforge.net/id3/id3v1.html
-  ['audio/mpeg', -32, 0x41, 0x50, 0x45, 0x54, 0x41, 0x47, 0x45, 0x58], // `APETAGEX` (APEv1, APEv2): https://wiki.hydrogenaud.io/index.php?title=APEv1_specification
-  ['audio/mpeg', 0, 0x41, 0x50, 0x45, 0x54, 0x41, 0x47, 0x45, 0x58], // `APETAGEX` (APEv2): https://wiki.hydrogenaud.io/index.php?title=APEv2_specification
+  ['audio/mpeg', -128, 0x54, 0x41, 0x47], // `TAG` (ID3v1*): https://id3lib.sourceforge.net/id3/id3v1.html
   ['application/zip', 0, 0x50, 0x4b, 0x03, 0x04], // `PK\x03\x04` (PKZIP LFH): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
   ['application/zip', 0, 0x50, 0x4b, 0x07, 0x08], // `PK\x07\x08` (PKZIP Split): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
   ['application/zip', 0, 0x50, 0x4b, 0x05, 0x06], // `PK\x05\x06` (PKZIP EOCD): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
