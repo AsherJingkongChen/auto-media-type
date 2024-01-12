@@ -13,11 +13,28 @@ import {
  */
 export namespace MediaType {
   export type Guessable = File;
+
+  /**
+   * ### Introduction
+   * To guess all possible media types from the data
+   * 
+   * ### Parameters
+   * - `data` - `Guessable` -
+   *   The data for which media types are to be guessed
+   * 
+   * ### Results
+   * - `string[]` - An array of possible media types
+   * 
+   * ### Note
+   * - This function is a wrapper for
+   *   - `.guessFile()`
+   */
   export async function guess(data: Guessable): Promise<string[]> {
-    if (data instanceof File) {
+    // [TODO] `BunFile` is not compatible with `File`
+    if (data instanceof Blob && data.name) {
       return guessFile(data);
     }
-    throw new Error('Not implemented yet');
+    throw new TypeError('Data is not a guessable');
   }
 
   /**
@@ -38,17 +55,13 @@ export namespace MediaType {
    * 3. return Types
    */
   export async function guessFile(file: File): Promise<string[]> {
-    return Array.from(
-      new Set(
-        findMediaTypesByExtension(file.name).concat(
-          await findMediaTypesByMagicNumbers(file),
-        ),
-      ),
-    );
+    let types = findMediaTypesByExtension(file.name);
+    types = types.concat(await findMediaTypesByMagicNumbers(file));
+    return Array.from(new Set(types));
   }
 }
 
-export async function completeMediaType(file: File): Promise<File> {
-  file;
-  throw new Error('Not implemented yet');
-}
+// export async function completeMediaType(file: File): Promise<File> {
+//   file;
+//   throw new Error('Not implemented yet');
+// }

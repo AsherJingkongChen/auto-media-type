@@ -42,28 +42,36 @@ export async function findMediaTypesByMagicNumbers(
   // 1. Get the target byte lookup table
   const indexToTargetByte = new Map<number, number>();
   for (const [beginIndex, endIndex] of indexRanges) {
-    const bytes = new Uint8Array(
-      await blob.slice(beginIndex, endIndex).arrayBuffer(),
+    // [TODO] Blob.slice(beginIndex, endIndex) is buggy in Bun v1.0.22
+    const targetBytes = new Uint8Array(
+      await blob.slice(0).arrayBuffer(),
     );
 
-    // Early exit if the blob is too small
-    // `indexRanges` should be strictly sorted
-    if (!bytes.length) {
-      break;
-    }
-
-    // Build the lookup table
-    let index = beginIndex;
-    for (const byte of bytes) {
-      indexToTargetByte.set(index++, byte);
+    // Build the table
+    for (let index = beginIndex; index < endIndex; index++) {
+      const targetByte = targetBytes.at(index);
+      if (targetByte !== undefined) {
+        indexToTargetByte.set(index, targetByte);
+      }
     }
   }
+
+  // const decoder = new TextDecoder();
+  // console.debug(
+  //   new Map(
+  //     [...indexToTargetByte.entries()].map(([index, byte]) => [
+  //       index,
+  //       decoder.decode(new Uint8Array([byte])),
+  //     ]),
+  //   ),
+  // );
 
   // 2. Match the magic numbers with the target bytes
   const matches = new Set<string>();
   for (let i = 0; i < mediaTypeAndMagicNumbersList.length; i++) {
     const item = mediaTypeAndMagicNumbersList[i]!;
     const mediaType = item[0];
+
     // Early exit if the media type is already matched
     if (matches.has(mediaType)) {
       continue;

@@ -90,19 +90,79 @@ export const mediaTypeAndMagicNumbersList: [string, number, ...number[]][] = [
  * All index ranges of groups of overlapping magic numbers
  *
  * ### Layout
- * `[number, number][]`
- * - `[begin, end]: [number, number]`
- *   represents a pair of indices for a group of overlapping magic numbers
+ * `[number, number][]` - `[begin, end)[]` -
+ *   represents pairs of index ranges to cover all magic numbers
  *
  * ### Note
- * - Index ranges should not overlap inclusively (assert-on-debug)
+ * - Ranges should not overlap (assert-on-debug)
  * - The list should be sorted for maintainability
  */
 export const indexRanges: [number, number][] = [
   [-128, -125],
-  [-32, -24],
-  [0, 12],
+  [-2, 0],
+  [0, 11],
 ];
+
+// /**
+//  * ### Introduction
+//  * Update a media type
+//  *
+//  * ### Parameters
+//  * - `context` - `object` - The context object
+//  *   - `mediaType` - `string` - The media type to set
+//  *   - `fileExtensions` - `string[]` - The file extensions to set
+//  *   - `magic` - `object` - The magic numbers to add
+//  *     - `offset` - `number` - The offset of the magic numbers
+//  *     - `numbers` - `number[]` - The magic numbers
+//  * 
+//  * ### Results
+//  * - `boolean` - `true` if the update modifies entries that already exist
+//  * 
+//  * ### Throws
+//  * - `Error` - If the magic numbers are empty
+//  */
+// export function update(context: {
+//   fileExtensions: string[];
+//   mediaType: string;
+//   magic: {
+//     offset: number;
+//     numbers: number[];
+//   }[];
+// }): boolean {
+//   const { fileExtensions, mediaType, magic } = context;
+//   let modified = false;
+
+//   // Check `magic`
+//   if (!magic.length || !magic[0]) {
+//     throw new Error('Magic cannot be empty');
+//   }
+
+//   // 1. Update the lookup table with the file extensions
+//   for (const extension of fileExtensions) {
+//     const mediaTypes = extensionToMediaTypes[extension];
+//     if (mediaTypes) {
+//       mediaTypes.push(mediaType);
+//       modified = true;
+//     } else {
+//       extensionToMediaTypes[extension] = [mediaType];
+//     }
+//   }
+
+//   // 2. Update the media type to the magic numbers list
+//   const magicTypeAndMagicNumbers: [string, number, ...number[]] = [
+//     mediaType,
+//     magic[0].offset,
+//     ...magic[0].numbers,
+//   ];
+//   for (let i = 1; i < magic.length; i++) {
+//     const { numbers, offset } = magic[i]!;
+//     magicTypeAndMagicNumbers.push(NaN, offset, ...numbers);
+//   }
+//   mediaTypeAndMagicNumbersList.push(magicTypeAndMagicNumbers);
+
+//   // [TODO] indexRanges should be updated
+//   return modified;
+// }
 
 {
   console.assert(
@@ -112,7 +172,7 @@ export const indexRanges: [number, number][] = [
           indexRanges[index - 1]!,
           indexRanges[index]!,
         ];
-        if (i0 >= i1 || i1 >= i2 || i2 >= i3) {
+        if (i0 >= i1 || i1 > i2 || i2 >= i3) {
           return false;
         }
       }

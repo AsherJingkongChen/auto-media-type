@@ -20,11 +20,11 @@ export namespace Data {
    * ### Results
    * - `Generator<string>` - file paths
    */
-  function* paths(dir: string): Generator<string> {
+  function* _paths(dir: string): Generator<string> {
     const entries = readdirSync(dir, { withFileTypes: true });
     for (const entry of entries) {
       if (entry.isDirectory()) {
-        yield* paths(join(dir, entry.name));
+        yield* _paths(join(dir, entry.name));
       } else {
         yield join(dir, entry.name);
       }
@@ -36,14 +36,27 @@ export namespace Data {
    * Walk through all the files in the data directory
    *
    * ### Results
-   * - `Iterable<File>` - file references
+   * - `Generator<{ path: string; type: string }>` - paths and media types
+   */
+  export function* paths(): Generator<{ path: string; type: string }> {
+    const assetsDir = join(import.meta.dir, 'assets');
+    for (const path of _paths(assetsDir)) {
+      const dir = dirname(path);
+      const type = relative(assetsDir, dir);
+      yield { path, type };
+    }
+  }
+
+  /**
+   * ### Introduction
+   * Walk through all the files in the data directory
+   *
+   * ### Results
+   * - `Generator<File>` - file references
    *   - `File.type` - The media type is set to the directory name manually
    */
   export function* files(): Generator<File> {
-    const assetsDir = join(import.meta.dir, 'assets');
-    for (const path of paths(assetsDir)) {
-      const dir = dirname(path);
-      const type = relative(assetsDir, dir);
+    for (const { path, type } of paths()) {
       const file = readFile(path, { type });
       if (file.name === undefined) {
         throw new Error(`Requested file has no name. Check the path: ${path}`);
