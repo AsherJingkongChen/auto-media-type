@@ -8,6 +8,7 @@ import { dirname, join, relative } from 'path';
  *
  * ### References
  * - [Samples Files](https://samples-files.com/)
+ * - [File Examples](https://file-examples.com/)
  * - [APNG Sample](https://apng.onevcat.com/assets/elephant.png)
  * - [EXIF Samples](https://pixelpeeper.com/photos)
  */

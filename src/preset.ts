@@ -28,8 +28,8 @@ export const extensionToMediaTypes: Record<string, string[]> = {
   mp1: ['audio/mpeg'], // MPEG-1/2 Layer I: https://datatracker.ietf.org/doc/html/rfc3003#section-2
   mp2: ['audio/mpeg'], // MPEG-1/2 Layer II: https://datatracker.ietf.org/doc/html/rfc3003#section-2
   mp3: ['audio/mpeg'], // MPEG-1/2 Layer III: https://datatracker.ietf.org/doc/html/rfc3003#section-2
-  mp4: ['application/mp4'], // MPEG-4 Part 14: https://datatracker.ietf.org/doc/html/rfc4337#section-3.1
-  mpg4: ['application/mp4'], // .mp4
+  mp4: ['video/mp4'], // MPEG-4 Part 14: https://datatracker.ietf.org/doc/html/rfc4337#section-3.1
+  mpg4: ['video/mp4'], // .mp4
   odp: ['application/zip'], // .zip
   ods: ['application/zip'], // .zip
   odt: ['application/zip'], // .zip
@@ -81,10 +81,8 @@ export const mediaTypeAndMagicNumbersList: [string, number, ...number[]][] = [
   ['image/apng', 0, 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a], // `\x89PNG\r\n\x1a\n` (PNG): https://www.w3.org/TR/png/#image-apng
   ['image/jpeg', 0, 0xff, 0xd8, 0xff, NaN, -2, 0xff, 0xd9], // `\xff\xd8\xff`, `\xff\xd9` (JPEG SOI, APPn, EOI): https://www.w3.org/Graphics/JPEG/
   ['image/png', 0, 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a], //`\x89PNG\r\n\x1a\n` (PNG):  https://www.w3.org/TR/png/#image-png
-  ['video/mp4', 4, 0x66, 0x74, 0x79, 0x70, 0x6d, 0x70, 0x34], // `ftypmp4`: https://www.ftyps.com/
   ['video/mp4', 4, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6f], // `ftypiso`: https://www.ftyps.com/
-  ['video/mp4', 4, 0x66, 0x74, 0x79, 0x70, 0x61, 0x76, 0x63, 0x31], // `ftypavc1`: https://www.ftyps.com/
-  ['video/mp4', 4, 0x66, 0x74, 0x79, 0x70, 0x4e, 0x44], // `ftypND`: https://www.ftyps.com/nero_profiles.html
+  ['video/mp4', 4, 0x66, 0x74, 0x79, 0x70, 0x6d, 0x70, 0x34], // `ftypmp4`: https://www.ftyps.com/
 ] satisfies [SupportedMediaType, number, ...number[]][];
 
 /**
