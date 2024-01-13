@@ -1,12 +1,16 @@
 # `auto-media-type`
 
-<!-- Badges -->
+[![NPM Version](https://img.shields.io/npm/v/auto-media-type.svg?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/auto-media-type)
 
 ## What is it for?
 
 With `auto-media-type`, you can complete the missing media type on every `File` instance. It works in modern JavaScript runtimes. Thanks for all great polyfill library contributors.
 
 We've provided a simple API for you. You can obtain `auto-media-type` from NPM. Please see the section ["How to Obtain"](#how-to-obtain).
+
+## Try Our Demo
+
+- [_(WIP)_](#try-our-demo)
 
 ## How to Obtain
 
@@ -18,10 +22,6 @@ We've provided a simple API for you. You can obtain `auto-media-type` from NPM. 
 | [npm](https://www.npmjs.com/) | `npm install auto-media-type`  | `npm i auto-media-type`    |
 | [pnpm](https://pnpm.io/)      | `pnpm install auto-media-type` | `pnpm i auto-media-type`   |
 | [yarn](https://yarnpkg.com/)  | `yarn add auto-media-type`     | `yarn add auto-media-type` |
-
-## Try Our Demo
-
-- [_(WIP)_](#try-our-demo)
 
 ## Our Competitors, or Alternatives
 
