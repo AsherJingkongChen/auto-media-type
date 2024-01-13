@@ -22,7 +22,7 @@ export async function polyfillNodejs(
 
   // Apply the polyfill if the version is old enough
   if (nodejsVersion < 20 && nodejsVersion >= 18) {
-    Object.assign(global, await import('buffer'));
+    Object.assign(globalThis, await import('buffer'));
   } else {
     // Not to apply the polyfill if the version is new enough
     return false;

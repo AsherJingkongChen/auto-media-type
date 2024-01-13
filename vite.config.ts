@@ -20,6 +20,7 @@ export default defineConfig((env) => ({
     coverage: {
       enabled: true,
       provider: 'istanbul',
+      reporter: ['text-summary', 'text'],
       thresholds: {
         100: true,
       },
@@ -37,8 +38,7 @@ function BundleFinishBannerPlugin(context: { mode: string }): PluginOption {
       order: 'post',
       handler() {
         this.info({
-          message:
-            '\x1b[32m' + `Build succeeded in ${context.mode} mode` + '\x1b[0m',
+          message: '\x1b[32m' + `Built in ${context.mode} mode` + '\x1b[0m',
         });
       },
     },

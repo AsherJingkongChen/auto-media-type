@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 describe('MediaType', () => {
   describe('.guess()', () => {
-    const pendingOutput = Promise.all(
+    const output = Promise.all(
       Array.from(Data.files()).map(async (file) => ({
         expected: file.type,
         received: await MediaType.guess(file),
@@ -12,18 +12,18 @@ describe('MediaType', () => {
     );
 
     it('always contains the closest media type (Recall 100%)', async () => {
-      for (const { expected, received } of await pendingOutput) {
+      for (const { expected, received } of await output) {
         expect<string[]>(received).toContain(expected);
       }
     });
 
-    it('throws an error if the data is not a guessable', () => {
-      expect(MediaType.guess({} as MediaType.Guessable)).rejects.toThrow();
+    it('throws if the data is not a guessable', async () => {
+      await expect(MediaType.guess({} as any)).rejects.toThrow();
     });
   });
 
   describe('.guessFile()', () => {
-    const pendingOutput = Promise.all(
+    const output = Promise.all(
       Array.from(Data.files()).map(async (file) => ({
         expected: file.type,
         received: await MediaType.guessFile(file),
@@ -31,7 +31,7 @@ describe('MediaType', () => {
     );
 
     it('always contains the closest media type (Recall 100%)', async () => {
-      for (const { expected, received } of await pendingOutput) {
+      for (const { expected, received } of await output) {
         expect<string[]>(received).toContain(expected);
       }
     });

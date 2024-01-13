@@ -15,9 +15,24 @@
     "vite-plugin-dts": "^3.7.0",
     "vitest": "^1.2.0"
   },
-  "exports": "./dist/auto-media-type.js",
+  "exports": {
+    ".": {
+      "default": "./dist/auto-media-type.js",
+      "import": "./dist/auto-media-type.js",
+      "require": "./dist/auto-media-type.umd.cjs",
+      "types": "./dist/auto-media-type.d.ts"
+    }
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist",
+    "package.json"
+  ],
   "homepage": "https://github.com/AsherJingkongChen/auto-media-type/",
   "license": "MIT",
+  "main": "./dist/auto-media-type.umd.cjs",
+  "module": "./dist/auto-media-type.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/AsherJingkongChen/auto-media-type.git"

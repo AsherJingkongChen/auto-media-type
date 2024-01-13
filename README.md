@@ -51,25 +51,19 @@ It depends on your use cases. You can choose one of them.
   - [Prettier](https://prettier.io/)
   - [TypeScript](https://www.typescriptlang.org/)
 - Testers
-  = [Vitest](https://vitest.dev/)
+  - [Vitest](https://vitest.dev/)
 
 ### See What Commands We Are Using
 
-The syntax to run scripts:
-
-```sh
-bun run <Script>
-```
-
-| Script       | Description                        |
-| ------------ | ---------------------------------- |
-| build        | Build the library for production   |
-| check        | Check the codes with TypeScript    |
-| dev-build    | Build the library for development  |
-| dev-test     | Run tests in watch mode            |
-| format       | Format source codes using Prettier |
-| test         | Run tests                          |
-| src/index.ts | Run the entry script               |
+| Package Manager        | Command   | Script      | Description                       |
+| ---------------------- | --------- | ----------- | --------------------------------- |
+| `bun` / `npm` / `pnpm` | `install` |             | Install dependencies              |
+| `bun` / `npm` / `pnpm` | `run`     | `build`     | Build the library for production  |
+| `bun` / `npm` / `pnpm` | `run`     | `check`     | Check the codes with TypeScript   |
+| `bun` / `npm` / `pnpm` | `run`     | `dev-build` | Build the library for development |
+| `bun` / `npm` / `pnpm` | `run`     | `dev-test`  | Run tests in watch mode           |
+| `bun` / `npm` / `pnpm` | `run`     | `format`    | Format codes using Prettier       |
+| `bun` / `npm` / `pnpm` | `run`     | `test`      | Run tests                         |
 
 ### Be Aware of These Details
 

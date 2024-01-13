@@ -16,8 +16,6 @@ describe('findMediaTypesByExtension()', () => {
 
   it('returns an empty array if no extension is matched', () => {
     expect(findMediaTypesByExtension('')).toEqual([]);
-    expect(findMediaTypesByExtension('.x-undefined-file-extension')).toEqual(
-      [],
-    );
+    expect(findMediaTypesByExtension('.__x-unknown-file-ext__')).toEqual([]);
   });
 });
