@@ -30,16 +30,20 @@ It depends on your use cases. You can choose one of them.
 - github.com/sindresorhus/file-type
 - github.com/mmalecot/file-format
 
+## Let's Learn How to Use It
+
+- [Guide *_(WIP)_*](#lets-learn-how-to-use-it)
+
 ## Let's Setup the Project
 
 > **Note:** THIS section is for contributors and developers only
 
 ### Recommended IDE Setup for You
 
-- IDE:
+- IDEs:
   - [VSCode](https://code.visualstudio.com/)
-  - Extensions:
-    - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- Extensions:
+  - [Prettier for VSCode](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
 ### See What Dependencies We Are Using
 
