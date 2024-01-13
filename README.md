@@ -4,7 +4,7 @@
 
 ## What is it for?
 
-With `auto-media-type`, you can complete the missing media type on every `File` instance. It works in modern JavaScript runtimes. Thanks for every generous open-source contributor.
+With `auto-media-type`, you can complete the missing media type on every `File` instance. It works in modern JavaScript runtimes. Thanks for all great polyfill library contributors.
 
 We've provided a simple API for you. You can obtain `auto-media-type` from NPM. Please see the section ["How to Obtain"](#how-to-obtain).
 
@@ -44,16 +44,14 @@ It depends on your use cases. You can choose one of them.
 ### See What Dependencies We Are Using
 
 - Builders
-  - [Bun](https://bun.sh/)
+  - [Vite](https://vitejs.dev/)
+- Environments
+  - [Node.js v20](https://nodejs.org/)
 - Linters
   - [Prettier](https://prettier.io/)
   - [TypeScript](https://www.typescriptlang.org/)
-
-If Bun is installed, you can install our dependencies with:
-
-| Package Manager        | Command       | Shorthand |
-| ---------------------- | ------------- | --------- |
-| [bun](https://bun.sh/) | `bun install` | `bun i`   |
+- Testers
+  = [Vitest](https://vitest.dev/)
 
 ### See What Commands We Are Using
 
@@ -66,6 +64,7 @@ bun run <Script>
 | Script       | Description                        |
 | ------------ | ---------------------------------- |
 | build        | Build the library for production   |
+| check        | Check the codes with TypeScript    |
 | dev-build    | Build the library for development  |
 | dev-test     | Run tests in watch mode            |
 | format       | Format source codes using Prettier |

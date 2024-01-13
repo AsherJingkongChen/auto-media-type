@@ -17,21 +17,21 @@ export namespace MediaType {
   /**
    * ### Introduction
    * To guess all possible media types from the data
-   * 
+   *
    * ### Parameters
-   * - `data` - `Guessable` -
-   *   The data for which media types are to be guessed
-   * 
+   * - `data` - `Guessable`
+   *   + The data to be guessed what media types it may be
+   *
    * ### Results
-   * - `string[]` - An array of possible media types
-   * 
+   * - `string[]`
+   *   + An array of possible media types for the `data`
+   *
    * ### Note
-   * - This function is a wrapper for
-   *   - `.guessFile()`
+   * - This function may call:
+   *   + `.guessFile()`
    */
   export async function guess(data: Guessable): Promise<string[]> {
-    // [TODO] `BunFile` is not compatible with `File`
-    if (data instanceof Blob && data.name) {
+    if (data instanceof File) {
       return guessFile(data);
     }
     throw new TypeError('Data is not a guessable');
@@ -42,11 +42,12 @@ export namespace MediaType {
    * To guess all possible media types from the file
    *
    * ### Parameters
-   * - `file` - `File` -
-   *   The file for which media types are to be guessed
+   * - `file` - `File`
+   *   + The file to be guessed what media types it may be
    *
    * ### Results
-   * - `string[]` - An array of possible media types
+   * - `string[]`
+   *   + An array of possible media types for the `file`
    *
    * ### Process
    * There are three stages:

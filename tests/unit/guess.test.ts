@@ -1,6 +1,6 @@
 import { MediaType } from 'src';
 import { Data } from 'tests/data';
-import { describe, expect, it } from 'bun:test';
+import { describe, expect, it } from 'vitest';
 
 describe('MediaType', () => {
   describe('.guess()', () => {

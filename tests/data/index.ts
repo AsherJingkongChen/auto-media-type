@@ -1,6 +1,9 @@
-import { file as readFile } from 'bun';
-import { readdirSync } from 'fs';
+import { readdirSync, readFileSync } from 'fs';
 import { dirname, join, relative } from 'path';
+import { fileURLToPath } from 'url';
+import { polyfillNodejs } from './utils';
+
+await polyfillNodejs(process.version);
 
 /**
  * ### Introduction
@@ -39,7 +42,7 @@ export namespace Data {
    * - `Generator<{ path: string; type: string }>` - paths and media types
    */
   export function* paths(): Generator<{ path: string; type: string }> {
-    const assetsDir = join(import.meta.dir, 'assets');
+    const assetsDir = join(fileURLToPath(import.meta.url), 'assets');
     for (const path of _paths(assetsDir)) {
       const dir = dirname(path);
       const type = relative(assetsDir, dir);
@@ -57,11 +60,9 @@ export namespace Data {
    */
   export function* files(): Generator<File> {
     for (const { path, type } of paths()) {
-      const file = readFile(path, { type });
-      if (file.name === undefined) {
-        throw new Error(`Requested file has no name. Check the path: ${path}`);
-      }
-      yield file as File;
+      const buffer = readFileSync(path);
+      const file = new File([buffer], path, { type });
+      yield file;
     }
   }
 }

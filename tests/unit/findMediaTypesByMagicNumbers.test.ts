@@ -1,6 +1,6 @@
 import { findMediaTypesByMagicNumbers } from 'src/find';
 import { Data } from 'tests/data';
-import { describe, expect, it } from 'bun:test';
+import { describe, expect, it } from 'vitest';
 
 describe('findMediaTypesByMagicNumbers()', async () => {
   const pendingOutput = Promise.all(

@@ -1,3 +1,0 @@
-[test]
-root = "tests"
-coverageThreshold = { function = 1.00, line = 0.95 }

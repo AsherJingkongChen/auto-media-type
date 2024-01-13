@@ -1,17 +1,13 @@
 /**
  * ### Introduction
- * - Supported media types: 0
- *   - Goal: 2076
- */
-export type SupportedMediaType = (typeof supportedMediaTypes)[number];
-
-/**
- * ### Introduction
- * A lookup table for finding media types by file extension
+ * The lookup table for finding media types by file extension
  *
  * ### Layout
- * `string` - The key represents the file extension
- * `string[]` - The value is an array of possible media types
+ * `Record<string, string[]>`
+ * - `string`
+ *   + The file extension
+ * - `string[]`
+ *   + The associated media types
  *
  * ### Note
  * - The table should be sorted by file extension for maintainability
@@ -51,18 +47,21 @@ export const extensionToMediaTypes: Record<string, string[]> = {
  * The list of media types, offsets and magic numbers
  *
  * ### Layout
- * `[string, number, ...number[]][]`
- * - `string` represents a media type
- * - `number` represents the magic numbers offset.
- *   If negative, the offset is counted from the end.
- * - `...number[]` represents the magic number array.
- *   If NaN, the comparison process is reset from the next number:
- *   + The next number is the new magic number offset
- *   + The second next number is the new first magic number
+ * `[string, undefined, number, number, ...(undefined | number)[]][]`
+ * - `string`
+ *   + The media type
+ * - `undefined`
+ *   + The magic marker
+ *   + It is followed by magic offset and numbers.
+ * - `number`
+ *   + The magic offset
+ *   + If negative, the offset is counted from the end.
+ * - `number, ...(undefined | number)[]`
+ *   + The magic numbers, next markers and next offsets
+ *   + `undefined` is the next magic marker followed by the next magic offset and numbers
  *
  * ### Note
  * - The list should be sorted by media type for maintainability
- * - The list cannot handle magic numbers with dynamic offsets
  * - The media types can have duplicates,
  *   but should be sorted by the usage in the descending order
  *
@@ -70,36 +69,43 @@ export const extensionToMediaTypes: Record<string, string[]> = {
  * - [IETF Datatracker](https://datatracker.ietf.org/)
  * - [Wikipedia - List of file signatures](https://en.wikipedia.org/wiki/List_of_file_signatures)
  */
-
-export const mediaTypeAndMagicNumbersList: [string, number, ...number[]][] = [
-  ['application/pdf', 0, 0x25, 0x50, 0x44, 0x46, 0x2d], // `%PDF-` (PDF): https://datatracker.ietf.org/doc/html/rfc8118#section-8
-  ['audio/mpeg', 0, 0x49, 0x44, 0x33], // `ID3` (ID3v2.*): https://id3lib.sourceforge.net/id3/id3v2.3.0.html
-  ['audio/mpeg', -128, 0x54, 0x41, 0x47], // `TAG` (ID3v1*): https://id3lib.sourceforge.net/id3/id3v1.html
-  ['application/zip', 0, 0x50, 0x4b, 0x03, 0x04], // `PK\x03\x04` (PKZIP LFH): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
-  ['application/zip', 0, 0x50, 0x4b, 0x07, 0x08], // `PK\x07\x08` (PKZIP Split): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
-  ['application/zip', 0, 0x50, 0x4b, 0x05, 0x06], // `PK\x05\x06` (PKZIP EOCD): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
-  ['image/apng', 0, 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a], // `\x89PNG\r\n\x1a\n` (PNG): https://www.w3.org/TR/png/#image-apng
-  ['image/jpeg', 0, 0xff, 0xd8, 0xff, NaN, -2, 0xff, 0xd9], // `\xff\xd8\xff`, `\xff\xd9` (JPEG SOI, APPn, EOI): https://www.w3.org/Graphics/JPEG/
-  ['image/png', 0, 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a], //`\x89PNG\r\n\x1a\n` (PNG):  https://www.w3.org/TR/png/#image-png
-  ['video/mp4', 4, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6f], // `ftypiso`: https://www.ftyps.com/
-  ['video/mp4', 4, 0x66, 0x74, 0x79, 0x70, 0x6d, 0x70, 0x34], // `ftypmp4`: https://www.ftyps.com/
-] satisfies [SupportedMediaType, number, ...number[]][];
+export const mediaTypeAndMagicNumbersList: [
+  string,
+  undefined,
+  number,
+  ...(number | undefined)[],
+][] = [
+  ['application/pdf', undefined, 0, 0x25, 0x50, 0x44, 0x46, 0x2d], // `%PDF-` (PDF): https://datatracker.ietf.org/doc/html/rfc8118#section-8
+  ['application/zip', undefined, 0, 0x50, 0x4b, 0x03, 0x04], // `PK\x03\x04` (PKZIP LFH): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
+  ['application/zip', undefined, 0, 0x50, 0x4b, 0x07, 0x08], // `PK\x07\x08` (PKZIP Split): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
+  ['application/zip', undefined, 0, 0x50, 0x4b, 0x05, 0x06], // `PK\x05\x06` (PKZIP EOCD): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
+  ['audio/mpeg', undefined, 0, 0x49, 0x44, 0x33], // `ID3` (ID3v2.*): https://id3lib.sourceforge.net/id3/id3v2.3.0.html
+  ['audio/mpeg', undefined, -128, 0x54, 0x41, 0x47], // `TAG` (ID3v1*): https://id3lib.sourceforge.net/id3/id3v1.html
+  ['image/apng', undefined, 0, 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a], // `\x89PNG\r\n\x1a\n` (PNG): https://www.w3.org/TR/png/#image-apng
+  ['image/jpeg', undefined, 0, 0xff, 0xd8, 0xff, undefined, -2, 0xff, 0xd9], // `\xff\xd8\xff`, `\xff\xd9` (JPEG SOI, APPn, EOI): https://www.w3.org/Graphics/JPEG/
+  ['image/png', undefined, 0, 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a], //`\x89PNG\r\n\x1a\n` (PNG):  https://www.w3.org/TR/png/#image-png
+  ['video/mp4', undefined, 4, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6f], // `ftypiso`: https://www.ftyps.com/
+  ['video/mp4', undefined, 4, 0x66, 0x74, 0x79, 0x70, 0x6d, 0x70, 0x34], // `ftypmp4`: https://www.ftyps.com/
+] satisfies [SupportedMediaType, ...any[]][];
 
 /**
  * ### Introduction
- * All index ranges of groups of overlapping magic numbers
+ * Pairs of index ranges to cover all magic numbers
  *
  * ### Layout
- * `[number, number][]` - `[begin, end)[]` -
- *   represents pairs of index ranges to cover all magic numbers
+ * `[number, number | undefined][]`
+ * - `[number, number | undefined]`
+ *   + `[begin, end)` is a right-open index range.
+ *   + If `end` is `undefined`, it represents the end of the blob.
  *
  * ### Note
- * - Ranges should not overlap (assert-on-debug)
  * - The list should be sorted for maintainability
+ * - Ranges should not overlap
+ * - Ranges should be used with `Blob.slice(begin, end)`
  */
-export const indexRanges: [number, number][] = [
+export const indexRanges: [number, number | undefined][] = [
   [-128, -125],
-  [-2, 0],
+  [-2, undefined],
   [0, 11],
 ];
 
@@ -114,10 +120,10 @@ export const indexRanges: [number, number][] = [
 //  *   - `magic` - `object` - The magic numbers to add
 //  *     - `offset` - `number` - The offset of the magic numbers
 //  *     - `numbers` - `number[]` - The magic numbers
-//  * 
+//  *
 //  * ### Results
 //  * - `boolean` - `true` if the update modifies entries that already exist
-//  * 
+//  *
 //  * ### Throws
 //  * - `Error` - If the magic numbers are empty
 //  */
@@ -164,28 +170,16 @@ export const indexRanges: [number, number][] = [
 //   return modified;
 // }
 
-{
-  console.assert(
-    (() => {
-      for (let index = 1; index < indexRanges.length; index++) {
-        const [[i0, i1], [i2, i3]] = [
-          indexRanges[index - 1]!,
-          indexRanges[index]!,
-        ];
-        if (i0 >= i1 || i1 > i2 || i2 >= i3) {
-          return false;
-        }
-      }
-      return true;
-    })(),
-    'Index ranges should be strictly sorted',
-  );
-}
-
 /**
  * ### Introduction
- * - Supported media types: 0
- *   - Goal: 2076
+ * - Supported media types: `7`
+ *   + Goal: `2076`
+ */
+export type SupportedMediaType = (typeof supportedMediaTypes)[number];
+/**
+ * ### Introduction
+ * - Supported media types: `7`
+ *   + Goal: `2076`
  */
 export const supportedMediaTypes = [
   'application/1d-interleaved-parityfec',
@@ -489,7 +483,7 @@ export const supportedMediaTypes = [
   'application/parityfec',
   'application/passport',
   'application/patch-ops-error+xml',
-  'application/pdf',
+  'application/pdf', // Extensions, Magic Numbers
   'application/PDX',
   'application/pem-certificate-chain',
   'application/pgp-encrypted',
@@ -1764,7 +1758,7 @@ export const supportedMediaTypes = [
   'application/yang-patch+json',
   'application/yang-patch+xml',
   'application/yin+xml',
-  'application/zip',
+  'application/zip', // Extensions, Magic Numbers
   'application/zlib',
   'application/zstd',
   'audio/1d-interleaved-parityfec',
@@ -1848,7 +1842,7 @@ export const supportedMediaTypes = [
   'audio/mp4',
   'audio/MP4A-LATM',
   'audio/mpa-robust',
-  'audio/mpeg',
+  'audio/mpeg', // Extensions, Magic Numbers
   'audio/mpeg4-generic',
   'audio/ogg',
   'audio/opus',
@@ -1933,7 +1927,7 @@ export const supportedMediaTypes = [
   'font/woff',
   'font/woff2',
   'image/aces',
-  'image/apng',
+  'image/apng', // Extensions, Magic Numbers
   'image/avci',
   'image/avcs',
   'image/avif',
@@ -1954,7 +1948,7 @@ export const supportedMediaTypes = [
   'image/j2c',
   'image/jls',
   'image/jp2',
-  'image/jpeg',
+  'image/jpeg', // Extensions, Magic Numbers
   'image/jph',
   'image/jphc',
   'image/jpm',
@@ -1969,7 +1963,7 @@ export const supportedMediaTypes = [
   'image/ktx',
   'image/ktx2',
   'image/naplps',
-  'image/png',
+  'image/png', // Extensions, Magic Numbers
   'image/prs.btif',
   'image/prs.pti',
   'image/pwg-raster',
@@ -2206,7 +2200,7 @@ export const supportedMediaTypes = [
   'video/MP1S',
   'video/MP2P',
   'video/MP2T',
-  'video/mp4',
+  'video/mp4', // Extensions, Magic Numbers
   'video/MP4V-ES',
   'video/MPV',
   'video/mpeg4-generic',
