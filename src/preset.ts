@@ -1,6 +1,6 @@
 /**
  * ### Introduction
- * The lookup table for finding media types by file extension
+ * The lookup table for guessing media types by file extension
  *
  * ### Layout
  * `Record<string, string[]>`

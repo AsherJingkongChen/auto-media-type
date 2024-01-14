@@ -6,7 +6,7 @@ import {
 
 /**
  * ### Introduction
- * Find media types by the file extension
+ * Guess media types by the file extension
  *
  * ### Parameters
  * - `pathname` - `string`
@@ -16,24 +16,24 @@ import {
  * - `string[]`
  *   + An array of possible media types
  */
-export function findMediaTypesByExtension(pathname: string): string[] {
+export function guessMediaTypesByExtension(pathname: string): string[] {
   const extension = /\.([^\.]+)$/.exec(pathname)?.[1]?.toLowerCase();
   return extension ? extensionToMediaTypes[extension] ?? [] : [];
 }
 
 /**
  * ### Introduction
- * Find media types by matching magic numbers in a blob
+ * Guess media types by the magic numbers
  *
  * ### Parameters
  * - `blob` - `Blob`
- *   + The blob to search for magic numbers
+ *   + The query byte data
  *
  * ### Results
  * - `Promise<string[]>`
  *   + An array of possible media types
  */
-export async function findMediaTypesByMagicNumbers(
+export async function guessMediaTypesByMagicNumbers(
   blob: Blob,
 ): Promise<string[]> {
   // 1. Get the target byte lookup table

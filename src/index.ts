@@ -1,7 +1,7 @@
 import {
-  findMediaTypesByExtension,
-  findMediaTypesByMagicNumbers,
-} from './find';
+  guessMediaTypesByExtension,
+  guessMediaTypesByMagicNumbers,
+} from './guess';
 
 /**
  * ### Introduction
@@ -12,57 +12,50 @@ import {
  * - [RFC 6838](https://datatracker.ietf.org/doc/html/rfc6838)
  */
 export namespace MediaType {
-  export type Guessable = File;
-
   /**
    * ### Introduction
-   * To guess all possible media types from the data
+   * To suggest media types for the data
    *
    * ### Parameters
-   * - `data` - `Guessable`
-   *   + The data to be guessed what media types it may be
+   * - `data` - `File`
+   *   + The query data
    *
    * ### Results
-   * - `string[]`
+   * - `Promise<string[]>`
    *   + An array of possible media types for the `data`
    *
    * ### Note
    * - This function may call:
-   *   + `.guessFile()`
+   *   + `.suggestFile()`
    */
-  export async function guess(data: Guessable): Promise<string[]> {
+  export async function suggest(data: File): Promise<string[]> {
     if (data instanceof File) {
-      return guessFile(data);
+      return suggestFile(data);
     }
-    throw new TypeError('Data is not a guessable');
+    throw new TypeError('Data type is not valid');
   }
 
   /**
    * ### Introduction
-   * To guess all possible media types from the file
+   * To suggest media types for the file
    *
    * ### Parameters
    * - `file` - `File`
-   *   + The file to be guessed what media types it may be
+   *   + The query file
    *
    * ### Results
-   * - `string[]`
+   * - `Promise<string[]>`
    *   + An array of possible media types for the `file`
    *
    * ### Process
    * There are three stages:
-   * 1. Get Types by Extension {Extension, Type[]}
-   * 2. Extend Types by Blob {Blob, Type}
-   * 3. return Types
+   * 1. Guess media types by file extension
+   * 2. Guess media types by magic numbers
+   * 3. return media types
    */
-  export async function guessFile(file: File): Promise<string[]> {
-    let types = findMediaTypesByExtension(file.name);
-    types = types.concat(await findMediaTypesByMagicNumbers(file));
+  export async function suggestFile(file: File): Promise<string[]> {
+    let types = guessMediaTypesByExtension(file.name);
+    types = types.concat(await guessMediaTypesByMagicNumbers(file));
     return Array.from(new Set(types));
   }
 }
-
-// export async function completeMediaType(file: File): Promise<File> {
-//   file;
-//   throw new Error('Not implemented yet');
-// }

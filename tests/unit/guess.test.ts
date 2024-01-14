@@ -1,39 +1,39 @@
-import { MediaType } from 'src';
+import {
+  guessMediaTypesByExtension,
+  guessMediaTypesByMagicNumbers,
+} from 'src/guess';
 import { Data } from 'tests/data';
 import { describe, expect, it } from 'vitest';
 
-describe('MediaType', () => {
-  describe('.guess()', () => {
-    const output = Promise.all(
-      Array.from(Data.files()).map(async (file) => ({
-        expected: file.type,
-        received: await MediaType.guess(file),
-      })),
-    );
+describe('guessMediaTypesByExtension()', () => {
+  const output = Array.from(Data.paths()).map(({ path, type }) => ({
+    expected: type,
+    received: guessMediaTypesByExtension(path),
+  }));
 
-    it('always contains the closest media type (Recall 100%)', async () => {
-      for (const { expected, received } of await output) {
-        expect<string[]>(received).toContain(expected);
-      }
-    });
-
-    it('throws if the data is not a guessable', async () => {
-      await expect(MediaType.guess({} as any)).rejects.toThrow();
-    });
+  it('always contains the closest media type (Recall 100%)', () => {
+    for (const { expected, received } of output) {
+      expect<string[]>(received).toContain(expected);
+    }
   });
 
-  describe('.guessFile()', () => {
-    const output = Promise.all(
-      Array.from(Data.files()).map(async (file) => ({
-        expected: file.type,
-        received: await MediaType.guessFile(file),
-      })),
-    );
+  it('returns an empty array if no extension is matched', () => {
+    expect(guessMediaTypesByExtension('')).toEqual([]);
+    expect(guessMediaTypesByExtension('.__x-unknown-file-ext__')).toEqual([]);
+  });
+});
 
-    it('always contains the closest media type (Recall 100%)', async () => {
-      for (const { expected, received } of await output) {
-        expect<string[]>(received).toContain(expected);
-      }
-    });
+describe('guessMediaTypesByMagicNumbers()', async () => {
+  const output = Promise.all(
+    Array.from(Data.files()).map(async (file) => ({
+      expected: file.type,
+      received: await guessMediaTypesByMagicNumbers(file),
+    })),
+  );
+
+  it('always contains the closest media type (Recall 100%)', async () => {
+    for (const { expected, received } of await output) {
+      expect<string[]>(received).toContain(expected);
+    }
   });
 });
