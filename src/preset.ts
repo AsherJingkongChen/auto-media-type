@@ -9,18 +9,20 @@
  * - `string[]`
  *   + The associated media types
  *
+ * ### Note
+ * - The table should be sorted by file extension for maintainability
+ *
  * ### References
  * - [Apache MIME types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
+ * - [IANA Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml)
  * - [IETF Datatracker](https://datatracker.ietf.org/)
  * - [LOC](https://www.loc.gov/)
  * - [W3C](https://www.w3.org/)
- * 
- * ### Note
- * - The table should be sorted by file extension for maintainability
  */
 export const extensionToMediaTypes: Record<string, string[]> = {
   apk: ['application/zip'], // .zip
   apng: ['image/apng'], // APNG: https://www.w3.org/TR/png/#image-apng
+  avif: ['image/avif'], // AVIF: https://aomediacodec.github.io/av1-avif/#brands-overview
   epub: ['application/zip'], // .zip
   docx: ['application/zip'], // .zip
   ico: ['image/vnd.microsoft.icon'], // ICO: https://www.iana.org/assignments/media-types/image/vnd.microsoft.icon
@@ -54,7 +56,7 @@ export const extensionToMediaTypes: Record<string, string[]> = {
   z07: ['application/zip'], // .zip
   z08: ['application/zip'], // .zip
   z09: ['application/zip'], // .zip
-  zip: ['application/zip'], // PKZIP: https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
+  zip: ['application/zip'], // ZIP: https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
   zipx: ['application/zip'], // .zip
 } satisfies Record<string, SupportedMediaType[]>;
 
@@ -96,14 +98,14 @@ export const mediaTypeAndMagicNumbersList: [
   ['application/pdf', undefined, 0, 0x25, 0x50, 0x44, 0x46, 0x2d], // `%PDF-` (PDF): https://datatracker.ietf.org/doc/html/rfc8118#section-8
   ['application/zip', undefined, 0, 0x50, 0x4b, 0x03, 0x04], // `PK\x03\x04` (PKZIP LFH): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
   ['application/zip', undefined, 0, 0x50, 0x4b, 0x07, 0x08], // `PK\x07\x08` (PKZIP Split): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
-  ['application/zip', undefined, 0, 0x50, 0x4b, 0x05, 0x06], // `PK\x05\x06` (PKZIP EOCD): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
   ['audio/mpeg', undefined, 0, 0x49, 0x44, 0x33], // `ID3` (ID3v2.*): https://id3lib.sourceforge.net/id3/id3v2.3.0.html
   ['audio/mpeg', undefined, -128, 0x54, 0x41, 0x47], // `TAG` (ID3v1*): https://id3lib.sourceforge.net/id3/id3v1.html
   ['image/apng', undefined, 0, 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a], // `\x89PNG\r\n\x1a\n` (PNG): https://www.w3.org/TR/png/#image-apng
+  ['image/avif', undefined, 4, 0x66, 0x74, 0x79, 0x70, 0x61, 0x76, 0x69, 0x66], // `ftypavif` (AVIF Image Item): https://aomediacodec.github.io/av1-avif/#image-and-image-collection-brand
   ['image/vnd.microsoft.icon', undefined, 0, 0x00, 0x00, 0x01, 0x00], // `\x00\x00\x01\x00` (ICO): https://www.iana.org/assignments/media-types/image/vnd.microsoft.icon
   ['image/jpeg', undefined, 0, 0xff, 0xd8, 0xff, undefined, -2, 0xff, 0xd9], // `\xff\xd8\xff`, `\xff\xd9` (JPEG SOI, APPn, EOI): https://www.w3.org/Graphics/JPEG/
   ['image/png', undefined, 0, 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a], //`\x89PNG\r\n\x1a\n` (PNG):  https://www.w3.org/TR/png/#image-png
-  ['video/mp4', undefined, 4, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6f], // `ftypiso` (MP4 Base Media v*): https://www.ftyps.com/
+  ['video/mp4', undefined, 4, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6f], // `ftypiso` (ISO Base Media): https://www.ftyps.com/
   ['video/mp4', undefined, 4, 0x66, 0x74, 0x79, 0x70, 0x6d, 0x70, 0x34], // `ftypmp4` (MP4 v*): https://www.ftyps.com/
   ['video/mpeg', undefined, 0, 0x00, 0x00, 0x01], // `\x00\x00\x01` (MPEG-1/2 Part 2 Header Prefix): http://dvdnav.mplayerhq.hu/dvdinfo/mpeghdrs.html
 ] satisfies [SupportedMediaType, ...any[]][];
@@ -128,7 +130,7 @@ export const mediaTypeAndMagicNumbersList: [
 export const magicNumberIndexRanges: [number, number | undefined][] = [
   [-128, -125],
   [-2, undefined],
-  [0, 11],
+  [0, 12],
 ];
 
 // /**
@@ -196,12 +198,18 @@ export const magicNumberIndexRanges: [number, number | undefined][] = [
  * ### Introduction
  * - Supported media types: `7`
  *   + Goal: `2094`
+ *
+ * ### References
+ * - [IANA Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml)
  */
 export type SupportedMediaType = (typeof supportedMediaTypes)[number];
 /**
  * ### Introduction
  * - Supported media types: `7`
  *   + Goal: `2094`
+ *
+ * ### References
+ * - [IANA Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml)
  */
 export const supportedMediaTypes = [
   'application/1d-interleaved-parityfec',
