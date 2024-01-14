@@ -25,12 +25,12 @@ export namespace Data {
    * - `Generator<string>` - file paths
    */
   function* _paths(dir: string): Generator<string> {
-    const entries = readdirSync(dir, { withFileTypes: true });
-    for (const entry of entries) {
-      if (entry.isDirectory()) {
-        yield* _paths(join(dir, entry.name));
-      } else {
-        yield join(dir, entry.name);
+    for (const entry of readdirSync(dir, {
+      recursive: true,
+      withFileTypes: true,
+    })) {
+      if (entry.isFile()) {
+        yield join(entry.path, entry.name);
       }
     }
   }
