@@ -177,13 +177,13 @@ export const magicNumberIndexRanges: [number, number | undefined][] = [
 /**
  * ### Introduction
  * - Supported media types: `7`
- *   + Goal: `2076`
+ *   + Goal: `2094`
  */
 export type SupportedMediaType = (typeof supportedMediaTypes)[number];
 /**
  * ### Introduction
  * - Supported media types: `7`
- *   + Goal: `2076`
+ *   + Goal: `2094`
  */
 export const supportedMediaTypes = [
   'application/1d-interleaved-parityfec',
@@ -522,6 +522,9 @@ export const supportedMediaTypes = [
   'application/prs.hpub+zip',
   'application/prs.implied-document+xml',
   'application/prs.implied-executable',
+  'application/prs.implied-object+json',
+  'application/prs.implied-object+json-seq',
+  'application/prs.implied-object+yaml',
   'application/prs.implied-structure',
   'application/prs.nprend',
   'application/prs.plucker',
@@ -1943,12 +1946,14 @@ export const supportedMediaTypes = [
   'image/example',
   'image/fits',
   'image/g3fax',
+  'image/gif',
   'image/heic',
   'image/heic-sequence',
   'image/heif',
   'image/heif-sequence',
   'image/hej2k',
   'image/hsj2',
+  'image/ief',
   'image/j2c',
   'image/jls',
   'image/jp2',
@@ -2012,6 +2017,7 @@ export const supportedMediaTypes = [
   'message/delivery-status',
   'message/disposition-notification',
   'message/example',
+  'message/external-body',
   'message/feedback-report',
   'message/global',
   'message/global-delivery-status',
@@ -2023,6 +2029,8 @@ export const supportedMediaTypes = [
   'message/news',
   'message/ohttp-req',
   'message/ohttp-res',
+  'message/partial',
+  'message/rfc822',
   'message/s-http',
   'message/sip',
   'message/sipfrag',
@@ -2036,6 +2044,7 @@ export const supportedMediaTypes = [
   'model/gltf+json',
   'model/JT',
   'model/iges',
+  'model/mesh',
   'model/mtl',
   'model/obj',
   'model/prc',
@@ -2065,16 +2074,21 @@ export const supportedMediaTypes = [
   'model/vnd.usdz+zip',
   'model/vnd.valve.source.compiled-map',
   'model/vnd.vtu',
+  'model/vrml',
   'model/x3d-vrml',
   'model/x3d+fastinfoset',
   'model/x3d+xml',
+  'multipart/alternative',
   'multipart/appledouble',
   'multipart/byteranges',
+  'multipart/digest',
   'multipart/encrypted',
   'multipart/example',
   'multipart/form-data',
   'multipart/header-set',
+  'multipart/mixed',
   'multipart/multilingual',
+  'multipart/parallel',
   'multipart/related',
   'multipart/report',
   'multipart/signed',
@@ -2094,6 +2108,7 @@ export const supportedMediaTypes = [
   'text/dns',
   'text/ecmascript',
   'text/encaprtp',
+  'text/enriched',
   'text/example',
   'text/fhirpath',
   'text/flexfec',
@@ -2109,6 +2124,7 @@ export const supportedMediaTypes = [
   'text/n3',
   'text/parameters',
   'text/parityfec',
+  'text/plain',
   'text/provenance-notation',
   'text/prs.fallenstein.rst',
   'text/prs.lines.tag',
@@ -2117,6 +2133,7 @@ export const supportedMediaTypes = [
   'text/raptorfec',
   'text/RED',
   'text/rfc822-headers',
+  'text/richtext',
   'text/rtf',
   'text/rtp-enc-aescm128',
   'text/rtploopback',
@@ -2207,6 +2224,7 @@ export const supportedMediaTypes = [
   'video/mp4', // Extensions, Magic Numbers
   'video/MP4V-ES',
   'video/MPV',
+  'video/mpeg',
   'video/mpeg4-generic',
   'video/nv',
   'video/ogg',
