@@ -1,6 +1,6 @@
 import {
   extensionToMediaTypes,
-  indexRanges,
+  magicNumberIndexRanges,
   mediaTypeAndMagicNumbersList,
 } from './preset';
 
@@ -38,8 +38,8 @@ export async function guessMediaTypesByMagicNumbers(
 ): Promise<string[]> {
   // 1. Get the target byte lookup table
   const indexToTargetByte = new Map<number, number>();
-  for (let i = 0; i < indexRanges.length; i++) {
-    const [beginIndex, endIndex] = indexRanges[i]!;
+  for (let i = 0; i < magicNumberIndexRanges.length; i++) {
+    const [beginIndex, endIndex] = magicNumberIndexRanges[i]!;
     const targetBytes = new Uint8Array(
       await blob.slice(beginIndex, endIndex).arrayBuffer(),
     );
@@ -47,8 +47,7 @@ export async function guessMediaTypesByMagicNumbers(
     // Copy bytes and write to the table
     let index = beginIndex;
     for (let i = 0; i < targetBytes.length; i++) {
-      const targetByte = targetBytes[i]!;
-      indexToTargetByte.set(index++, targetByte);
+      indexToTargetByte.set(index++, targetBytes[i]!);
     }
   }
 
@@ -67,8 +66,8 @@ export async function guessMediaTypesByMagicNumbers(
 
     // Walk through the magic offsets and numbers
     // Record the matched magic numbers
-    let matched = true;
     let index = 0;
+    let matched = true;
     for (let i = 0; i < magics.length; i++) {
       let magic = magics[i];
       // Reset the index and magic number if undefined
@@ -88,5 +87,5 @@ export async function guessMediaTypesByMagicNumbers(
   }
 
   // 3. Return the matches
-  return Array.from(matches.values());
+  return Array.from(matches);
 }

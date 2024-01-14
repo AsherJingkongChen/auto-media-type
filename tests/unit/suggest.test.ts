@@ -11,13 +11,13 @@ describe('MediaType', () => {
       })),
     );
 
-    it('always contains the closest media type (Recall 100%)', async () => {
+    it('It always contains the closest media type (Recall 100%)', async () => {
       for (const { expected, received } of await output) {
         expect<string[]>(received).toContain(expected);
       }
     });
 
-    it('throws if the data type is not valid', async () => {
+    it('It throws if the data type is not valid', async () => {
       await expect(MediaType.suggest({} as any)).rejects.toThrow();
     });
   });
@@ -30,7 +30,7 @@ describe('MediaType', () => {
       })),
     );
 
-    it('always contains the closest media type (Recall 100%)', async () => {
+    it('It always contains the closest media type (Recall 100%)', async () => {
       for (const { expected, received } of await output) {
         expect<string[]>(received).toContain(expected);
       }

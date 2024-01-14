@@ -34,7 +34,7 @@ It depends on your use cases. You can choose one of them.
 
 ## Let's Learn How to Use It
 
-- [Guide *_(WIP)_*](#lets-learn-how-to-use-it)
+- [Guide _*(WIP)*_](#lets-learn-how-to-use-it)
 
 ## Let's Setup the Project
 

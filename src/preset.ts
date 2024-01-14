@@ -61,9 +61,10 @@ export const extensionToMediaTypes: Record<string, string[]> = {
  *   + `undefined` is the next magic marker followed by the next magic offset and numbers
  *
  * ### Note
- * - The list should be sorted by media type for maintainability
- * - The media types can have duplicates,
- *   but should be sorted by the usage in the descending order
+ * - The list should be sorted for maintainability
+ *   + in descending order
+ *   + by media type and usage
+ * - The media types can have duplicates
  *
  * ### References
  * - [IETF Datatracker](https://datatracker.ietf.org/)
@@ -72,6 +73,7 @@ export const extensionToMediaTypes: Record<string, string[]> = {
 export const mediaTypeAndMagicNumbersList: [
   string,
   undefined,
+  number,
   number,
   ...(number | undefined)[],
 ][] = [
@@ -99,11 +101,13 @@ export const mediaTypeAndMagicNumbersList: [
  *   + If `end` is `undefined`, it represents the end of the blob.
  *
  * ### Note
- * - The list should be sorted for maintainability
- * - Ranges should not overlap
- * - Ranges should be used with `Blob.slice(begin, end)`
+ * - The ranges should be sorted and not overlapping
+ *   + in ascending order
+ *   + assertion: `[i][0] < [i][1] <= [i+1][0]`
+ * - The ranges should be compatible with `Blob.slice(begin, end)`
+ *   + as the reason of the type of `end` is `number | undefined`
  */
-export const indexRanges: [number, number | undefined][] = [
+export const magicNumberIndexRanges: [number, number | undefined][] = [
   [-128, -125],
   [-2, undefined],
   [0, 11],
