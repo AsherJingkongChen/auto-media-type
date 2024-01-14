@@ -10,8 +10,9 @@ await polyfillNodejs(process.version);
  * Manage the external data used in tests
  *
  * ### References
- * - [Samples Files](https://samples-files.com/)
  * - [File Examples](https://file-examples.com/)
+ * - [File Samples](https://filesamples.com/)
+ * - [Samples Files](https://samples-files.com/)
  * - [APNG Sample](https://apng.onevcat.com/assets/elephant.png)
  * - [EXIF Samples](https://pixelpeeper.com/photos)
  */

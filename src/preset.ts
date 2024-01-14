@@ -9,6 +9,12 @@
  * - `string[]`
  *   + The associated media types
  *
+ * ### References
+ * - [Apache MIME types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
+ * - [IETF Datatracker](https://datatracker.ietf.org/)
+ * - [LOC](https://www.loc.gov/)
+ * - [W3C](https://www.w3.org/)
+ * 
  * ### Note
  * - The table should be sorted by file extension for maintainability
  */
@@ -21,10 +27,13 @@ export const extensionToMediaTypes: Record<string, string[]> = {
   jpe: ['image/jpeg'], // .jpeg
   jpeg: ['image/jpeg'], // JPEG: https://www.w3.org/Graphics/JPEG/
   jpg: ['image/jpeg'], // .jpeg
-  mp1: ['audio/mpeg'], // MPEG-1/2 Layer I: https://datatracker.ietf.org/doc/html/rfc3003#section-2
-  mp2: ['audio/mpeg'], // MPEG-1/2 Layer II: https://datatracker.ietf.org/doc/html/rfc3003#section-2
-  mp3: ['audio/mpeg'], // MPEG-1/2 Layer III: https://datatracker.ietf.org/doc/html/rfc3003#section-2
+  m2v: ['video/mpeg'], // MPEG-2 Video Only: https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types
+  mp1: ['audio/mpeg'], // MPEG-1/2 Part 3 Layer I: https://datatracker.ietf.org/doc/html/rfc3003#section-2
+  mp2: ['audio/mpeg'], // MPEG-1/2 Part 3 Layer II: https://datatracker.ietf.org/doc/html/rfc3003#section-2
+  mp3: ['audio/mpeg'], // MPEG-1/2 Part 3 Layer III: https://datatracker.ietf.org/doc/html/rfc3003#section-2
   mp4: ['video/mp4'], // MPEG-4 Part 14: https://datatracker.ietf.org/doc/html/rfc4337#section-3.1
+  mpeg: ['video/mpeg'], // MPEG-1/2 Part 2: https://www.loc.gov/preservation/digital/formats/fdd/fdd000028.shtml
+  mpg: ['video/mpeg'], // .mpeg
   mpg4: ['video/mp4'], // .mp4
   odp: ['application/zip'], // .zip
   ods: ['application/zip'], // .zip
@@ -38,6 +47,12 @@ export const extensionToMediaTypes: Record<string, string[]> = {
   z01: ['application/zip'], // .zip
   z02: ['application/zip'], // .zip
   z03: ['application/zip'], // .zip
+  z04: ['application/zip'], // .zip
+  z05: ['application/zip'], // .zip
+  z06: ['application/zip'], // .zip
+  z07: ['application/zip'], // .zip
+  z08: ['application/zip'], // .zip
+  z09: ['application/zip'], // .zip
   zip: ['application/zip'], // PKZIP: https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
   zipx: ['application/zip'], // .zip
 } satisfies Record<string, SupportedMediaType[]>;
@@ -67,7 +82,7 @@ export const extensionToMediaTypes: Record<string, string[]> = {
  * - The media types can have duplicates
  *
  * ### References
- * - [IETF Datatracker](https://datatracker.ietf.org/)
+ * - [Gary Kessler's Library](https://www.garykessler.net/library/file_sigs.html)
  * - [Wikipedia - List of file signatures](https://en.wikipedia.org/wiki/List_of_file_signatures)
  */
 export const mediaTypeAndMagicNumbersList: [
@@ -86,8 +101,9 @@ export const mediaTypeAndMagicNumbersList: [
   ['image/apng', undefined, 0, 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a], // `\x89PNG\r\n\x1a\n` (PNG): https://www.w3.org/TR/png/#image-apng
   ['image/jpeg', undefined, 0, 0xff, 0xd8, 0xff, undefined, -2, 0xff, 0xd9], // `\xff\xd8\xff`, `\xff\xd9` (JPEG SOI, APPn, EOI): https://www.w3.org/Graphics/JPEG/
   ['image/png', undefined, 0, 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a], //`\x89PNG\r\n\x1a\n` (PNG):  https://www.w3.org/TR/png/#image-png
-  ['video/mp4', undefined, 4, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6f], // `ftypiso`: https://www.ftyps.com/
-  ['video/mp4', undefined, 4, 0x66, 0x74, 0x79, 0x70, 0x6d, 0x70, 0x34], // `ftypmp4`: https://www.ftyps.com/
+  ['video/mp4', undefined, 4, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6f], // `ftypiso` (MP4 Base Media v*): https://www.ftyps.com/
+  ['video/mp4', undefined, 4, 0x66, 0x74, 0x79, 0x70, 0x6d, 0x70, 0x34], // `ftypmp4` (MP4 v*): https://www.ftyps.com/
+  ['video/mpeg', undefined, 0, 0x00, 0x00, 0x01], // `\x00\x00\x01` (MPEG-1/2 Part 2 Header Prefix): http://dvdnav.mplayerhq.hu/dvdinfo/mpeghdrs.html
 ] satisfies [SupportedMediaType, ...any[]][];
 
 /**
@@ -2224,7 +2240,7 @@ export const supportedMediaTypes = [
   'video/mp4', // Extensions, Magic Numbers
   'video/MP4V-ES',
   'video/MPV',
-  'video/mpeg',
+  'video/mpeg', // Extensions, Magic Numbers
   'video/mpeg4-generic',
   'video/nv',
   'video/ogg',

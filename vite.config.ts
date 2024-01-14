@@ -19,13 +19,14 @@ export default defineConfig((env) => ({
   test: {
     coverage: {
       enabled: true,
+      include: ['src/**.ts'],
       provider: 'istanbul',
       reporter: ['text-summary', 'text'],
       thresholds: {
         100: true,
       },
     },
-    include: ['tests/unit/**/*.test.ts'],
+    include: ['tests/unit/**.test.ts'],
   },
 }));
 
