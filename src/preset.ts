@@ -23,6 +23,7 @@ export const extensionToMediaTypes: Record<string, string[]> = {
   apng: ['image/apng'], // APNG: https://www.w3.org/TR/png/#image-apng
   epub: ['application/zip'], // .zip
   docx: ['application/zip'], // .zip
+  ico: ['image/vnd.microsoft.icon'], // ICO: https://www.iana.org/assignments/media-types/image/vnd.microsoft.icon
   jar: ['application/zip'], // .zip
   jpe: ['image/jpeg'], // .jpeg
   jpeg: ['image/jpeg'], // JPEG: https://www.w3.org/Graphics/JPEG/
@@ -99,6 +100,7 @@ export const mediaTypeAndMagicNumbersList: [
   ['audio/mpeg', undefined, 0, 0x49, 0x44, 0x33], // `ID3` (ID3v2.*): https://id3lib.sourceforge.net/id3/id3v2.3.0.html
   ['audio/mpeg', undefined, -128, 0x54, 0x41, 0x47], // `TAG` (ID3v1*): https://id3lib.sourceforge.net/id3/id3v1.html
   ['image/apng', undefined, 0, 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a], // `\x89PNG\r\n\x1a\n` (PNG): https://www.w3.org/TR/png/#image-apng
+  ['image/vnd.microsoft.icon', undefined, 0, 0x00, 0x00, 0x01, 0x00], // `\x00\x00\x01\x00` (ICO): https://www.iana.org/assignments/media-types/image/vnd.microsoft.icon
   ['image/jpeg', undefined, 0, 0xff, 0xd8, 0xff, undefined, -2, 0xff, 0xd9], // `\xff\xd8\xff`, `\xff\xd9` (JPEG SOI, APPn, EOI): https://www.w3.org/Graphics/JPEG/
   ['image/png', undefined, 0, 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a], //`\x89PNG\r\n\x1a\n` (PNG):  https://www.w3.org/TR/png/#image-png
   ['video/mp4', undefined, 4, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6f], // `ftypiso` (MP4 Base Media v*): https://www.ftyps.com/
