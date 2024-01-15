@@ -13,6 +13,10 @@ export const SupportedMediaTypes = [
   'application/vnd.openxmlformats-officedocument.presentationml.presentation', // Extensions, Magic Numbers
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // Extensions, Magic Numbers
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // Extensions, Magic Numbers
+  'application/xhtml+xml',
+  'application/xml',
+  'application/xml-dtd',
+  'application/xml-external-parsed-entity',
   'application/zip', // Extensions, Magic Numbers
   'audio/mpeg', // Extensions, Magic Numbers
   'font/otf', // Extensions, Magic Numbers
@@ -24,6 +28,9 @@ export const SupportedMediaTypes = [
   'image/jpeg', // Extensions, Magic Numbers
   'image/png', // Extensions, Magic Numbers
   'image/vnd.microsoft.icon', // Extensions, Magic Numbers
+  'text/html',
+  'text/xml',
+  'text/xml-external-parsed-entity',
   'video/mp4', // Extensions, Magic Numbers
   'video/mpeg', // Extensions, Magic Numbers
 ] as const;
@@ -41,6 +48,7 @@ export const SupportedMediaTypes = [
  *
  * ### Note
  * - The table should be sorted by file extension for maintainability
+ * - An extension can have multiple media types as fallbacks
  *
  * ### References
  * - [Apache MIME types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
@@ -129,6 +137,7 @@ export const extensionToMediaTypes: Record<string, string[]> = {
  *   + in descending order
  *   + by media type and usage
  * - The media types can have duplicates
+ * - The magic numbers should be available for all the files
  *
  * ### References
  * - [Gary Kessler's Library](https://www.garykessler.net/library/file_sigs.html)
@@ -152,13 +161,7 @@ export const mediaTypeAndMagicNumbersList: [
     0x4b,
     0x03,
     0x04,
-    undefined,
-    30,
-    0x5b,
-    0x43,
-    0x6f,
-    0x6e,
-  ], // `PK\x03\x04`, `[Con` (ZIP, OPC): https://www.iana.org/assignments/media-types/application/vnd.openxmlformats-officedocument.presentationml.presentation, https://ecma-international.org/wp-content/uploads/OpenXML-White-Paper.pdf
+  ], // `PK\x03\x04` (ZIP): https://www.iana.org/assignments/media-types/application/vnd.openxmlformats-officedocument.presentationml.presentation, https://ecma-international.org/wp-content/uploads/OpenXML-White-Paper.pdf
   [
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     undefined,
@@ -167,13 +170,7 @@ export const mediaTypeAndMagicNumbersList: [
     0x4b,
     0x03,
     0x04,
-    undefined,
-    30,
-    0x5b,
-    0x43,
-    0x6f,
-    0x6e,
-  ], // `PK\x03\x04`, `[Con` (ZIP, OPC): https://www.loc.gov/preservation/digital/formats/fdd/fdd000398.shtml, https://ecma-international.org/wp-content/uploads/OpenXML-White-Paper.pdf
+  ], // `PK\x03\x04` (ZIP): https://www.loc.gov/preservation/digital/formats/fdd/fdd000398.shtml, https://ecma-international.org/wp-content/uploads/OpenXML-White-Paper.pdf
   [
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     undefined,
@@ -182,13 +179,7 @@ export const mediaTypeAndMagicNumbersList: [
     0x4b,
     0x03,
     0x04,
-    undefined,
-    30,
-    0x5b,
-    0x43,
-    0x6f,
-    0x6e,
-  ], // `PK\3\4`, `[Con` (ZIP, OPC): https://www.iana.org/assignments/media-types/application/vnd.openxmlformats-officedocument.wordprocessingml.document, https://ecma-international.org/wp-content/uploads/OpenXML-White-Paper.pdf
+  ], // `PK\3\4` (ZIP): https://www.iana.org/assignments/media-types/application/vnd.openxmlformats-officedocument.wordprocessingml.document, https://ecma-international.org/wp-content/uploads/OpenXML-White-Paper.pdf
   ['application/zip', undefined, 0, 0x50, 0x4b, 0x03, 0x04], // `PK\3\4` (PKZIP LFH): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
   ['application/zip', undefined, 0, 0x50, 0x4b, 0x07, 0x08], // `PK\7\x08` (PKZIP Split): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
   ['audio/mpeg', undefined, 0, 0x49, 0x44, 0x33], // `ID3` (ID3v2.*): https://id3lib.sourceforge.net/id3/id3v2.3.0.html
@@ -229,7 +220,6 @@ export const magicNumberIndexRanges: [number, number | undefined][] = [
   [-128, -125],
   [-2, undefined],
   [0, 12],
-  [30, 34],
 ];
 
 // /**
