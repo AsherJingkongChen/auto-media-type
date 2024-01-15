@@ -1,9 +1,9 @@
-import { supportedMediaTypes } from 'src/preset';
+import { SupportedMediaTypes } from 'src/preset';
 import { describe, expect, it } from 'vitest';
 
-describe('supportedMediaTypes', () => {
+describe('SupportedMediaTypes', () => {
   it('It contains all the media types', () => {
-    for (const mediaType of supportedMediaTypes) {
+    for (const mediaType of SupportedMediaTypes) {
       expect(IanaMediaTypes).toContain(mediaType);
     }
   });
@@ -16,7 +16,7 @@ describe('supportedMediaTypes', () => {
  * ### References
  * - [IANA Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml)
  */
-const IanaMediaTypes = [
+const IanaMediaTypes = new Set([
   'application/1d-interleaved-parityfec',
   'application/3gpdash-qoe-report+xml',
   'application/3gppHal+json',
@@ -2111,4 +2111,4 @@ const IanaMediaTypes = [
   'video/vnd.vivo',
   'video/VP8',
   'video/VP9',
-] as const;
+] as const);

@@ -18,7 +18,10 @@ import {
  */
 export function guessMediaTypesByExtension(pathname: string): string[] {
   const extension = /\.([^\.]+)$/.exec(pathname)?.[1]?.toLowerCase();
-  return extension ? extensionToMediaTypes[extension] ?? [] : [];
+  if (extension) {
+    return extensionToMediaTypes[extension] ?? [];
+  }
+  return [];
 }
 
 /**

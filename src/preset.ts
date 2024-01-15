@@ -26,6 +26,7 @@ export const extensionToMediaTypes: Record<string, string[]> = {
   epub: ['application/zip'], // .zip
   docx: [
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/zip',
   ], // DOCX: https://www.iana.org/assignments/media-types/application/vnd.openxmlformats-officedocument.wordprocessingml.document
   ico: ['image/vnd.microsoft.icon'], // ICO: https://www.iana.org/assignments/media-types/image/vnd.microsoft.icon
   jar: ['application/zip'], // .zip
@@ -47,9 +48,13 @@ export const extensionToMediaTypes: Record<string, string[]> = {
   png: ['image/png', 'image/apng'], // PNG: https://www.w3.org/TR/png/#image-png
   pptx: [
     'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'application/zip',
   ], // PPTX: https://www.iana.org/assignments/media-types/application/vnd.openxmlformats-officedocument.presentationml.presentation
   war: ['application/zip'], // .zip
-  xlsx: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'], // XLSX: https://www.loc.gov/preservation/digital/formats/fdd/fdd000401.shtml
+  xlsx: [
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/zip',
+  ], // XLSX: https://www.loc.gov/preservation/digital/formats/fdd/fdd000401.shtml
   z00: ['application/zip'], // .zip
   z01: ['application/zip'], // .zip
   z02: ['application/zip'], // .zip
@@ -62,7 +67,7 @@ export const extensionToMediaTypes: Record<string, string[]> = {
   z09: ['application/zip'], // .zip
   zip: ['application/zip'], // ZIP: https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
   zipx: ['application/zip'], // .zip
-} satisfies Record<string, SupportedMediaType[]>;
+} satisfies Record<string, SupportedMediaTypes[]>;
 
 /**
  * ### Introduction
@@ -109,16 +114,10 @@ export const mediaTypeAndMagicNumbersList: [
     0x03,
     0x04,
     undefined,
-    40,
-    0x79,
-    0x70,
-    0x65,
-    0x73,
-    0x5d,
-    0x2e,
-    0x78,
-    0x6d,
-  ], // `PK\x03\x04`, `ypes].xm` (ZIP, OPC): https://www.iana.org/assignments/media-types/application/vnd.openxmlformats-officedocument.presentationml.presentation, https://ecma-international.org/wp-content/uploads/OpenXML-White-Paper.pdf
+    30,
+    0x5b,
+    0x43,
+  ], // `PK\x03\x04`, `[C` (ZIP, OPC): https://www.iana.org/assignments/media-types/application/vnd.openxmlformats-officedocument.presentationml.presentation, https://ecma-international.org/wp-content/uploads/OpenXML-White-Paper.pdf
   [
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     undefined,
@@ -128,16 +127,10 @@ export const mediaTypeAndMagicNumbersList: [
     0x03,
     0x04,
     undefined,
-    40,
-    0x79,
-    0x70,
-    0x65,
-    0x73,
-    0x5d,
-    0x2e,
-    0x78,
-    0x6d,
-  ], // `PK\x03\x04`, `ypes].xm` (ZIP, OPC): https://www.loc.gov/preservation/digital/formats/fdd/fdd000398.shtml, https://ecma-international.org/wp-content/uploads/OpenXML-White-Paper.pdf
+    30,
+    0x5b,
+    0x43,
+  ], // `PK\x03\x04`, `[C` (ZIP, OPC): https://www.loc.gov/preservation/digital/formats/fdd/fdd000398.shtml, https://ecma-international.org/wp-content/uploads/OpenXML-White-Paper.pdf
   [
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     undefined,
@@ -147,16 +140,10 @@ export const mediaTypeAndMagicNumbersList: [
     0x03,
     0x04,
     undefined,
-    40,
-    0x79,
-    0x70,
-    0x65,
-    0x73,
-    0x5d,
-    0x2e,
-    0x78,
-    0x6d,
-  ], // `PK\x03\x04`, `ypes].xm` (ZIP, OPC): https://www.iana.org/assignments/media-types/application/vnd.openxmlformats-officedocument.wordprocessingml.document, https://ecma-international.org/wp-content/uploads/OpenXML-White-Paper.pdf
+    30,
+    0x5b,
+    0x43,
+  ], // `PK\x03\x04`, `[C` (ZIP, OPC): https://www.iana.org/assignments/media-types/application/vnd.openxmlformats-officedocument.wordprocessingml.document, https://ecma-international.org/wp-content/uploads/OpenXML-White-Paper.pdf
   ['application/zip', undefined, 0, 0x50, 0x4b, 0x03, 0x04], // `PK\x03\x04` (PKZIP LFH): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
   ['application/zip', undefined, 0, 0x50, 0x4b, 0x07, 0x08], // `PK\x07\x08` (PKZIP Split): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
   ['audio/mpeg', undefined, 0, 0x49, 0x44, 0x33], // `ID3` (ID3v2.*): https://id3lib.sourceforge.net/id3/id3v2.3.0.html
@@ -169,7 +156,7 @@ export const mediaTypeAndMagicNumbersList: [
   ['video/mp4', undefined, 4, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6f], // `ftypiso` (ISO Base Media): https://www.ftyps.com/
   ['video/mp4', undefined, 4, 0x66, 0x74, 0x79, 0x70, 0x6d, 0x70, 0x34], // `ftypmp4` (MP4 v*): https://www.ftyps.com/
   ['video/mpeg', undefined, 0, 0x00, 0x00, 0x01], // `\x00\x00\x01` (MPEG-1/2 Part 2 Header Prefix): http://dvdnav.mplayerhq.hu/dvdinfo/mpeghdrs.html
-] satisfies [SupportedMediaType, ...any[]][];
+] satisfies [SupportedMediaTypes, ...any[]][];
 
 /**
  * ### Introduction
@@ -192,7 +179,7 @@ export const magicNumberIndexRanges: [number, number | undefined][] = [
   [-128, -125],
   [-2, undefined],
   [0, 12],
-  [40, 48],
+  [30, 32],
 ];
 
 // /**
@@ -263,15 +250,8 @@ export const magicNumberIndexRanges: [number, number | undefined][] = [
  * ### References
  * - [IANA Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml)
  */
-export type SupportedMediaType = (typeof supportedMediaTypes)[number];
-/**
- * ### Introduction
- * - Supported media types: `13`
- *
- * ### References
- * - [IANA Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml)
- */
-export const supportedMediaTypes = [
+export type SupportedMediaTypes = (typeof SupportedMediaTypes)[number];
+export const SupportedMediaTypes = [
   'application/pdf', // Extensions, Magic Numbers
   'application/vnd.openxmlformats-officedocument.presentationml.presentation', // Extensions, Magic Numbers
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // Extensions, Magic Numbers

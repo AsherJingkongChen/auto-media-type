@@ -1,3 +1,4 @@
+// import { checkMediaTypes } from './check';
 import {
   guessMediaTypesByExtension,
   guessMediaTypesByMagicNumbers,
@@ -49,14 +50,30 @@ export namespace MediaType {
    *   + An array of possible media types for the `file`
    *
    * ### Process
-   * There are three stages:
+   * There are four stages:
    * 1. Guess media types by file extension
-   * 2. Guess media types by magic numbers
-   * 3. return media types
+   * 2. Check media types
+   *    - Return if at least one of media types are valid
+   * 3. Guess media types by magic numbers
+   * 4. Check media types
+   *    - Return filtered media types
    */
   export async function suggestFile(file: File): Promise<string[]> {
-    let types = guessMediaTypesByExtension(file.name);
-    types = types.concat(await guessMediaTypesByMagicNumbers(file));
-    return Array.from(new Set(types));
+    // [TODO] Need a working check algorithm
+    // const mediaTypes = checkMediaTypes(
+    //   file,
+    //   guessMediaTypesByExtension(file.name),
+    // );
+    // if (mediaTypes.length) {
+    //   return mediaTypes;
+    // }
+    // return checkMediaTypes(file, await guessMediaTypesByMagicNumbers(file));
+    return Array.from(
+      new Set(
+        guessMediaTypesByExtension(file.name).concat(
+          await guessMediaTypesByMagicNumbers(file),
+        ),
+      ),
+    );
   }
 }
