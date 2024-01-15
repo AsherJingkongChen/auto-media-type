@@ -11,9 +11,9 @@ describe('magicNumberIndexRanges', () => {
         magicNumberIndexRanges[i]!,
         magicNumberIndexRanges[i - 1]!,
       ];
-      expect(prevBeginIndex).toBeLessThan(prevEndIndex);
-      expect(prevEndIndex).toBeLessThanOrEqual(beginIndex);
-      expect(beginIndex).toBeLessThan(endIndex);
+      expect(prevBeginIndex < prevEndIndex).toBe(true);
+      expect(prevEndIndex <= beginIndex).toBe(true);
+      expect(beginIndex < endIndex).toBe(true);
     }
   });
 

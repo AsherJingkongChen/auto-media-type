@@ -15,6 +15,7 @@ await polyfillNodejs(process.version);
  * - [Samples Files](https://samples-files.com/)
  * - [APNG Sample](https://apng.onevcat.com/assets/elephant.png)
  * - [EXIF Samples](https://pixelpeeper.com/photos)
+ * - [Fontsource](https://fontsource.org/)
  */
 export namespace Data {
   /**
