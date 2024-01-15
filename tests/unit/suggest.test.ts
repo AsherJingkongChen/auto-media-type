@@ -28,6 +28,21 @@ describe('MediaType', () => {
     });
   });
 
+  describe('.suggestBlob()', () => {
+    const output = Promise.all(
+      Array.from(Data.files()).map(async (file) => ({
+        expected: file.type,
+        received: await MediaType.suggestBlob(file),
+      })),
+    );
+
+    it('It always contains the closest media type (Recall 100%)', async () => {
+      for (const { expected, received } of await output) {
+        expect(received).toContain(expected);
+      }
+    });
+  });
+
   describe('.suggestFile()', () => {
     const output = Promise.all(
       Array.from(Data.files()).map(async (file) => ({

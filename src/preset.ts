@@ -142,21 +142,7 @@ export const mediaTypeAndMagicNumbersList: [
   ...(number | undefined)[],
 ][] = [
   ['application/gzip', undefined, 0, 0x1f, 0x8b], // `\x1f\x8b` (GZIP): https://www.iana.org/assignments/media-types/application/gzip
-  [
-    'application/java-archive',
-    undefined,
-    0,
-    0x50,
-    0x4b,
-    0x03,
-    0x04,
-    undefined,
-    30,
-    0x4d,
-    0x45,
-    0x54,
-    0x41,
-  ], // `PK\x03\x04`, `META` (ZIP, JAR): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT, https://docs.oracle.com/en/java/javase/20/docs/specs/jar/jar.html
+  ['application/java-archive', undefined, 0, 0x50, 0x4b, 0x03, 0x04], // `PK\x03\x04`= (ZIP): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT, https://docs.oracle.com/en/java/javase/20/docs/specs/jar/jar.html
   ['application/pdf', undefined, 0, 0x25, 0x50, 0x44, 0x46, 0x2d], // `%PDF-` (PDF): https://datatracker.ietf.org/doc/html/rfc8118#section-8
   [
     'application/vnd.openxmlformats-officedocument.presentationml.presentation',
@@ -204,7 +190,7 @@ export const mediaTypeAndMagicNumbersList: [
     0x6e,
   ], // `PK\3\4`, `[Con` (ZIP, OPC): https://www.iana.org/assignments/media-types/application/vnd.openxmlformats-officedocument.wordprocessingml.document, https://ecma-international.org/wp-content/uploads/OpenXML-White-Paper.pdf
   ['application/zip', undefined, 0, 0x50, 0x4b, 0x03, 0x04], // `PK\3\4` (PKZIP LFH): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
-  ['application/zip', undefined, 0, 0x50, 0x4b, 0x07, 0x08], // `PK\x07\x08` (PKZIP Split): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
+  ['application/zip', undefined, 0, 0x50, 0x4b, 0x07, 0x08], // `PK\7\x08` (PKZIP Split): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
   ['audio/mpeg', undefined, 0, 0x49, 0x44, 0x33], // `ID3` (ID3v2.*): https://id3lib.sourceforge.net/id3/id3v2.3.0.html
   ['audio/mpeg', undefined, -128, 0x54, 0x41, 0x47], // `TAG` (ID3v1*): https://id3lib.sourceforge.net/id3/id3v1.html
   ['font/otf', undefined, 0, 0x4f, 0x54, 0x54, 0x4f], // `OTTO`: https://learn.microsoft.com/en-us/typography/opentype/spec/otff#table-directory
