@@ -28,7 +28,7 @@ export const SupportedMediaTypes = [
   'image/jpeg', // Extensions, Magic Numbers
   'image/png', // Extensions, Magic Numbers
   'image/vnd.microsoft.icon', // Extensions, Magic Numbers
-  'text/html',
+  'text/html', // Extensions, Magic Numbers
   'text/xml',
   'text/xml-external-parsed-entity',
   'video/mp4', // Extensions, Magic Numbers
@@ -72,6 +72,8 @@ export const extensionToMediaTypes: Record<string, string[]> = {
   jpe: ['image/jpeg'], // .jpeg
   jpeg: ['image/jpeg'], // JPEG: https://www.w3.org/Graphics/JPEG/
   jpg: ['image/jpeg'], // .jpeg
+  htm: ['text/html'], // .html
+  html: ['text/html'], // HTML: https://datatracker.ietf.org/doc/html/rfc2854#section-2
   m2v: ['video/mpeg'], // MPEG-2 Video Only: https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types
   mp1: ['audio/mpeg'], // MPEG-1/2 Part 3 Layer I: https://datatracker.ietf.org/doc/html/rfc3003#section-2
   mp2: ['audio/mpeg'], // MPEG-1/2 Part 3 Layer II: https://datatracker.ietf.org/doc/html/rfc3003#section-2
@@ -194,6 +196,9 @@ export const mediaTypeAndMagicNumbersList: [
   ['image/vnd.microsoft.icon', undefined, 0, 0x00, 0x00, 0x01, 0x00], // `\0\0\1\0` (ICO): https://www.iana.org/assignments/media-types/image/vnd.microsoft.icon
   ['image/jpeg', undefined, 0, 0xff, 0xd8, 0xff, undefined, -2, 0xff, 0xd9], // `\xff\xd8\xff`, `\xff\xd9` (JPEG SOI, APPn, EOI): https://www.w3.org/Graphics/JPEG/
   ['image/png', undefined, 0, 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a], //`\x89PNG\r\n\x1a\n` (PNG):  https://www.w3.org/TR/png/#image-png
+  ['text/html', undefined, 0, 0x3c, 0x21, 0x44, 0x4f], // `<!DO` (HTML Preamble): https://datatracker.ietf.org/doc/html/rfc2854#section-5
+  ['text/html', undefined, 0, 0x3c, 0x21, 0x64, 0x6f], // `<!do` (HTML Preamble): https://datatracker.ietf.org/doc/html/rfc2854#section-5
+  ['text/html', undefined, 0, 0x3c, 0x68, 0x74, 0x6d], // `<htm` (HTML Root): https://datatracker.ietf.org/doc/html/rfc2854#section-5
   ['video/mp4', undefined, 4, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6f], // `ftypiso` (ISO Base Media): https://www.ftyps.com/
   ['video/mp4', undefined, 4, 0x66, 0x74, 0x79, 0x70, 0x6d, 0x70, 0x34], // `ftypmp4` (MP4 v*): https://www.ftyps.com/
   ['video/mpeg', undefined, 0, 0x00, 0x00, 0x01], // `\0\0\1` (MPEG-1/2 Part 2 Header Prefix): http://dvdnav.mplayerhq.hu/dvdinfo/mpeghdrs.html

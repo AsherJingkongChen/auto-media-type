@@ -10,12 +10,13 @@ await polyfillNodejs(process.version);
  * Manage the external data used in tests
  *
  * ### References
- * - [File Examples](https://file-examples.com/)
- * - [File Samples](https://filesamples.com/)
- * - [Samples Files](https://samples-files.com/)
  * - [APNG Sample](https://apng.onevcat.com/assets/elephant.png)
  * - [EXIF Samples](https://pixelpeeper.com/photos)
+ * - [Download Sample Files](https://www.dwsamplefiles.com/)
+ * - [File Examples](https://file-examples.com/)
+ * - [File Samples](https://filesamples.com/)
  * - [Fontsource](https://fontsource.org/)
+ * - [Samples Files](https://samples-files.com/)
  */
 export namespace Data {
   /**
