@@ -19,20 +19,22 @@ export namespace MediaType {
    * To suggest media types for the data
    *
    * ### Parameters
-   * - `data` - `File`
+   * - `data` - `Blob | File`
    *   + The query data
    *
    * ### Results
-   * - `Promise<string[]>`
-   *   + An array of possible media types for the `data`
+   * - `Promise<Set<string>>`
+   *   + A set of possible media types for the `data`
    *
    * ### Note
    * - This function may call:
    *   + `.suggestFile()`
    */
-  export async function suggest(data: File): Promise<string[]> {
+  export async function suggest(data: Blob | File): Promise<Set<string>> {
     if (data instanceof File) {
       return suggestFile(data);
+    } else if (data instanceof Blob) {
+      return suggestBlob(data);
     }
     throw new TypeError('Data type is not valid');
   }
@@ -46,8 +48,8 @@ export namespace MediaType {
    *   + The query blob
    *
    * ### Results
-   * - `Promise<string[]>`
-   *   + An array of possible media types for the `blob`
+   * - `Promise<Set<string>>`
+   *   + A set of possible media types for the `blob`
    *
    * ### Process
    * There are four stages:
@@ -55,7 +57,7 @@ export namespace MediaType {
    * 2. Check media types
    *    - Return filtered media types
    */
-  export async function suggestBlob(blob: Blob): Promise<string[]> {
+  export async function suggestBlob(blob: Blob): Promise<Set<string>> {
     // [TODO] Need a working check algorithm
     // return checkMediaTypes(file, await guessMediaTypesByMagicNumbers(file));
     return guessMediaTypesByMagicNumbers(blob);
@@ -70,8 +72,8 @@ export namespace MediaType {
    *   + The query file
    *
    * ### Results
-   * - `Promise<string[]>`
-   *   + An array of possible media types for the `file`
+   * - `Promise<Set<string>>`
+   *   + A set of possible media types for the `file`
    *
    * ### Process
    * There are four stages:
@@ -82,7 +84,7 @@ export namespace MediaType {
    * 4. Check media types
    *    - Return filtered media types
    */
-  export async function suggestFile(file: File): Promise<string[]> {
+  export async function suggestFile(file: File): Promise<Set<string>> {
     // [TODO] Need a working check algorithm
     // const mediaTypes = checkMediaTypes(
     //   file,
@@ -92,12 +94,9 @@ export namespace MediaType {
     //   return mediaTypes;
     // }
     // return checkMediaTypes(file, await guessMediaTypesByMagicNumbers(file));
-    return Array.from(
-      new Set(
-        guessMediaTypesByExtension(file.name).concat(
-          await guessMediaTypesByMagicNumbers(file),
-        ),
-      ),
-    );
+    return new Set([
+      ...guessMediaTypesByExtension(file.name),
+      ...await guessMediaTypesByMagicNumbers(file),
+    ]);
   }
 }

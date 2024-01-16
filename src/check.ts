@@ -4,6 +4,6 @@
 //   return true;
 // }
 
-// export function checkMediaTypes(blob: Blob, mediaTypes: string[]): string[] {
+// export function checkMediaTypes(blob: Blob, mediaTypes: Set<string>): Set<string> {
 //   return mediaTypes.filter(checkMediaType.bind(undefined, blob));
 // }

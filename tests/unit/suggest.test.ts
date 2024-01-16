@@ -4,27 +4,34 @@ import { describe, expect, it } from 'vitest';
 
 describe('MediaType', () => {
   describe('.suggest()', () => {
-    const output = Promise.all(
+    const outputBlobs = Promise.all(
+      Array.from(Data.files()).map(async (file) => ({
+        expected: file.type,
+        received: await MediaType.suggest(file.slice()),
+      })),
+    );
+
+    const outputFiles = Promise.all(
       Array.from(Data.files()).map(async (file) => ({
         expected: file.type,
         received: await MediaType.suggest(file),
       })),
     );
 
-    it('It always contains the closest media type (Recall 100%)', async () => {
-      for (const { expected, received } of await output) {
+    it('It always contains the closest media type for blobs (Recall 100%)', async () => {
+      for (const { expected, received } of await outputBlobs) {
+        expect(received).toContain(expected);
+      }
+    });
+
+    it('It always contains the closest media type for files (Recall 100%)', async () => {
+      for (const { expected, received } of await outputFiles) {
         expect(received).toContain(expected);
       }
     });
 
     it('It throws if the data type is not valid', async () => {
       await expect(MediaType.suggest({} as any)).rejects.toThrow();
-    });
-
-    it('It returns no duplicate', async () => {
-      for (const { received } of await output) {
-        expect(received.length).toBe(new Set(received).size);
-      }
     });
   });
 

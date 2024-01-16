@@ -13,15 +13,15 @@ import {
  *   + The file path or name
  *
  * ### Results
- * - `string[]`
- *   + An array of possible media types
+ * - `Set<string>`
+ *   + A set of possible media types
  */
-export function guessMediaTypesByExtension(pathname: string): string[] {
+export function guessMediaTypesByExtension(pathname: string): Set<string> {
   const extension = /\.([^\.]+)$/.exec(pathname)?.[1]?.toLowerCase();
   if (extension) {
-    return extensionToMediaTypes[extension] ?? [];
+    return new Set(extensionToMediaTypes[extension] ?? []);
   }
-  return [];
+  return new Set();
 }
 
 /**
@@ -33,12 +33,12 @@ export function guessMediaTypesByExtension(pathname: string): string[] {
  *   + The query byte data
  *
  * ### Results
- * - `Promise<string[]>`
- *   + An array of possible media types
+ * - `Promise<Set<string>>`
+ *   + A set of possible media types
  */
 export async function guessMediaTypesByMagicNumbers(
   blob: Blob,
-): Promise<string[]> {
+): Promise<Set<string>> {
   // 1. Get the target byte lookup table
   const indexToTargetByte = new Map<number, number>();
   for (let i = 0; i < magicNumberIndexRanges.length; i++) {
@@ -90,5 +90,5 @@ export async function guessMediaTypesByMagicNumbers(
   }
 
   // 3. Return the matches
-  return Array.from(matches);
+  return matches;
 }
