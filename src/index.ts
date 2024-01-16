@@ -96,7 +96,7 @@ export namespace MediaType {
     // return checkMediaTypes(file, await guessMediaTypesByMagicNumbers(file));
     return new Set([
       ...guessMediaTypesByExtension(file.name),
-      ...await guessMediaTypesByMagicNumbers(file),
+      ...(await guessMediaTypesByMagicNumbers(file)),
     ]);
   }
 }

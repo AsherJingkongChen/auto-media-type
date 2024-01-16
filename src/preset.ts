@@ -1,6 +1,6 @@
 /**
  * ### Introduction
- * - Supported media types: `19`
+ * - Supported media types: `21`
  *
  * ### References
  * - [IANA Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml)
@@ -14,7 +14,7 @@ export const SupportedMediaTypes = [
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // Extensions, Magic Numbers
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // Extensions, Magic Numbers
   'application/xhtml+xml',
-  'application/xml',
+  'application/xml', // Extensions, Magic Numbers
   'application/xml-dtd',
   'application/xml-external-parsed-entity',
   'application/zip', // Extensions, Magic Numbers
@@ -29,8 +29,8 @@ export const SupportedMediaTypes = [
   'image/png', // Extensions, Magic Numbers
   'image/vnd.microsoft.icon', // Extensions, Magic Numbers
   'text/html', // Extensions, Magic Numbers
-  'text/xml',
-  'text/xml-external-parsed-entity',
+  'text/xml', // DEPRECATED by us
+  'text/xml-external-parsed-entity', // DEPRECATED by us
   'video/mp4', // Extensions, Magic Numbers
   'video/mpeg', // Extensions, Magic Numbers
 ] as const;
@@ -101,6 +101,7 @@ export const extensionToMediaTypes: Record<string, string[]> = {
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     'application/zip',
   ], // .zip, XLSX: https://www.loc.gov/preservation/digital/formats/fdd/fdd000401.shtml
+  xml: ['application/xml'], // https://datatracker.ietf.org/doc/html/rfc7303#section-9.1
   z: ['application/gzip'], // .gz
   z00: ['application/zip'], // .zip
   z01: ['application/zip'], // .zip
@@ -182,6 +183,37 @@ export const mediaTypeAndMagicNumbersList: [
     0x03,
     0x04,
   ], // `PK\3\4` (ZIP): https://www.iana.org/assignments/media-types/application/vnd.openxmlformats-officedocument.wordprocessingml.document, https://ecma-international.org/wp-content/uploads/OpenXML-White-Paper.pdf
+  ['application/xml', undefined, 0, 0x3c, 0x3f, 0x78, 0x6d, 0x6c], // `<?xml` (XML Declaration): https://datatracker.ietf.org/doc/html/rfc7303#section-9.1
+  [
+    'application/xml',
+    undefined,
+    0,
+    0xfe,
+    0xff,
+    0x00,
+    0x3c,
+    0x00,
+    0x3f,
+    0x00,
+    0x78,
+    0x00,
+    0x6d,
+  ], // `<?xm` (XML Declaration UTF-16BE): https://datatracker.ietf.org/doc/html/rfc7303#section-9.1
+  [
+    'application/xml',
+    undefined,
+    0,
+    0xff,
+    0xfe,
+    0x3c,
+    0x00,
+    0x3f,
+    0x00,
+    0x78,
+    0x00,
+    0x6d,
+    0x00,
+  ], // `<?xm` (XML Declaration UTF-16LE): https://datatracker.ietf.org/doc/html/rfc7303#section-9.1
   ['application/zip', undefined, 0, 0x50, 0x4b, 0x03, 0x04], // `PK\3\4` (PKZIP LFH): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
   ['application/zip', undefined, 0, 0x50, 0x4b, 0x07, 0x08], // `PK\7\x08` (PKZIP Split): https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.10.TXT
   ['audio/mpeg', undefined, 0, 0x49, 0x44, 0x33], // `ID3` (ID3v2.*): https://id3lib.sourceforge.net/id3/id3v2.3.0.html
@@ -198,7 +230,7 @@ export const mediaTypeAndMagicNumbersList: [
   ['image/png', undefined, 0, 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a], //`\x89PNG\r\n\x1a\n` (PNG):  https://www.w3.org/TR/png/#image-png
   ['text/html', undefined, 0, 0x3c, 0x21, 0x44, 0x4f], // `<!DO` (HTML Preamble): https://datatracker.ietf.org/doc/html/rfc2854#section-5
   ['text/html', undefined, 0, 0x3c, 0x21, 0x64, 0x6f], // `<!do` (HTML Preamble): https://datatracker.ietf.org/doc/html/rfc2854#section-5
-  ['text/html', undefined, 0, 0x3c, 0x68, 0x74, 0x6d], // `<htm` (HTML Root): https://datatracker.ietf.org/doc/html/rfc2854#section-5
+  ['text/html', undefined, 0, 0x3c, 0x68, 0x74, 0x6d, 0x6c], // `<html` (HTML Root): https://datatracker.ietf.org/doc/html/rfc2854#section-5
   ['video/mp4', undefined, 4, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6f], // `ftypiso` (ISO Base Media): https://www.ftyps.com/
   ['video/mp4', undefined, 4, 0x66, 0x74, 0x79, 0x70, 0x6d, 0x70, 0x34], // `ftypmp4` (MP4 v*): https://www.ftyps.com/
   ['video/mpeg', undefined, 0, 0x00, 0x00, 0x01], // `\0\0\1` (MPEG-1/2 Part 2 Header Prefix): http://dvdnav.mplayerhq.hu/dvdinfo/mpeghdrs.html

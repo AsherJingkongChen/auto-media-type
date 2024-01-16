@@ -1,6 +1,6 @@
 # `auto-media-type`
 
-[![NPM Version](https://img.shields.io/npm/v/auto-media-type.svg?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/auto-media-type)
+[![NPM Version](https://img.shields.io/npm/v/auto-media-type?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/auto-media-type)
 
 > **Note:** THIS project is still under development. Please do not use it in production.
 

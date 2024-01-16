@@ -4,29 +4,21 @@ import { describe, expect, it } from 'vitest';
 
 describe('MediaType', () => {
   describe('.suggest()', () => {
-    const outputBlobs = Promise.all(
-      Array.from(Data.files()).map(async (file) => ({
-        expected: file.type,
-        received: await MediaType.suggest(file.slice()),
-      })),
-    );
-
-    const outputFiles = Promise.all(
-      Array.from(Data.files()).map(async (file) => ({
-        expected: file.type,
-        received: await MediaType.suggest(file),
-      })),
-    );
+    const output = Array.from(Data.files()).map((file) => ({
+      expected: file.type,
+      receivedFromBlob: MediaType.suggest(file.slice()),
+      receivedFromFile: MediaType.suggest(file),
+    }));
 
     it('It always contains the closest media type for blobs (Recall 100%)', async () => {
-      for (const { expected, received } of await outputBlobs) {
-        expect(received).toContain(expected);
+      for (const { expected, receivedFromBlob } of output) {
+        await expect(receivedFromBlob).resolves.toContain(expected);
       }
     });
 
     it('It always contains the closest media type for files (Recall 100%)', async () => {
-      for (const { expected, received } of await outputFiles) {
-        expect(received).toContain(expected);
+      for (const { expected, receivedFromFile } of output) {
+        await expect(receivedFromFile).resolves.toContain(expected);
       }
     });
 
@@ -36,31 +28,27 @@ describe('MediaType', () => {
   });
 
   describe('.suggestBlob()', () => {
-    const output = Promise.all(
-      Array.from(Data.files()).map(async (file) => ({
-        expected: file.type,
-        received: await MediaType.suggestBlob(file),
-      })),
-    );
+    const output = Array.from(Data.files()).map((file) => ({
+      expected: file.type,
+      received: MediaType.suggestBlob(file),
+    }));
 
     it('It always contains the closest media type (Recall 100%)', async () => {
-      for (const { expected, received } of await output) {
-        expect(received).toContain(expected);
+      for (const { expected, received } of output) {
+        await expect(received).resolves.toContain(expected);
       }
     });
   });
 
   describe('.suggestFile()', () => {
-    const output = Promise.all(
-      Array.from(Data.files()).map(async (file) => ({
-        expected: file.type,
-        received: await MediaType.suggestFile(file),
-      })),
-    );
+    const output = Array.from(Data.files()).map((file) => ({
+      expected: file.type,
+      received: MediaType.suggestFile(file),
+    }));
 
     it('It always contains the closest media type (Recall 100%)', async () => {
-      for (const { expected, received } of await output) {
-        expect(received).toContain(expected);
+      for (const { expected, received } of output) {
+        await expect(received).resolves.toContain(expected);
       }
     });
   });
