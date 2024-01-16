@@ -31,12 +31,13 @@ for (const [type, link] of typeAndLinkList) {
       mediatype: template || `${type}/${name}`,
     };
   });
-  const mediatypes = Array.from(
-    new Set(entries.map(({ mediatype }) => mediatype)),
+  data.entries = data.entries.concat(entries);
+  data.mediatypes = data.mediatypes.concat(
+    entries.map(({ mediatype }) => mediatype),
   );
-  data.entries.push(...entries);
-  data.mediatypes.push(...mediatypes);
-  data.mediatypesLength += mediatypes.length;
 }
+
+data.mediatypes = Array.from(new Set(data.mediatypes));
+data.mediatypesLength = data.mediatypes.length;
 
 console.log(JSON.stringify(data, undefined, 2));
