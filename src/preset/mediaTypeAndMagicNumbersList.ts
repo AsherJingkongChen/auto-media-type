@@ -1,4 +1,3 @@
-import {} from 'dist/auto-media-type';
 import { SupportedMediaTypes } from './SupportedMediaTypes';
 
 /**
