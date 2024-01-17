@@ -49,9 +49,10 @@ function BundleFinishBannerPlugin(context: { mode: string }): PluginOption {
 function DtsPlugin(context: { mode: string }): PluginOption {
   return context.mode === 'production'
     ? ViteDtsPlugin({
-        include: 'src',
         entryRoot: '.',
+        include: 'src',
         insertTypesEntry: true,
+        rollupTypes: true,
       })
     : undefined;
 }

@@ -215,3 +215,5 @@ export namespace MediaType {
     | Uint16Array
     | Uint32Array;
 }
+
+export type { SupportedMediaTypes } from './preset';
