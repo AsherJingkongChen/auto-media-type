@@ -10,10 +10,10 @@ describe('SupportedMediaTypes', () => {
 });
 
 /**
- * ### Introduction
+ * ## Introduction
  * - All media types: `2094`
  *
- * ### References
+ * ## References
  * - [IANA Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml)
  */
 const IanaMediaTypes = new Set([

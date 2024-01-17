@@ -1,8 +1,8 @@
 /**
- * ### Introduction
+ * ## Introduction
  * - Supported media types: `21`
  *
- * ### References
+ * ## References
  * - [IANA Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml)
  */
 export type SupportedMediaTypes = (typeof SupportedMediaTypes)[number];
@@ -36,21 +36,21 @@ export const SupportedMediaTypes = [
 ] as const;
 
 /**
- * ### Introduction
+ * ## Introduction
  * The lookup table for guessing media types by file extension
  *
- * ### Layout
+ * ## Layout
  * `Record<string, string[]>`
  * - `string`
  *   + The file extension
  * - `string[]`
  *   + The associated media types
  *
- * ### Note
+ * ## Note
  * - The table should be sorted by file extension for maintainability
  * - An extension can have multiple media types as fallbacks
  *
- * ### References
+ * ## References
  * - [Apache MIME types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
  * - [IANA Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml)
  * - [IETF Datatracker](https://datatracker.ietf.org/)
@@ -118,10 +118,10 @@ export const extensionToMediaTypes: Record<string, string[]> = {
 } satisfies Record<string, SupportedMediaTypes[]>;
 
 /**
- * ### Introduction
+ * ## Introduction
  * The list of media types, offsets and magic numbers
  *
- * ### Layout
+ * ## Layout
  * `[string, undefined, number, number, ...(undefined | number)[]][]`
  * - `string`
  *   + The media type
@@ -135,14 +135,14 @@ export const extensionToMediaTypes: Record<string, string[]> = {
  *   + The magic numbers, next markers and next offsets
  *   + `undefined` is the next magic marker followed by the next magic offset and numbers
  *
- * ### Note
+ * ## Note
  * - The list should be sorted for maintainability
  *   + in descending order
  *   + by media type and usage
  * - The media types can have duplicates
  * - The magic numbers should be available for all the files
  *
- * ### References
+ * ## References
  * - [Gary Kessler's Library](https://www.garykessler.net/library/file_sigs.html)
  * - [Wikipedia - List of file signatures](https://en.wikipedia.org/wiki/List_of_file_signatures)
  */
@@ -237,16 +237,16 @@ export const mediaTypeAndMagicNumbersList: [
 ] satisfies [SupportedMediaTypes, ...any[]][];
 
 /**
- * ### Introduction
+ * ## Introduction
  * Pairs of index ranges to cover all magic numbers
  *
- * ### Layout
+ * ## Layout
  * `[number, number | undefined][]`
  * - `[number, number | undefined]`
  *   + `[begin, end)` is a right-open index range.
  *   + If `end` is `undefined`, it represents the end of the blob.
  *
- * ### Note
+ * ## Note
  * - The ranges should be sorted and not overlapping
  *   + in ascending order
  *   + assertion: `[i][0] < [i][1] <= [i+1][0]`
@@ -260,10 +260,10 @@ export const magicNumberIndexRanges: [number, number | undefined][] = [
 ];
 
 // /**
-//  * ### Introduction
+//  * ## Introduction
 //  * Update a media type
 //  *
-//  * ### Parameters
+//  * ## Parameters
 //  * - `context` - `object` - The context object
 //  *   - `mediaType` - `string` - The media type to set
 //  *   - `fileExtensions` - `string[]` - The file extensions to set
@@ -271,10 +271,10 @@ export const magicNumberIndexRanges: [number, number | undefined][] = [
 //  *     - `offset` - `number` - The offset of the magic numbers
 //  *     - `numbers` - `number[]` - The magic numbers
 //  *
-//  * ### Results
+//  * ## Results
 //  * - `boolean` - `true` if the update modifies entries that already exist
 //  *
-//  * ### Throws
+//  * ## Throws
 //  * - `Error` - If the magic numbers are empty
 //  */
 // export function update(context: {

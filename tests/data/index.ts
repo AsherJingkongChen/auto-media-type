@@ -6,10 +6,10 @@ import { polyfillNodejs } from './utils';
 await polyfillNodejs(process.version);
 
 /**
- * ### Introduction
+ * ## Introduction
  * Manage the external data used in tests
  *
- * ### References
+ * ## References
  * - [APNG Sample](https://apng.onevcat.com/assets/elephant.png)
  * - [EXIF Samples](https://pixelpeeper.com/photos)
  * - [Download Sample Files](https://www.dwsamplefiles.com/)
@@ -20,10 +20,10 @@ await polyfillNodejs(process.version);
  */
 export namespace Data {
   /**
-   * ### Introduction
+   * ## Introduction
    * Walk through all the files in the directory `dir`
    *
-   * ### Results
+   * ## Results
    * - `Generator<string>` - file paths
    */
   function* _paths(dir: string): Generator<string> {
@@ -38,10 +38,10 @@ export namespace Data {
   }
 
   /**
-   * ### Introduction
+   * ## Introduction
    * Walk through all the files in the data directory
    *
-   * ### Results
+   * ## Results
    * - `Generator<{ path: string; type: string }>` - paths and media types
    */
   export function* paths(): Generator<{ path: string; type: string }> {
@@ -54,10 +54,10 @@ export namespace Data {
   }
 
   /**
-   * ### Introduction
+   * ## Introduction
    * Walk through all the files in the data directory
    *
-   * ### Results
+   * ## Results
    * - `Generator<File>` - file references
    *   - `File.type` - The media type is set to the directory name manually
    */

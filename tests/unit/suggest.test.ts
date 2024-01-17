@@ -6,13 +6,32 @@ describe('MediaType', () => {
   describe('.suggest()', () => {
     const output = Array.from(Data.files()).map((file) => ({
       expected: file.type,
+      receivedFromArrayBuffer: file.arrayBuffer().then(MediaType.suggest),
       receivedFromBlob: MediaType.suggest(file.slice()),
+      receivedFromDataView: file
+        .arrayBuffer()
+        .then((a) => MediaType.suggest(new DataView(a))),
       receivedFromFile: MediaType.suggest(file),
+      receivedFromUint8Array: file
+        .arrayBuffer()
+        .then((a) => MediaType.suggest(new Uint8Array(a))),
     }));
+
+    it('It always contains the closest media type for array buffers (Recall 100%)', async () => {
+      for (const { expected, receivedFromArrayBuffer } of output) {
+        await expect(receivedFromArrayBuffer).resolves.toContain(expected);
+      }
+    });
 
     it('It always contains the closest media type for blobs (Recall 100%)', async () => {
       for (const { expected, receivedFromBlob } of output) {
         await expect(receivedFromBlob).resolves.toContain(expected);
+      }
+    });
+
+    it('It always contains the closest media type for data views (Recall 100%)', async () => {
+      for (const { expected, receivedFromDataView } of output) {
+        await expect(receivedFromDataView).resolves.toContain(expected);
       }
     });
 
@@ -22,34 +41,14 @@ describe('MediaType', () => {
       }
     });
 
+    it('It always contains the closest media type for uint8 arrays (Recall 100%)', async () => {
+      for (const { expected, receivedFromUint8Array } of output) {
+        await expect(receivedFromUint8Array).resolves.toContain(expected);
+      }
+    });
+
     it('It throws if the data type is not valid', async () => {
       await expect(MediaType.suggest({} as any)).rejects.toThrow();
-    });
-  });
-
-  describe('.suggestBlob()', () => {
-    const output = Array.from(Data.files()).map((file) => ({
-      expected: file.type,
-      received: MediaType.suggestBlob(file),
-    }));
-
-    it('It always contains the closest media type (Recall 100%)', async () => {
-      for (const { expected, received } of output) {
-        await expect(received).resolves.toContain(expected);
-      }
-    });
-  });
-
-  describe('.suggestFile()', () => {
-    const output = Array.from(Data.files()).map((file) => ({
-      expected: file.type,
-      received: MediaType.suggestFile(file),
-    }));
-
-    it('It always contains the closest media type (Recall 100%)', async () => {
-      for (const { expected, received } of output) {
-        await expect(received).resolves.toContain(expected);
-      }
     });
   });
 });

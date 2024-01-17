@@ -3,16 +3,17 @@ import {
   magicNumberIndexRanges,
   mediaTypeAndMagicNumbersList,
 } from './preset';
+import { getBytesOfBlob, getBytesOfUint8Array } from './utils';
 
 /**
- * ### Introduction
+ * ## Introduction
  * Guess media types by the file extension
  *
- * ### Parameters
+ * ## Parameters
  * - `pathname` - `string`
  *   + The file path or name
  *
- * ### Results
+ * ## Results
  * - `Set<string>`
  *   + A set of possible media types
  */
@@ -25,36 +26,47 @@ export function guessMediaTypesByExtension(pathname: string): Set<string> {
 }
 
 /**
- * ### Introduction
+ * ## Introduction
  * Guess media types by the magic numbers
  *
- * ### Parameters
- * - `blob` - `Blob`
- *   + The query byte data
+ * ## Parameters
+ * - `data` - `Blob | Uint8Array`
+ *   + The query data
  *
- * ### Results
+ * ## Results
  * - `Promise<Set<string>>`
  *   + A set of possible media types
  */
 export async function guessMediaTypesByMagicNumbers(
-  blob: Blob,
+  data: Blob | Uint8Array,
 ): Promise<Set<string>> {
-  // 1. Get the target byte lookup table
-  const indexToTargetByte = new Map<number, number>();
+  // 1. Determine the getBytes implementation
+  let getBytes: typeof getBytesOfBlob | typeof getBytesOfUint8Array | undefined;
+  if (data instanceof Blob) {
+    getBytes = getBytesOfBlob;
+  } else {
+    getBytes = getBytesOfUint8Array;
+  }
+
+  // 2. Get the byte table for the data
+  const byteTable = new Map<number, number>();
   for (let i = 0; i < magicNumberIndexRanges.length; i++) {
+    // Get the slice within the range
     const [beginIndex, endIndex] = magicNumberIndexRanges[i]!;
-    const targetBytes = new Uint8Array(
-      await blob.slice(beginIndex, endIndex).arrayBuffer(),
+    const bytes = await getBytes(
+      data as Blob & Uint8Array,
+      beginIndex,
+      endIndex,
     );
 
     // Copy bytes and write to the table
     let index = beginIndex;
-    for (let i = 0; i < targetBytes.length; i++) {
-      indexToTargetByte.set(index++, targetBytes[i]!);
+    for (let i = 0; i < bytes.length; i++) {
+      byteTable.set(index++, bytes[i]!);
     }
   }
 
-  // 2. Match the magic numbers with the target bytes
+  // 3. Match the magic numbers with the bytes
   const matches = new Set<string>();
   for (let i = 0; i < mediaTypeAndMagicNumbersList.length; i++) {
     const listItem = mediaTypeAndMagicNumbersList[i]!;
@@ -65,10 +77,9 @@ export async function guessMediaTypesByMagicNumbers(
       continue;
     }
 
-    const magics = listItem.slice(1) as (number | undefined)[];
-
     // Walk through the magic offsets and numbers
     // Record the matched magic numbers
+    const magics = listItem.slice(1) as (number | undefined)[];
     let index = 0;
     let matched = true;
     for (let i = 0; i < magics.length; i++) {
@@ -78,8 +89,8 @@ export async function guessMediaTypesByMagicNumbers(
         index = magics[++i]!;
         magic = magics[++i]!;
       }
-      const targetByte = indexToTargetByte.get(index++);
-      if (targetByte !== magic) {
+      const byte = byteTable.get(index++);
+      if (byte !== magic) {
         matched = false;
         break;
       }
@@ -89,6 +100,6 @@ export async function guessMediaTypesByMagicNumbers(
     }
   }
 
-  // 3. Return the matches
+  // 4. Return the matches
   return matches;
 }

@@ -1,14 +1,14 @@
 /**
- * ### Introduction
+ * ## Introduction
  * Polyfill for Node.js
  *
- * ### Parameters
+ * ## Parameters
  * - `version` - `number | string`
  *   + The version of Node.js
  *   + A Semver string or a number representing
  *     the major version + minor version
  *
- * ### Results
+ * ## Results
  * - `Promise<boolean>`
  *   + Whether the polyfill is applied
  */
