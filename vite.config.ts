@@ -21,7 +21,7 @@ export default defineConfig((env) => ({
       enabled: true,
       include: ['src/**/*.ts'],
       provider: 'istanbul',
-      reporter: ['text-summary', 'text'],
+      reporter: ['text', 'text-summary'],
       thresholds: {
         100: true,
       },
