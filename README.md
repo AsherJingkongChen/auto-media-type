@@ -36,6 +36,10 @@ It depends on your use cases. You can choose one of them.
 
 - [Guide _*(WIP)*_](#lets-learn-how-to-use-it)
 
+## Resources
+
+- [Media Type Resources](https://github.com/AsherJingkongChen/auto-media-type/blob/main/docs/resources/media-type.md)
+
 ## Let's Setup the Project
 
 > **Note:** THIS section is for contributors and developers only
