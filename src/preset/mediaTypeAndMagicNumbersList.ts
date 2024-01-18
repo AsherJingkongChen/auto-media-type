@@ -5,7 +5,7 @@ import { SupportedMediaTypes } from './SupportedMediaTypes';
  * The list of media types, offsets and magic numbers
  *
  * ## Layout
- * `[string, undefined, number, number, ...(undefined | number)[]][]`
+ * `[string, undefined, number, number, ...(number | undefined)[]][]`
  * - `string`
  *   + The media type
  * - `undefined`
@@ -14,7 +14,7 @@ import { SupportedMediaTypes } from './SupportedMediaTypes';
  * - `number`
  *   + The magic offset
  *   + If negative, the offset is counted from the end.
- * - `number, ...(undefined | number)[]`
+ * - `number, ...(number | undefined)[]`
  *   + The magic numbers, next markers and next offsets
  *   + `undefined` is the next magic marker followed by the next magic offset and numbers
  *

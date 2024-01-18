@@ -1,9 +1,18 @@
 import { readdirSync, readFileSync } from 'fs';
 import { dirname, join, relative } from 'path';
 import { fileURLToPath } from 'url';
-import { polyfillNodejs } from './utils';
 
-await polyfillNodejs(process.version);
+/**
+ * Polyfill for Node.js
+ */
+if (typeof process !== 'undefined') {
+  const nodejsVersion =  Number(/(\d+\.\d+)/.exec(process.version)?.[1]);
+  if (nodejsVersion < 20 && nodejsVersion >= 18) {
+    Object.assign(globalThis, await import('buffer'));
+  } else if (nodejsVersion < 18) {
+    // [TODO]
+  }
+}
 
 /**
  * ## Introduction
@@ -13,6 +22,7 @@ await polyfillNodejs(process.version);
  * - [APNG Sample](https://apng.onevcat.com/assets/elephant.png)
  * - [EXIF Samples](https://pixelpeeper.com/photos)
  * - [Download Sample Files](https://www.dwsamplefiles.com/)
+ * - [FFmpeg Samples](https://samples.ffmpeg.org/)
  * - [File Examples](https://file-examples.com/)
  * - [File Samples](https://filesamples.com/)
  * - [Fontsource](https://fontsource.org/)
@@ -27,12 +37,12 @@ export namespace Data {
    * - `Generator<string>` - file paths
    */
   function* _paths(dir: string): Generator<string> {
-    for (const entry of readdirSync(dir, {
-      recursive: true,
-      withFileTypes: true,
-    })) {
-      if (entry.isFile()) {
-        yield join(entry.path, entry.name);
+    const entries = readdirSync(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      if (entry.isDirectory()) {
+        yield* _paths(join(dir, entry.name));
+      } else {
+        yield join(dir, entry.name);
       }
     }
   }
