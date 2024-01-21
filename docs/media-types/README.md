@@ -8,7 +8,7 @@
 - [application/vnd.openxmlformats-officedocument.presentationml.presentation](./application/vnd.openxmlformats-officedocument.presentationml.presentation.md)
 - [application/vnd.openxmlformats-officedocument.spreadsheetml.sheet](./application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.md)
 - [application/vnd.openxmlformats-officedocument.wordprocessingml](./application/vnd.openxmlformats-officedocument.wordprocessingml.document.md)
-- [application/xml](./application/xml-dtd.md)
+- [application/xml-dtd](./application/xml-dtd.md)
 - [application/xml](./application/xml.md)
 - [application/zip](./application/zip.md)
 - [audio/mpeg](./audio/mpeg.md)
