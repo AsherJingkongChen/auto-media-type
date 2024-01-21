@@ -7,6 +7,7 @@ export default defineConfig((env) => ({
   build: {
     lib: {
       entry: 'src/index.ts',
+      fileName: 'auto-media-type',
       name: 'AutoMediaType',
     },
     minify: env.mode === 'production',
@@ -15,7 +16,7 @@ export default defineConfig((env) => ({
   esbuild: {
     drop: env.mode === 'production' ? ['console', 'debugger'] : undefined,
   },
-  plugins: [BundleFinishBannerPlugin(env), DtsPlugin(env)],
+  plugins: [BundleFinishBannerPlugin(env), DtsPlugin()],
   test: {
     coverage: {
       enabled: true,
@@ -26,7 +27,7 @@ export default defineConfig((env) => ({
         100: true,
       },
     },
-    include: ['tests/unit/**/*.test.ts'],
+    include: ['tests/**/*.test.ts'],
   },
 }));
 
@@ -46,13 +47,11 @@ function BundleFinishBannerPlugin(context: { mode: string }): PluginOption {
   };
 }
 
-function DtsPlugin(context: { mode: string }): PluginOption {
-  return context.mode === 'production'
-    ? ViteDtsPlugin({
-        entryRoot: '.',
-        include: 'src',
-        insertTypesEntry: true,
-        rollupTypes: true,
-      })
-    : undefined;
+function DtsPlugin(): PluginOption {
+  return ViteDtsPlugin({
+    entryRoot: '.',
+    include: 'src',
+    insertTypesEntry: true,
+    rollupTypes: true,
+  });
 }

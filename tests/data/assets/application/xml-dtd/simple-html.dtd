@@ -1,5 +1,0 @@
-<!ELEMENT html (head,body)>
-<!ELEMENT head (title)>
-<!ELEMENT body (h1)>
-<!ELEMENT title (#PCDATA)>
-<!ELEMENT h1 (#PCDATA)>

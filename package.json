@@ -7,11 +7,13 @@
   "description": "Complete any missing media type for you",
   "devDependencies": {
     "@types/node": "^20",
-    "@vitest/coverage-istanbul": "^1.2.0",
+    "@vitest/coverage-istanbul": "^1.2.1",
+    "iana-media-type": "^0.0.2",
+    "lots-of-sample-files": "^0.0.6",
     "npm-run-all2": "^6.1.1",
     "prettier": "^3.2.0",
     "typescript": "^5.3.3",
-    "vite": "^5.0.11",
+    "vite": "^5.0.12",
     "vite-plugin-dts": "^3.7.0",
     "vitest": "^1.2.0"
   },
@@ -71,7 +73,7 @@
   },
   "scripts": {
     "build": "run-p _build check format",
-    "_build": "vite build --mode production",
+    "_build": "vite build",
     "check": "tsc",
     "dev-build": "vite build --mode development",
     "dev-test": "vitest",

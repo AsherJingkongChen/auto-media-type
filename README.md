@@ -60,8 +60,9 @@ It depends on your use cases. You can choose one of them.
 - Linters
   - [Prettier](https://prettier.io/)
   - [TypeScript](https://www.typescriptlang.org/)
-- Testers
+- Testing
   - [Vitest](https://vitest.dev/)
+  - [lots-of-sample-files](https://asherjingkongchen.github.io/lots-of-sample-files/)
 
 ### See What Commands We Are Using
 
