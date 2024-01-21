@@ -1,4 +1,4 @@
 markdown: GFM
 name: Auto Media Type - Complete any missing media type
-theme: hacker
+remote_theme: pages-themes/hacker
 title: null
