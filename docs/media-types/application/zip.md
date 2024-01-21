@@ -18,6 +18,12 @@
    | Byte | 0x50 | 0x4b | 0x07 | 0x08 | 0x50 | 0x4b | 0x03 | 0x04 |
    | Char | P | K | | | P | K | | |
 
+3. End of Central Directory Signature
+   | | 0 | 1 | 2 | 3 |
+   | ---- | ---- | ---- | ---- | ---- |
+   | Byte | 0x50 | 0x4b | 0x05 | 0x06 |
+   | Char | P | K | | |
+
 ## References
 
 - [Media Type Assignment](https://www.iana.org/assignments/media-types/application/zip)

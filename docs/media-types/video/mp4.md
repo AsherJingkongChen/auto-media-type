@@ -2,7 +2,7 @@
 
 ## File Extensions
 
-`mp4`, `mpg4`, `mp4v`
+`mp4`, `mp4v`, `mpg4`
 
 ## Magic Numbers
 
