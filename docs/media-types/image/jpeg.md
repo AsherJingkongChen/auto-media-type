@@ -2,7 +2,7 @@
 
 ## File Extensions
 
-`jpg`, `jpeg`, `jpe`, `jif`, `jfif`, `jfi`
+`jfi`, `jfif`, `jif`, `jpg`, `jpeg`, `jpe`
 
 ## Magic Numbers
 
