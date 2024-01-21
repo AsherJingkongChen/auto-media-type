@@ -8,7 +8,7 @@
 
 With `auto-media-type`, you can complete the missing media type on any `File` instance. It works in modern JavaScript runtimes. Thanks for all great polyfill and bundler contributors.
 
-We've provided a simple API for you. You can obtain `auto-media-type` from NPM. Please see the section ["How to Obtain"](#how-to-obtain).
+We've provided a simple API for you. You can obtain `auto-media-type` from NPM. Please see the section [`How to Obtain`](#how-to-obtain).
 
 ## Try Our Demo
 
@@ -38,7 +38,7 @@ It depends on your use cases. You can choose one of them.
 
 ## Resources
 
-- [Media Type Resources](https://github.com/AsherJingkongChen/auto-media-type/blob/main/docs/resources/media-type.md)
+- [Media Types](./docs/media-types/README.md)
 
 ## Let's Setup the Project
 
