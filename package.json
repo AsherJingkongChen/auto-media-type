@@ -9,7 +9,7 @@
     "@types/node": "^20",
     "@vitest/coverage-istanbul": "^1.2.1",
     "iana-media-type": "^0.0.10",
-    "lots-of-sample-files": "^0.0.7",
+    "lots-of-sample-files": "^0.0.12",
     "npm-run-all2": "^6.1.1",
     "prettier": "^3.2.0",
     "typescript": "^5.3.3",
