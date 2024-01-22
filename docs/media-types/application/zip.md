@@ -1,4 +1,4 @@
-# `application/zip`
+# [⎗](../README.md) `application/zip`
 
 ## File Extensions
 

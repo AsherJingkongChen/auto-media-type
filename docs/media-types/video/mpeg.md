@@ -1,4 +1,4 @@
-# `video/mpeg`
+# [⎗](../README.md) `video/mpeg`
 
 ## File Extensions
 

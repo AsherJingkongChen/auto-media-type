@@ -1,4 +1,4 @@
-# `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`
+# [⎗](../README.md) `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`
 
 ## File Extensions
 

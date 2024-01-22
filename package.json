@@ -29,6 +29,7 @@
     "LICENSE",
     "README.md",
     "dist",
+    "docs",
     "package.json"
   ],
   "homepage": "https://asherjingkongchen.github.io/auto-media-type/",

@@ -1,4 +1,4 @@
-# `image/avif`
+# [⎗](../README.md) `image/avif`
 
 ## File Extensions
 

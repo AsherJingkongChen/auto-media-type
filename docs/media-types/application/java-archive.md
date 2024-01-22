@@ -1,4 +1,4 @@
-# `application/java-archive`
+# [⎗](../README.md) `application/java-archive`
 
 ## File Extensions
 

@@ -12,7 +12,11 @@ We've provided a simple API for you. You can obtain `auto-media-type` from NPM. 
 
 ## Try Our Demo
 
-- [_(WIP)_](#try-our-demo)
+- [_(WIP)_]
+
+## Links for You
+
+- [Media Types](./docs/media-types/README.md)
 
 ## How to Obtain
 
@@ -34,11 +38,11 @@ It depends on your use cases. You can choose one of them.
 
 ## Let's Learn How to Use It
 
-- [Guide _*(WIP)*_](#lets-learn-how-to-use-it)
+- [Guide _*(WIP)*_]
 
-## Resources
-
-- [Media Types](./docs/media-types/README.md)
+```javascript
+// Work In Progress
+```
 
 ## Let's Setup the Project
 

@@ -1,4 +1,4 @@
-# `image/vnd.microsoft.icon`
+# [⎗](../README.md) `image/vnd.microsoft.icon`
 
 ## File Extensions
 

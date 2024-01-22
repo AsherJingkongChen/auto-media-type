@@ -1,4 +1,4 @@
-# `application/pdf`
+# [⎗](../README.md) `application/pdf`
 
 ## File Extensions
 

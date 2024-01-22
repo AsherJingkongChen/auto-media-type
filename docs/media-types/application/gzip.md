@@ -1,4 +1,4 @@
-# `application/gzip`
+# [⎗](../README.md) `application/gzip`
 
 ## File Extensions
 

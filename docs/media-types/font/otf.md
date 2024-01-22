@@ -1,4 +1,4 @@
-# `font/otf`
+# [⎗](../README.md) `font/otf`
 
 ## File Extensions
 

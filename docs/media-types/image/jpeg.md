@@ -1,4 +1,4 @@
-# `image/jpeg`
+# [⎗](../README.md) `image/jpeg`
 
 ## File Extensions
 

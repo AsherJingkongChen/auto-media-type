@@ -1,4 +1,4 @@
-# `image/apng`
+# [⎗](../README.md) `image/apng`
 
 ## File Extensions
 

@@ -1,7 +1,7 @@
-# Media Types
+# [⎗](../../README.md) Media Types
 
 - [application/gzip](./application/gzip.md)
-- [application/java](./application/java-archive.md)
+- [application/java-archive](./application/java-archive.md)
 - [application/pdf](./application/pdf.md)
 - [application/vnd.openxmlformats-officedocument.presentationml.presentation](./application/vnd.openxmlformats-officedocument.presentationml.presentation.md)
 - [application/vnd.openxmlformats-officedocument.spreadsheetml.sheet](./application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.md)

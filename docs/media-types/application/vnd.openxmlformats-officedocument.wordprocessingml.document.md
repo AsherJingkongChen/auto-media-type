@@ -1,4 +1,4 @@
-# `application/vnd.openxmlformats-officedocument.wordprocessingml.document`
+# [⎗](../README.md) `application/vnd.openxmlformats-officedocument.wordprocessingml.document`
 
 ## File Extensions
 
