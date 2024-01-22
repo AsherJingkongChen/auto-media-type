@@ -2,14 +2,14 @@
   "name": "auto-media-type",
   "version": "0.3.4",
   "author": {
-    "name": "AsherJingkongChen"
+    "name": "Asher Jingkong Chen"
   },
   "description": "Complete any missing media type for you",
   "devDependencies": {
     "@types/node": "^20",
     "@vitest/coverage-istanbul": "^1.2.1",
-    "iana-media-type": "^0.0.2",
-    "lots-of-sample-files": "^0.0.6",
+    "iana-media-type": "^0.0.10",
+    "lots-of-sample-files": "^0.0.7",
     "npm-run-all2": "^6.1.1",
     "prettier": "^3.2.0",
     "typescript": "^5.3.3",
