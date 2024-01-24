@@ -6,11 +6,11 @@
 
 ## Magic Numbers
 
-1. JPEG 2000 signature suffix + ISOBMFF major brand for JPEG 2000 Part 1
-   | | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 |
-   | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
-   | Byte | 0x0d | 0x0A | 0x87 | 0x0a | 0x66 | 0x74 | 0x79 | 0x70 | 0x6a | 0x70 | 0x32 | 0x20 |
-   | Char | | | | | f | t | y | p | j | p | 2 | |
+1. JPEG 2000 signature (size + box code prefix) + ISOBMFF major brand for JPEG 2000 Part 1
+   | | 0 | 1 | 2 | 3 | 4 | 20 | 21 | 22 |
+   | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+   | Byte | 0x00 | 0x00 | 0x00 | 0x0c | 0x6a | 0x6a | 0x70 | 0x32 |
+   | Char | | | | | j | j | p | 2 |
 
 ## References
 
