@@ -1,6 +1,6 @@
 import { SupportedMediaTypes } from 'src/preset';
 import { describe, expect, it } from 'vitest';
-import { mediaTypes } from 'iana-media-type';
+import mediaTypes from 'iana-media-type';
 
 describe('SupportedMediaTypes', () => {
   it('It contains all the media types', () => {
