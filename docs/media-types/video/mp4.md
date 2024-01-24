@@ -36,3 +36,4 @@
 - [RFC 4337 - MP4 File](https://datatracker.ietf.org/doc/html/rfc4337#section-3.1)
 - [Apache HTTP MIME types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
 - [ISOBMFF Major Brand Designations](https://www.ftyps.com/)
+- [MP4RA Brands](https://mp4ra.org/registered-types/brands)

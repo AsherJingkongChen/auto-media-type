@@ -18,12 +18,12 @@ import { SupportedMediaTypes } from './SupportedMediaTypes';
  * ## References
  * - [Apache HTTP MIME types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
  * - [IANA Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml)
- * - [IETF Datatracker](https://datatracker.ietf.org/)
  * - [LOC Digital Formats](https://www.loc.gov/preservation/digital/formats/fdd/browse_list.shtml)
  */
 export const extensionToMediaTypes: Record<string, string[]> = {
   apng: ['image/apng'],
   avif: ['image/avif'],
+  avifs: ['image/avif'],
   docx: [
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     'application/zip',

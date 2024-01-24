@@ -6,25 +6,25 @@
 
 ## Magic Numbers
 
-1. ID3v2
+1. ID3v2 tag signature
    | | 0 | 1 | 2 |
    | ---- | ---- | ---- | ---- |
    | Byte | 0x49 | 0x44 | 0x33 |
    | Char | I | D | 3 |
 
-2. ID3v1
+2. ID3v1 tag signature
    | | -128 | -127 | -126 |
    | ---- | ---- | ---- | ---- |
    | Byte | 0x54 | 0x41 | 0x47 |
    | Char | T | A | G |
 
-3. MPEG-1 Audio Layer II with CRC-16 protection
+3. MPEG-1 Audio Layer II header prefix with CRC-16 protection
    | | 0 | 1 |
    | ---- | ---- | ---- |
    | Byte | 0xff | 0xfd |
    | Char | | |
 
-4. MPEG-1 Audio Layer I without CRC-16 protection
+4. MPEG-1 Audio Layer I header prefix without CRC-16 protection
    | | 0 | 1 |
    | ---- | ---- | ---- |
    | Byte | 0xff | 0xfe |

@@ -6,19 +6,19 @@
 
 ## Magic Numbers
 
-1. Local File Header Signature
+1. Local file header signature
    | | 0 | 1 | 2 | 3 |
    | ---- | ---- | ---- | ---- | ---- |
    | Byte | 0x50 | 0x4b | 0x03 | 0x04 |
    | Char | P | K | | |
 
-2. Spanning Signature
+2. Spanning signature
    | | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
    | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
    | Byte | 0x50 | 0x4b | 0x07 | 0x08 | 0x50 | 0x4b | 0x03 | 0x04 |
    | Char | P | K | | | P | K | | |
 
-3. End of Central Directory Signature
+3. End of central directory signature
    | | 0 | 1 | 2 | 3 |
    | ---- | ---- | ---- | ---- | ---- |
    | Byte | 0x50 | 0x4b | 0x05 | 0x06 |

@@ -6,17 +6,17 @@
 
 ## Magic Numbers
 
-1. HTML Preamble prefix in upper caase
-   | | 0 | 1 | 2 | 3 |
-   | ---- | ---- | ---- | ---- | ---- |
-   | Byte | 0x3c | 0x21 | 0x44 | 0x4f |
-   | Char | < | ! | D | O |
+1. HTML preamble prefix in upper caase
+   | | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+   | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+   | Byte | 0x3c | 0x21 | 0x44 | 0x4f | 0x43 | 0x54 | 0x59 | 0x50 |
+   | Char | < | ! | D | O | C | T | Y | P |
 
-2. HTML Preamble prefix in lower caase
-   | | 0 | 1 | 2 | 3 |
-   | ---- | ---- | ---- | ---- | ---- |
-   | Byte | 0x3c | 0x21 | 0x64 | 0x6f |
-   | Char | < | ! | d | o |
+2. HTML preamble prefix in lower caase
+   | | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+   | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+   | Byte | 0x3c | 0x21 | 0x64 | 0x6f | 0x63 | 0x74 | 0x79 | 0x70 |
+   | Char | < | ! | d | o | c | t | y | p |
 
 ## References
 
