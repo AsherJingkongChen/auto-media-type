@@ -14,7 +14,7 @@
 
 ## References
 
-- [Media Type Assignment](https://www.iana.org/assignments/media-types/image/jp2)
+- [Media Type Assignment](https://www.iana.org/assignments/media-types/image/jpx)
 - [RFC 3745 - Extended Still Image Registration](https://datatracker.ietf.org/doc/html/rfc3745#section-4.2)
 - [LOC Digital Formats - JPEG 2000 Part 2](https://www.loc.gov/preservation/digital/formats/fdd/fdd000154.shtml)
 - [MP4RA Brands](https://mp4ra.org/registered-types/brands)
