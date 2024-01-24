@@ -17,6 +17,7 @@ We've provided a simple API for you. You can obtain `auto-media-type` from NPM. 
 ## Links for You
 
 - [Media Types](./docs/media-types/README.md)
+- [IANA Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml)
 
 ## How to Obtain
 
