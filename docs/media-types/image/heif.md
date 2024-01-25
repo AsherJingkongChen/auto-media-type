@@ -6,7 +6,7 @@
 
 ## Magic Numbers
 
-1. ISOBMFF major brand for HEIF image with any coding format
+1. ISOBMFF file type box code + major brand prefix for HEIF image with any coding format
    | | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
    | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
    | Byte | 0x66 | 0x74 | 0x79 | 0x70 | 0x6d | 0x69 | 0x66 |
