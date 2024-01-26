@@ -22,5 +22,5 @@
 
 - [RFC 2046 - Initial Media Types](https://datatracker.ietf.org/doc/html/rfc2046#section-3)
 - [LOC Digital Formats - MPEG-2](https://www.loc.gov/preservation/digital/formats/fdd/fdd000028.shtml)
-- [Apache HTTP MIME types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
+- [Apache HTTP MIME Types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
 - [MPEG Video Headers Quick Reference](https://dvd.sourceforge.net/dvdinfo/mpeghdrs.html)

@@ -36,5 +36,5 @@
 - [RFC 3003](https://datatracker.ietf.org/doc/html/rfc3003)
 - [ID3v2.3 Specification](https://id3lib.sourceforge.net/id3/id3v2.3.0.html)
 - [ID3v1 Specification](https://id3lib.sourceforge.net/id3/id3v1.html)
-- [Apache HTTP MIME types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
+- [Apache HTTP MIME Types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
 - [MPEG Audio Frame Header](https://www.datavoyage.com/mpgscript/mpeghdr.htm)

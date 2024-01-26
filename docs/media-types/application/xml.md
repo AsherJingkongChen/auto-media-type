@@ -2,7 +2,7 @@
 
 ## File Extensions
 
-`xml`
+`xml`, `xsd`, `xsl`
 
 ## Magic Numbers
 
@@ -16,3 +16,4 @@
 
 - [Media Type Assignment](https://www.iana.org/assignments/media-types/application/xml)
 - [RFC 7303 - application/xml Registration](https://datatracker.ietf.org/doc/html/rfc7303#section-9.1)
+- [Apache HTTP MIME Types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
