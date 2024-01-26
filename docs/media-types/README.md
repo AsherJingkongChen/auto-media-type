@@ -26,6 +26,7 @@ All sample directory are named after [IANA Media Types](https://www.iana.org/ass
 - [`image/jpm`](./image/jpm.md)
 - [`image/jpx`](./image/jpx.md)
 - [`image/png`](./image/png.md)
+- [`image/svg+xml`](./image/svg+xml.md)
 - [`image/tiff`](./image/tiff.md)
 - [`image/vnd.djvu`](./image/vnd.djvu.md)
 - [`image/vnd.microsoft.icon`](./image/vnd.microsoft.icon.md)
