@@ -7,7 +7,7 @@ import { getBytesOfBlob, getBytesOfUint8Array } from './utils';
 
 /**
  * ## Introduction
- * Guess media types by the file extension
+ * Guess media types by the file extension (case-insensitive)
  *
  * ## Parameters
  * - `pathname` - `string`
