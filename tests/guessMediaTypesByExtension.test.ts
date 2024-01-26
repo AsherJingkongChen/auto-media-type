@@ -14,7 +14,7 @@ describe('guessMediaTypesByExtension()', () => {
     });
   });
 
-  it('It always contains the closest media type (Recall 100%)', () => {
+  it('It always contains the closest media type', () => {
     const output = Array.from(Sample.files()).map((file) => ({
       expected: file.type,
       received: guessMediaTypesByExtension(file.name),
