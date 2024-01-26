@@ -17,8 +17,9 @@
  */
 export const magicNumberIndexRanges: [number, number | undefined][] = [
   [-128, -125],
-  [-2, undefined],
+  [-5, undefined],
   [0, 12],
+  [20, 23],
 ];
 
 // /**
