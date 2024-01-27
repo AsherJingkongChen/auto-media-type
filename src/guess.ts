@@ -1,5 +1,5 @@
 import {
-  extensionToMediaTypes,
+  extensionToMediaTypesTable,
   magicNumberIndexRanges,
   mediaTypeAndMagicNumbersList,
 } from './preset';
@@ -20,7 +20,7 @@ import { getBytesOfBlob, getBytesOfUint8Array } from './utils';
 export function guessMediaTypesByExtension(pathname: string): Set<string> {
   const extension = /\.([^\.]+)$/.exec(pathname)?.[1]?.toLowerCase();
   if (extension) {
-    return new Set(extensionToMediaTypes[extension] ?? []);
+    return new Set(extensionToMediaTypesTable[extension] ?? []);
   }
   return new Set();
 }

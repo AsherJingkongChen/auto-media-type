@@ -1,4 +1,3 @@
-// import { checkMediaTypes } from './check';
 import {
   guessMediaTypesByExtension,
   guessMediaTypesByMagicNumbers,
@@ -115,12 +114,6 @@ export namespace MediaType {
    * ## Results
    * - `Promise<Set<string>>`
    *   + A set of possible media types for the `blob`
-   *
-   * ## Note
-   * This function has two stages:
-   * 1. Guess media types by magic numbers
-   * 2. Check media types
-   *    - Return filtered media types
    */
   export async function suggestBlob(blob: Blob): Promise<Set<string>> {
     // [TODO] Need a working check algorithm
@@ -141,13 +134,10 @@ export namespace MediaType {
    *   + A set of possible media types for the `file`
    *
    * ## Note
-   * This function has four stages:
+   * This function has 3 stages:
    * 1. Guess media types by file extension
-   * 2. Check media types
-   *    - Return if at least one of media types are valid
-   * 3. Guess media types by magic numbers
-   * 4. Check media types
-   *    - Return filtered media types
+   * 2. Guess media types by magic numbers
+   * 3. Return the guessed media types
    */
   export async function suggestFile(file: File): Promise<Set<string>> {
     // [TODO] Need a working check algorithm
