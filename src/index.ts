@@ -15,7 +15,7 @@ import {
 export namespace MediaType {
   /**
    * ## Introduction
-   * To suggest media types for the data
+   * To suggest media types for the given data
    *
    * ## Parameters
    * - `data` - `ArrayBufferLike | ArrayBufferView | Blob | DataView | File | TypedArray`
@@ -26,11 +26,11 @@ export namespace MediaType {
    *   + A set of possible media types for the `data`
    *
    * ## Note
-   * - This function may call:
-   *   + `.suggestArrayBufferLike()`
-   *   + `.suggestArrayBufferView()`
-   *   + `.suggestBlob()`
-   *   + `.suggestFile()`
+   * - This function may also call:
+   *   + `MediaType.suggestArrayBuffer()`
+   *   + `MediaType.suggestArrayBufferView()`
+   *   + `MediaType.suggestBlob()`
+   *   + `MediaType.suggestFile()`
    */
   export async function suggest(
     data:
@@ -52,44 +52,44 @@ export namespace MediaType {
       data instanceof ArrayBuffer ||
       data instanceof SharedArrayBuffer
     ) {
-      return suggestArrayBufferLike(data);
+      return suggestArrayBuffer(data);
     }
     throw new TypeError('Data type is not valid');
   }
 
   /**
    * ## Introduction
-   * To suggest media types for the array buffer
+   * To suggest media types for the given array buffer
    *
    * ## Parameters
-   * - `arrayBufferLike` - `ArrayBufferLike`
-   *   + The query array buffer like object
+   * - `arrayBuffer` - `ArrayBufferLike`
+   *   + The query data as an array buffer like object
    *
    * ## Results
    * - `Promise<Set<string>>`
-   *   + A set of possible media types for the `arrayBufferLike`
+   *   + A set of possible media types for `arrayBuffer`
    */
-  export async function suggestArrayBufferLike(
-    arrayBufferLike: ArrayBufferLike,
+  export async function suggestArrayBuffer(
+    arrayBuffer: ArrayBufferLike,
   ): Promise<Set<string>> {
-    return guessMediaTypesByMagicNumbers(new Uint8Array(arrayBufferLike));
+    return guessMediaTypesByMagicNumbers(new Uint8Array(arrayBuffer));
   }
 
   /**
    * ## Introduction
-   * To suggest media types for the array buffer view
+   * To suggest media types for the given array buffer view
    *
    * ## Parameters
    * - `arrayBufferView` - `ArrayBufferView | DataView | TypedArray`
-   *   + The query array buffer view
+   *   + The query data as an array buffer view
    *
    * ## Results
    * - `Promise<Set<string>>`
-   *   + A set of possible media types for the `arrayBufferView`
+   *   + A set of possible media types for `arrayBufferView`
    *
    * ## Note
-   * - This function may call:
-   *   + `.suggestUint8Array()`
+   * - This function may also call:
+   *   + `MediaType.suggestUint8Array()`
    */
   export async function suggestArrayBufferView(
     arrayBufferView: ArrayBufferView | DataView | TypedArray,
@@ -105,15 +105,15 @@ export namespace MediaType {
 
   /**
    * ## Introduction
-   * To suggest media types for the blob
+   * To suggest media types for the given blob
    *
    * ## Parameters
    * - `blob` - `Blob`
-   *   + The query blob
+   *   + The query data as a binary large object
    *
    * ## Results
    * - `Promise<Set<string>>`
-   *   + A set of possible media types for the `blob`
+   *   + A set of possible media types for `blob`
    */
   export async function suggestBlob(blob: Blob): Promise<Set<string>> {
     // [TODO] Need a working check algorithm
@@ -123,11 +123,11 @@ export namespace MediaType {
 
   /**
    * ## Introduction
-   * To suggest media types for the file
+   * To suggest media types for the given file
    *
    * ## Parameters
    * - `file` - `File`
-   *   + The query file
+   *   + The query data as a file reference
    *
    * ## Results
    * - `Promise<Set<string>>`
@@ -137,7 +137,7 @@ export namespace MediaType {
    * This function has 3 stages:
    * 1. Guess media types by file extension
    * 2. Guess media types by magic numbers
-   * 3. Return the guessed media types
+   * 3. Collect and return the guessed media types
    */
   export async function suggestFile(file: File): Promise<Set<string>> {
     // [TODO] Need a working check algorithm
@@ -157,11 +157,11 @@ export namespace MediaType {
 
   /**
    * ## Introduction
-   * To suggest media types for the uint8 array
+   * To suggest media types for the given uint8 array
    *
    * ## Parameters
    * - `uint8Array` - `Uint8Array`
-   *   + The query uint8 array
+   *   + The query data as a typed array of 8-bit unsigned integers
    *
    * ## Results
    * - `Promise<Set<string>>`
