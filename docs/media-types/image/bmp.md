@@ -6,10 +6,10 @@
 
 ## Magic Numbers
 
-|      | 0    | 1    |
-| ---- | ---- | ---- |
-| Byte | 0x42 | 0x4d |
-| Char | B    | M    |
+| Offset | 0    | 1    |
+| ------ | ---- | ---- |
+| Byte   | 0x42 | 0x4d |
+| Char   | B    | M    |
 
 ## References
 

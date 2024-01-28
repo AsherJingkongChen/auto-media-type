@@ -7,7 +7,7 @@
 ## Magic Numbers
 
 1. ISOBMFF file type box code + major brand prefix for HEIF image with HEVC format
-   | | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+   | Offset | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
    | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
    | Byte | 0x66 | 0x74 | 0x79 | 0x70 | 0x68 | 0x65 | 0x69 |
    | Char | f | t | y | p | h | e | i |

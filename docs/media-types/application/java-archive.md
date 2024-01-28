@@ -6,10 +6,11 @@
 
 ## Magic Numbers
 
-|      | 0    | 1    | 2    | 3    |
-| ---- | ---- | ---- | ---- | ---- |
-| Byte | 0x50 | 0x4b | 0x03 | 0x04 |
-| Char | P    | K    |      |      |
+1. ZIP file header
+   | Offset | 0 | 1 | 2 | 3 |
+   | ------ | ---- | ---- | ---- | ---- |
+   | Byte | 0x50 | 0x4b | 0x03 | 0x04 |
+   | Char | P | K | | |
 
 ## References
 

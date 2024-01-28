@@ -6,10 +6,10 @@
 
 ## Magic Numbers
 
-|      | 0    | 1    |
-| ---- | ---- | ---- |
-| Byte | 0x1f | 0x8b |
-| Char |      |      |
+| Offset | 0    | 1    |
+| ------ | ---- | ---- |
+| Byte   | 0x1f | 0x8b |
+| Char   |      |      |
 
 ## References
 

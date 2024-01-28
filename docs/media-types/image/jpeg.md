@@ -7,7 +7,7 @@
 ## Magic Numbers
 
 1. JPEG EOI + SOI marker
-   | | -2 | -1 | 0 | 1 |
+   | Offset | -2 | -1 | 0 | 1 |
    | ---- | ---- | ---- | ---- | ---- |
    | Byte | 0xff | 0xd9 | 0xff | 0xd8 |
    | Char | | | | |

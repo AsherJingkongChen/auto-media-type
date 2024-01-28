@@ -7,7 +7,7 @@
 ## Magic Numbers
 
 1. WBMP `TypeField` + `FixHeaderField` for type 0
-   | | 0 | 1 |
+   | Offset | 0 | 1 |
    | ---- | ---- | ---- |
    | Byte | 0x00 | 0x00 |
    | Char | | |

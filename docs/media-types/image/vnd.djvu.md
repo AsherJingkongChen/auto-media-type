@@ -7,7 +7,7 @@
 ## Magic Numbers
 
 1. AT&T (not necessary but practical) + composite chunk identifier
-   | | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+   | Offset | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
    | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
    | Byte | 0x41 | 0x54 | 0x26 | 0x54 | 0x46 | 0x4f | 0x52 | 0x4d |
    | Char | A | T | & | T | F | O | R | M |

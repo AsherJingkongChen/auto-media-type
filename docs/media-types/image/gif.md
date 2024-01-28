@@ -7,7 +7,7 @@
 ## Magic Numbers
 
 1. GIF trailer + header signature
-   | | -1 | 0 | 1 | 2 |
+   | Offset | -1 | 0 | 1 | 2 |
    | ---- | ---- | ---- | ---- | ---- |
    | Byte | 0x3b | 0x47 | 0x49 | 0x46 |
    | Char | ; | G | I | F |

@@ -7,13 +7,13 @@
 ## Magic Numbers
 
 1. MPEG Video pack header
-   | | 0 | 1 | 2 | 3 |
+   | Offset | 0 | 1 | 2 | 3 |
    | ---- | ---- | ---- | ---- | ---- |
    | Byte | 0x00 | 0x00 | 0x01 | 0xba |
    | Char | | | | |
 
 2. MPEG Video sequence header
-   | | 0 | 1 | 2 | 3 |
+   | Offset | 0 | 1 | 2 | 3 |
    | ---- | ---- | ---- | ---- | ---- |
    | Byte | 0x00 | 0x00 | 0x01 | 0xb3 |
    | Char | | | | |

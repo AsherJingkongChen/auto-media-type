@@ -7,13 +7,13 @@
 ## Magic Numbers
 
 1. Little endian
-   | | 0 | 1 | 2 | 3 |
+   | Offset | 0 | 1 | 2 | 3 |
    | ---- | --- | --- | --- | --- |
    | Byte | 0x49 | 0x49 | 0x2a | 0x00 |
    | Char | I | I | \* | |
 
 2. Big endian
-   | | 0 | 1 | 2 | 3 |
+   | Offset | 0 | 1 | 2 | 3 |
    | ---- | --- | --- | --- | --- |
    | Byte | 0x4d | 0x4d | 0x00 | 0x2a |
    | Char | M | M | | \* |
