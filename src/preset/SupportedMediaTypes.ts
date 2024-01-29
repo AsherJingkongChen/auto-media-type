@@ -1,6 +1,6 @@
 /**
  * ## Introduction
- * - Supported media types: `22`
+ * - Supported media types: `38`
  * - Deprecated media types: `2`
  *
  * ## References
