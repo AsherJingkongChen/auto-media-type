@@ -13,7 +13,6 @@ import { SupportedMediaTypes } from './SupportedMediaTypes';
  *   + It is followed by magic offset and numbers.
  * - `number`
  *   + The magic offset
- *   + If negative, the offset is counted from the end.
  * - `number, ...(number | undefined)[]`
  *   + The magic numbers, next markers and next offsets
  *   + `undefined` is the next magic marker,
@@ -87,7 +86,7 @@ export const mediaTypeAndMagicNumbersList: [
   ],
   ['application/zip', undefined, 0, 0x50, 0x4b, 0x05, 0x06],
   ['audio/mpeg', undefined, 0, 0x49, 0x44, 0x33],
-  ['audio/mpeg', undefined, -128, 0x54, 0x41, 0x47],
+  ['audio/mpeg', undefined, 0, 0xff, 0xfb],
   ['audio/mpeg', undefined, 0, 0xff, 0xfd],
   ['audio/mpeg', undefined, 0, 0xff, 0xfe],
   ['font/otf', undefined, 0, 0x4f, 0x54, 0x54, 0x4f],
@@ -98,7 +97,7 @@ export const mediaTypeAndMagicNumbersList: [
   ['image/apng', undefined, 0, 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a],
   ['image/avif', undefined, 4, 0x66, 0x74, 0x79, 0x70, 0x61, 0x76, 0x69],
   ['image/bmp', undefined, 0, 0x42, 0x4d],
-  ['image/gif', undefined, -1, 0x3b, 0x47, 0x49, 0x46],
+  ['image/gif', undefined, 0, 0x47, 0x49, 0x46],
   ['image/heic', undefined, 4, 0x66, 0x74, 0x79, 0x70, 0x68, 0x65, 0x69],
   [
     'image/heic-sequence',
@@ -171,11 +170,10 @@ export const mediaTypeAndMagicNumbersList: [
     0x70,
     0x78,
   ],
-  ['image/jpeg', undefined, -2, 0xff, 0xd9, 0xff, 0xd8],
+  ['image/jpeg', undefined, 0, 0xff, 0xd8, 0xff],
   ['image/png', undefined, 0, 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a],
   ['image/svg+xml', undefined, 0, 0x3c, 0x73, 0x76, 0x67],
-  ['image/svg+xml', undefined, -4, 0x73, 0x76, 0x67, 0x3e],
-  ['image/svg+xml', undefined, -5, 0x73, 0x76, 0x67, 0x3e],
+  ['image/svg+xml', undefined, 0, 0x3c, 0x3f, 0x78, 0x6d, 0x6c],
   ['image/tiff', undefined, 0, 0x49, 0x49, 0x2a, 0x00],
   ['image/tiff', undefined, 0, 0x4d, 0x4d, 0x00, 0x2a],
   [
