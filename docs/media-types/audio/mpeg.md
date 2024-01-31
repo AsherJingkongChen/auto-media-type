@@ -12,11 +12,11 @@
    | Byte | 0x49 | 0x44 | 0x33 |
    | Char | I | D | 3 |
 
-2. ID3v1 tag signature
-   | Offset | -128 | -127 | -126 |
-   | ---- | ---- | ---- | ---- |
-   | Byte | 0x54 | 0x41 | 0x47 |
-   | Char | T | A | G |
+2. MPEG-1 Audio Layer III header prefix with CRC-16 protection
+   | Offset | 0 | 1 |
+   | ---- | ---- | ---- |
+   | Byte | 0xff | 0xfb |
+   | Char | | |
 
 3. MPEG-1 Audio Layer II header prefix with CRC-16 protection
    | Offset | 0 | 1 |

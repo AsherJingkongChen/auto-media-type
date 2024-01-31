@@ -6,11 +6,11 @@
 
 ## Magic Numbers
 
-1. JPEG EOI + SOI marker
-   | Offset | -2 | -1 | 0 | 1 |
-   | ---- | ---- | ---- | ---- | ---- |
-   | Byte | 0xff | 0xd9 | 0xff | 0xd8 |
-   | Char | | | | |
+1. JPEG SOI marker + APPn marker prefix
+   | Offset | 0 | 1 | 2 |
+   | ---- | ---- | ---- | ---- |
+   | Byte | 0xff | 0xd8 | 0xff |
+   | Char | | | |
 
 ## References
 

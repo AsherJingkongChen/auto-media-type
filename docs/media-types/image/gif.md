@@ -6,11 +6,11 @@
 
 ## Magic Numbers
 
-1. GIF trailer + header signature
-   | Offset | -1 | 0 | 1 | 2 |
-   | ---- | ---- | ---- | ---- | ---- |
-   | Byte | 0x3b | 0x47 | 0x49 | 0x46 |
-   | Char | ; | G | I | F |
+1. GIF header signature
+   | Offset | 0 | 1 | 2 |
+   | ---- | ---- | ---- | ---- |
+   | Byte | 0x47 | 0x49 | 0x46 |
+   | Char | G | I | F |
 
 ## References
 
