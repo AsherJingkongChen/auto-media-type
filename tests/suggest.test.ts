@@ -7,9 +7,7 @@ describe('MediaType', () => {
     it('It always contains the closest media type for array buffers and views', async () => {
       for (const file of Sample.files()) {
         const buffer = await file.arrayBuffer();
-        await expect(
-          MediaType.suggest(buffer),
-        ).resolves.toContain(file.type);
+        await expect(MediaType.suggest(buffer)).resolves.toContain(file.type);
         await expect(
           MediaType.suggest(new Uint8Array(buffer)),
         ).resolves.toContain(file.type);
