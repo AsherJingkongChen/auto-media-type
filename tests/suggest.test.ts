@@ -31,8 +31,52 @@ describe('MediaType', () => {
       }
     });
 
+    it('It always contains the closest media type for streams', async () => {
+      for (const file of Sample.files()) {
+        await expect(MediaType.suggest(file.stream())).resolves.toContain(
+          file.type,
+        );
+      }
+    });
+
     it('It throws if the data type is not valid', async () => {
       await expect(MediaType.suggest({} as any)).rejects.toThrow();
+    });
+  });
+
+  describe('.suggestFile()', () => {
+    describe('It returns an empty set', () => {
+      it('for an extensionless file name', async () => {
+        expect(MediaType.suggestFile(new File([], ''))).resolves.toEqual(
+          new Set(),
+        );
+        expect(
+          MediaType.suggestFile(new File([], 'an-extensionless-file')),
+        ).resolves.toEqual(new Set());
+      });
+      it('for an unseen file extension', async () => {
+        expect(
+          MediaType.suggestFile(new File([], 'filename.undefined')),
+        ).resolves.toEqual(new Set());
+        expect(
+          MediaType.suggestFile(new File([], '.undefined-2')),
+        ).resolves.toEqual(new Set());
+      });
+    });
+  });
+
+  describe('.suggestStream()', () => {
+    it('It returns an empty set for an empty stream', async () => {
+      await expect(
+        MediaType.suggestStream(
+          new ReadableStream({
+            start(controller) {
+              controller.close();
+            },
+            type: 'bytes',
+          }),
+        ),
+      ).resolves.toEqual(new Set());
     });
   });
 });

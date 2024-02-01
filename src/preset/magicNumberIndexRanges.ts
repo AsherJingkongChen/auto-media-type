@@ -17,3 +17,32 @@ export const magicNumberIndexRanges: [number, number][] = [
   [0, 12],
   [20, 23],
 ];
+
+/**
+ * ## Introduction
+ * The maximum index of magic numbers
+ *
+ * ## Layout
+ * `number`
+ */
+export const magicNumberIndexMax =
+  magicNumberIndexRanges[magicNumberIndexRanges.length - 1]![1]!;
+
+/**
+ * ## Introduction
+ * The minimum index of magic numbers
+ *
+ * ## Layout
+ * `number`
+ */
+export const magicNumberIndexMin = magicNumberIndexRanges[0]![0]!;
+
+/**
+ * ## Introduction
+ * The index range of magic numbers
+ *
+ * ## Layout
+ * `number`
+ * - `magicNumberIndexMax - magicNumberIndexMin`
+ */
+export const magicNumberIndexRange = magicNumberIndexMax - magicNumberIndexMin;

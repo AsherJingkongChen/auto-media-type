@@ -1,7 +1,9 @@
 import {
   guessMediaTypesByExtension,
-  guessMediaTypesByMagicNumbers,
+  guessMediaTypesByMagicNumbersForBlob,
+  guessMediaTypesByMagicNumbersForUint8Array,
 } from './guess';
+import { magicNumberIndexRange } from './preset';
 
 /**
  * ## Introduction
@@ -18,12 +20,15 @@ export namespace MediaType {
    * To suggest media types for the given data
    *
    * ## Parameters
-   * - `data` - `ArrayBufferLike | ArrayBufferView | Blob | DataView | File | TypedArray`
+   * - `data` - `
+   *     ArrayBufferLike | ArrayBufferView |
+   *     Blob | DataView | File |
+   *     ReadableStream<Uint8Array> | TypedArray`
    *   + The query data
    *
    * ## Results
    * - `Promise<Set<string>>`
-   *   + A set of possible media types for the `data`
+   *   + A set of possible media types
    *
    * ## Note
    * - This function may also call:
@@ -31,6 +36,7 @@ export namespace MediaType {
    *   + `MediaType.suggestArrayBufferView()`
    *   + `MediaType.suggestBlob()`
    *   + `MediaType.suggestFile()`
+   *   + `MediaType.suggestStream()`
    */
   export async function suggest(
     data:
@@ -39,6 +45,7 @@ export namespace MediaType {
       | Blob
       | DataView
       | File
+      | ReadableStream<Uint8Array>
       | TypedArray,
   ): Promise<Set<string>> {
     if (data instanceof File) {
@@ -54,7 +61,10 @@ export namespace MediaType {
     ) {
       return suggestArrayBuffer(data);
     }
-    throw new TypeError('Data type is not valid');
+    if (data instanceof ReadableStream) {
+      return suggestStream(data);
+    }
+    throw new TypeError('The query data type is not valid');
   }
 
   /**
@@ -67,12 +77,14 @@ export namespace MediaType {
    *
    * ## Results
    * - `Promise<Set<string>>`
-   *   + A set of possible media types for `arrayBuffer`
+   *   + A set of possible media types
    */
   export async function suggestArrayBuffer(
     arrayBuffer: ArrayBufferLike,
   ): Promise<Set<string>> {
-    return guessMediaTypesByMagicNumbers(new Uint8Array(arrayBuffer));
+    return guessMediaTypesByMagicNumbersForUint8Array(
+      new Uint8Array(arrayBuffer),
+    );
   }
 
   /**
@@ -85,7 +97,7 @@ export namespace MediaType {
    *
    * ## Results
    * - `Promise<Set<string>>`
-   *   + A set of possible media types for `arrayBufferView`
+   *   + A set of possible media types
    *
    * ## Note
    * - This function may also call:
@@ -97,7 +109,7 @@ export namespace MediaType {
     if (arrayBufferView instanceof Uint8Array) {
       return suggestUint8Array(arrayBufferView);
     } else {
-      return guessMediaTypesByMagicNumbers(
+      return guessMediaTypesByMagicNumbersForUint8Array(
         new Uint8Array(arrayBufferView.buffer),
       );
     }
@@ -113,12 +125,12 @@ export namespace MediaType {
    *
    * ## Results
    * - `Promise<Set<string>>`
-   *   + A set of possible media types for `blob`
+   *   + A set of possible media types
    */
   export async function suggestBlob(blob: Blob): Promise<Set<string>> {
     // [TODO] Need a working check algorithm
     // return checkMediaTypes(file, await guessMediaTypesByMagicNumbers(file));
-    return guessMediaTypesByMagicNumbers(blob);
+    return guessMediaTypesByMagicNumbersForBlob(blob);
   }
 
   /**
@@ -131,7 +143,7 @@ export namespace MediaType {
    *
    * ## Results
    * - `Promise<Set<string>>`
-   *   + A set of possible media types for the `file`
+   *   + A set of possible media types
    *
    * ## Note
    * This function has 3 stages:
@@ -151,8 +163,33 @@ export namespace MediaType {
     // return checkMediaTypes(file, await guessMediaTypesByMagicNumbers(file));
     return new Set([
       ...guessMediaTypesByExtension(file.name),
-      ...(await guessMediaTypesByMagicNumbers(file)),
+      ...(await guessMediaTypesByMagicNumbersForBlob(file)),
     ]);
+  }
+
+  /**
+   * ## Introduction
+   * To suggest media types for the given stream
+   *
+   * ## Parameters
+   * - `stream` - `ReadableStream<Uint8Array>`
+   *   + The query data as a byte stream
+   *
+   * ## Results
+   * - `Promise<Set<string>>`
+   *   + A set of possible media types
+   */
+  export async function suggestStream(
+    stream: ReadableStream<Uint8Array>,
+  ): Promise<Set<string>> {
+    const reader = stream.getReader({ mode: 'byob' });
+    const { done, value: uint8Array } = await reader.read(
+      new Uint8Array(magicNumberIndexRange),
+    );
+    reader.releaseLock();
+    return done
+      ? new Set<string>()
+      : guessMediaTypesByMagicNumbersForUint8Array(uint8Array);
   }
 
   /**
@@ -165,12 +202,12 @@ export namespace MediaType {
    *
    * ## Results
    * - `Promise<Set<string>>`
-   *   + A set of possible media types for the `uint8Array`
+   *   + A set of possible media types
    */
   export async function suggestUint8Array(
     uint8Array: Uint8Array,
   ): Promise<Set<string>> {
-    return guessMediaTypesByMagicNumbers(uint8Array);
+    return guessMediaTypesByMagicNumbersForUint8Array(uint8Array);
   }
 
   /**
