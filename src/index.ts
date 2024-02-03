@@ -183,13 +183,16 @@ export namespace MediaType {
     stream: ReadableStream<Uint8Array>,
   ): Promise<Set<string>> {
     const reader = stream.getReader({ mode: 'byob' });
-    const { done, value: uint8Array } = await reader.read(
-      new Uint8Array(magicBytesIndexRange),
-    );
-    reader.releaseLock();
-    return done
-      ? new Set<string>()
-      : guessMediaTypesByMagicBytesForUint8Array(uint8Array);
+    try {
+      const { done, value: uint8Array } = await reader.read(
+        new Uint8Array(magicBytesIndexRange),
+      );
+      return done
+        ? new Set<string>()
+        : guessMediaTypesByMagicBytesForUint8Array(uint8Array);
+    } finally {
+      reader.releaseLock();
+    }
   }
 
   /**
