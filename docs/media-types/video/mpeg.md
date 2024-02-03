@@ -4,7 +4,7 @@
 
 `mpeg`, `mpg`, `mpe`, `m1v`, `m2v`
 
-## Magic Numbers
+## Magic Bytes
 
 1. MPEG Video pack header
    | Offset | 0 | 1 | 2 | 3 |

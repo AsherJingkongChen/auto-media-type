@@ -4,7 +4,7 @@
 
 `jfi`, `jfif`, `jif`, `jpg`, `jpeg`, `jpe`
 
-## Magic Numbers
+## Magic Bytes
 
 1. JPEG SOI marker + APPn marker prefix
    | Offset | 0 | 1 | 2 |

@@ -4,7 +4,7 @@
 
 `bmp`, `dib`
 
-## Magic Numbers
+## Magic Bytes
 
 | Offset | 0    | 1    |
 | ------ | ---- | ---- |

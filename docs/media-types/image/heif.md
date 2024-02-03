@@ -4,7 +4,7 @@
 
 `heif`, `hif`
 
-## Magic Numbers
+## Magic Bytes
 
 1. ISOBMFF file type box code + major brand prefix for HEIF image with any coding format
    | Offset | 4 | 5 | 6 | 7 | 8 | 9 | 10 |

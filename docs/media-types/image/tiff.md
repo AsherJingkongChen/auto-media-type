@@ -4,7 +4,7 @@
 
 `dng`, `tif`, `tiff`
 
-## Magic Numbers
+## Magic Bytes
 
 1. Little endian
    | Offset | 0 | 1 | 2 | 3 |

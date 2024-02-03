@@ -4,7 +4,7 @@
 
 `svg`
 
-## Magic Numbers
+## Magic Bytes
 
 1. SVG element start tag
    | Offset | 0 | 1 | 2 | 3 |

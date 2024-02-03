@@ -4,7 +4,7 @@
 
 `woff`
 
-## Magic Numbers
+## Magic Bytes
 
 | Offset | 0    | 1    | 2    | 3    |
 | ------ | ---- | ---- | ---- | ---- |

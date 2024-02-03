@@ -4,7 +4,7 @@
 
 `otf`
 
-## Magic Numbers
+## Magic Bytes
 
 1.  OpenType fonts containing CFF data
     | Offset | 0 | 1 | 2 | 3 |

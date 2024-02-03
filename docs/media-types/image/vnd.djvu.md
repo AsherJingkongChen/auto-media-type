@@ -4,7 +4,7 @@
 
 `djv`, `djvu`
 
-## Magic Numbers
+## Magic Bytes
 
 1. AT&T (not necessary but practical) + composite chunk identifier
    | Offset | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |

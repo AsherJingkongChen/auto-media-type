@@ -4,7 +4,7 @@
 
 `xml`, `xsd`, `xsl`
 
-## Magic Numbers
+## Magic Bytes
 
 1. XML declaration prefix
    | Offset | 0 | 1 | 2 | 3 | 4 |

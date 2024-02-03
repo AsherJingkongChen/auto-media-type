@@ -4,7 +4,7 @@
 
 `html`, `htm`
 
-## Magic Numbers
+## Magic Bytes
 
 1. HTML preamble prefix in upper caase
    | Offset | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |

@@ -4,7 +4,7 @@
 
 `docx`
 
-## Magic Numbers
+## Magic Bytes
 
 1. ZIP file header
    | Offset | 0 | 1 | 2 | 3 |

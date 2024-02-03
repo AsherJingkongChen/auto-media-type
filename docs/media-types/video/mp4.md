@@ -4,7 +4,7 @@
 
 `mp4`, `mp4v`, `mpg4`
 
-## Magic Numbers
+## Magic Bytes
 
 1. ISOBMFF file type box code + major brand prefix for MP4 base media
    | Offset | 4 | 5 | 6 | 7 | 8 | 9 | 10 |

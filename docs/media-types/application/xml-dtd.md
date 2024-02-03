@@ -4,7 +4,7 @@
 
 `dtd`
 
-## Magic Numbers
+## Magic Bytes
 
 1. Declaration prefix
    | Offset | 0 | 1 |

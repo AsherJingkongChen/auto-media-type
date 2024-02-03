@@ -4,7 +4,7 @@
 
 `docx`, `jar`, `odt`, `ods`, `odp`, `pptx`, `war`, `xlsx`, `z00`, `z01`, `z02`, `z03`, `z04`, `z05`, `z06`, `z07`, `z08`, `z09`, `zip`, `zipx`
 
-## Magic Numbers
+## Magic Bytes
 
 1. Local file header signature
    | Offset | 0 | 1 | 2 | 3 |

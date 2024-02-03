@@ -4,7 +4,7 @@
 
 `avif`, `avifs`
 
-## Magic Numbers
+## Magic Bytes
 
 1. ISOBMFF file type box code + major brand prefix for AVIF image or image sequence
    | Offset | 4 | 5 | 6 | 7 | 8 | 9 | 10 |

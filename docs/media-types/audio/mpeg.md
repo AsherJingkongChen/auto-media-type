@@ -4,7 +4,7 @@
 
 `m1a`, `m2a`, `mp1`, `mp2`, `mp3`, `mp1a`, `mp2a`, `mpga`
 
-## Magic Numbers
+## Magic Bytes
 
 1. ID3v2 tag signature
    | Offset | 0 | 1 | 2 |

@@ -4,7 +4,7 @@
 
 `gif`
 
-## Magic Numbers
+## Magic Bytes
 
 1. GIF header signature
    | Offset | 0 | 1 | 2 |

@@ -4,7 +4,7 @@
 
 `wbmp`
 
-## Magic Numbers
+## Magic Bytes
 
 1. WBMP `TypeField` + `FixHeaderField` for type 0
    | Offset | 0 | 1 |

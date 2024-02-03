@@ -4,7 +4,7 @@
 
 `jpf`, `jpx`
 
-## Magic Numbers
+## Magic Bytes
 
 1. JPEG 2000 signature (size + box code prefix) + ISOBMFF major brand prefix for JPEG 2000 Part 2
    | Offset | 0 | 1 | 2 | 3 | 4 | 20 | 21 | 22 |

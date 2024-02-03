@@ -4,7 +4,7 @@
 
 `gz`, `tgz`
 
-## Magic Numbers
+## Magic Bytes
 
 | Offset | 0    | 1    |
 | ------ | ---- | ---- |
