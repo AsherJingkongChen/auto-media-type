@@ -2,18 +2,16 @@ import { SupportedMediaTypes } from './SupportedMediaTypes';
 
 /**
  * ## Introduction
- * The lookup table to find media types by file extension
+ * A lookup table to find media types by file extension
  *
  * ## Layout
  * `Record<string, string[]>`
- * - `string`
- *   + The file extension
- * - `string[]`
- *   + The associated media types
+ * - The key is a file extension
+ * - The value is an array of media types
  *
  * ## Note
  * - The table should be sorted by file extension for maintainability
- * - An extension can have multiple media types as fallbacks
+ * - An file extension can have multiple associated media types as fallbacks
  *
  * ## References
  * - [Apache HTTP MIME types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)

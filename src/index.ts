@@ -1,9 +1,9 @@
 import {
   guessMediaTypesByExtension,
-  guessMediaTypesByMagicNumbersForBlob,
-  guessMediaTypesByMagicNumbersForUint8Array,
+  guessMediaTypesByMagicBytesForBlob,
+  guessMediaTypesByMagicBytesForUint8Array,
 } from './guess';
-import { magicNumberIndexRange } from './preset';
+import { magicBytesIndexRange } from './preset';
 
 /**
  * ## Introduction
@@ -82,7 +82,7 @@ export namespace MediaType {
   export async function suggestArrayBuffer(
     arrayBuffer: ArrayBufferLike,
   ): Promise<Set<string>> {
-    return guessMediaTypesByMagicNumbersForUint8Array(
+    return guessMediaTypesByMagicBytesForUint8Array(
       new Uint8Array(arrayBuffer),
     );
   }
@@ -109,7 +109,7 @@ export namespace MediaType {
     if (arrayBufferView instanceof Uint8Array) {
       return suggestUint8Array(arrayBufferView);
     } else {
-      return guessMediaTypesByMagicNumbersForUint8Array(
+      return guessMediaTypesByMagicBytesForUint8Array(
         new Uint8Array(arrayBufferView.buffer),
       );
     }
@@ -129,8 +129,8 @@ export namespace MediaType {
    */
   export async function suggestBlob(blob: Blob): Promise<Set<string>> {
     // [TODO] Need a working check algorithm
-    // return checkMediaTypes(file, await guessMediaTypesByMagicNumbers(file));
-    return guessMediaTypesByMagicNumbersForBlob(blob);
+    // return checkMediaTypes(file, await guessMediaTypesByMagicBytes(file));
+    return guessMediaTypesByMagicBytesForBlob(blob);
   }
 
   /**
@@ -148,7 +148,7 @@ export namespace MediaType {
    * ## Note
    * This function has 3 stages:
    * 1. Guess media types by file extension
-   * 2. Guess media types by magic numbers
+   * 2. Guess media types by magic bytes
    * 3. Collect and return the guessed media types
    */
   export async function suggestFile(file: File): Promise<Set<string>> {
@@ -160,10 +160,10 @@ export namespace MediaType {
     // if (mediaTypes.length) {
     //   return mediaTypes;
     // }
-    // return checkMediaTypes(file, await guessMediaTypesByMagicNumbers(file));
+    // return checkMediaTypes(file, await guessMediaTypesByMagicBytes(file));
     return new Set([
       ...guessMediaTypesByExtension(file.name),
-      ...(await guessMediaTypesByMagicNumbersForBlob(file)),
+      ...(await guessMediaTypesByMagicBytesForBlob(file)),
     ]);
   }
 
@@ -184,12 +184,12 @@ export namespace MediaType {
   ): Promise<Set<string>> {
     const reader = stream.getReader({ mode: 'byob' });
     const { done, value: uint8Array } = await reader.read(
-      new Uint8Array(magicNumberIndexRange),
+      new Uint8Array(magicBytesIndexRange),
     );
     reader.releaseLock();
     return done
       ? new Set<string>()
-      : guessMediaTypesByMagicNumbersForUint8Array(uint8Array);
+      : guessMediaTypesByMagicBytesForUint8Array(uint8Array);
   }
 
   /**
@@ -207,7 +207,7 @@ export namespace MediaType {
   export async function suggestUint8Array(
     uint8Array: Uint8Array,
   ): Promise<Set<string>> {
-    return guessMediaTypesByMagicNumbersForUint8Array(uint8Array);
+    return guessMediaTypesByMagicBytesForUint8Array(uint8Array);
   }
 
   /**
