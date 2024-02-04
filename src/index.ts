@@ -1,9 +1,7 @@
 import {
   guessMediaTypesByExtension,
-  guessMediaTypesByMagicBytesForBlob,
-  guessMediaTypesByMagicBytesForUint8Array,
+  guessMediaTypesByMagicBytes,
 } from './guess';
-import { magicBytesIndexRange } from './preset';
 
 /**
  * ## Introduction
@@ -82,7 +80,7 @@ export namespace MediaType {
   export async function suggestArrayBuffer(
     arrayBuffer: ArrayBufferLike,
   ): Promise<Set<string>> {
-    return guessMediaTypesByMagicBytesForUint8Array(
+    return guessMediaTypesByMagicBytes.forUint8Array(
       new Uint8Array(arrayBuffer),
     );
   }
@@ -109,7 +107,7 @@ export namespace MediaType {
     if (arrayBufferView instanceof Uint8Array) {
       return suggestUint8Array(arrayBufferView);
     } else {
-      return guessMediaTypesByMagicBytesForUint8Array(
+      return guessMediaTypesByMagicBytes.forUint8Array(
         new Uint8Array(arrayBufferView.buffer),
       );
     }
@@ -130,7 +128,7 @@ export namespace MediaType {
   export async function suggestBlob(blob: Blob): Promise<Set<string>> {
     // [TODO] Need a working check algorithm
     // return checkMediaTypes(file, await guessMediaTypesByMagicBytes(file));
-    return guessMediaTypesByMagicBytesForBlob(blob);
+    return guessMediaTypesByMagicBytes.forBlob(blob);
   }
 
   /**
@@ -163,7 +161,7 @@ export namespace MediaType {
     // return checkMediaTypes(file, await guessMediaTypesByMagicBytes(file));
     return new Set([
       ...guessMediaTypesByExtension(file.name),
-      ...(await guessMediaTypesByMagicBytesForBlob(file)),
+      ...(await guessMediaTypesByMagicBytes.forBlob(file)),
     ]);
   }
 
@@ -184,12 +182,7 @@ export namespace MediaType {
   ): Promise<Set<string>> {
     const reader = stream.getReader({ mode: 'byob' });
     try {
-      const { done, value: uint8Array } = await reader.read(
-        new Uint8Array(magicBytesIndexRange),
-      );
-      return done
-        ? new Set<string>()
-        : guessMediaTypesByMagicBytesForUint8Array(uint8Array);
+      return await guessMediaTypesByMagicBytes.forByteReader(reader);
     } finally {
       reader.releaseLock();
     }
@@ -210,7 +203,7 @@ export namespace MediaType {
   export async function suggestUint8Array(
     uint8Array: Uint8Array,
   ): Promise<Set<string>> {
-    return guessMediaTypesByMagicBytesForUint8Array(uint8Array);
+    return guessMediaTypesByMagicBytes.forUint8Array(uint8Array);
   }
 
   /**

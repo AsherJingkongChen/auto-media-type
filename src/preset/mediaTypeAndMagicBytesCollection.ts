@@ -5,6 +5,10 @@ import { SupportedMediaTypes } from './SupportedMediaTypes';
  * ## Introduction
  * A keyed serial collection of media type and magic bytes (or magic numbers)
  *
+ * ## Layout
+ * - The key is a media type
+ * - The serial are magic bytes with offsets
+ *
  * ## Note
  * - The initialization list should be sorted for maintainability
  *   + in descending order
