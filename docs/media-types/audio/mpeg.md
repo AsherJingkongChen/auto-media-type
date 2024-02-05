@@ -12,23 +12,12 @@
    | Byte | 0x49 | 0x44 | 0x33 |
    | Char | I | D | 3 |
 
-2. MPEG-1 Audio Layer III header prefix with CRC-16 protection
-   | Offset | 0 | 1 |
-   | ---- | ---- | ---- |
-   | Byte | 0xff | 0xfb |
-   | Char | | |
+## Magic Bits
 
-3. MPEG-1 Audio Layer II header prefix with CRC-16 protection
-   | Offset | 0 | 1 |
-   | ---- | ---- | ---- |
-   | Byte | 0xff | 0xfd |
-   | Char | | |
-
-4. MPEG-1 Audio Layer I header prefix without CRC-16 protection
-   | Offset | 0 | 1 |
-   | ---- | ---- | ---- |
-   | Byte | 0xff | 0xfe |
-   | Char | | |
+1. MPEG-1/2 audio frame sync
+   | Offset | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+   | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+   | Bit | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
 
 ## References
 
