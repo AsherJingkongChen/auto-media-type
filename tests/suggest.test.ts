@@ -25,13 +25,7 @@ describe('MediaType', () => {
       }
     });
 
-    it('It always contains the closest media type for files', async () => {
-      for (const file of Sample.files()) {
-        await expect(MediaType.suggest(file)).resolves.toContain(file.type);
-      }
-    });
-
-    it('It always contains the closest media type for streams', async () => {
+    it('It always contains the closest media type for byte streams', async () => {
       for (const file of Sample.files()) {
         await expect(MediaType.suggest(file.stream())).resolves.toContain(
           file.type,
@@ -39,8 +33,84 @@ describe('MediaType', () => {
       }
     });
 
+    it('It always contains the closest media type for files', async () => {
+      for (const file of Sample.files()) {
+        await expect(MediaType.suggest(file)).resolves.toContain(file.type);
+      }
+    });
+
     it('It throws if the data type is not valid', async () => {
       await expect(MediaType.suggest({} as any)).rejects.toThrow();
+    });
+  });
+
+  describe('.suggestByteStream()', () => {
+    it('It returns an empty set for a cancelled or a closed stream', async () => {
+      const cancelledStream = new ReadableStream({ type: 'bytes' });
+      await cancelledStream.cancel();
+      await expect(
+        MediaType.suggestByteStream(cancelledStream),
+      ).resolves.toEqual(new Set());
+
+      const closedStream = new ReadableStream({
+        start(controller) {
+          controller.close();
+        },
+        type: 'bytes',
+      });
+      await expect(MediaType.suggestByteStream(closedStream)).resolves.toEqual(
+        new Set(),
+      );
+    });
+
+    it('It throws if the stream throws an error', async () => {
+      const error = new Error('[Test] Stream error');
+      const errorStream = new ReadableStream({
+        start(controller) {
+          controller.error(error);
+        },
+        type: 'bytes',
+      });
+      await expect(MediaType.suggestByteStream(errorStream)).rejects.toEqual(
+        error,
+      );
+    });
+
+    it('It cancels the given stream', async () => {
+      const cancelledStream = new ReadableStream({ type: 'bytes' });
+      const closedStream = new ReadableStream({
+        start(controller) {
+          controller.close();
+        },
+        type: 'bytes',
+      });
+      const errorStream = new ReadableStream({
+        start(controller) {
+          controller.error(new Error('[Test] Stream error'));
+        },
+        type: 'bytes',
+      });
+      const normalStream = new ReadableStream({
+        start(controller) {
+          // Max buffer size for media type application/vnd.efi.iso
+          controller.enqueue(new Uint8Array(0x9006));
+          controller.close();
+        },
+        type: 'bytes',
+      });
+
+      await cancelledStream.cancel();
+
+      await expect(MediaType.suggestByteStream(cancelledStream)).resolves.toBeTruthy();
+      await expect(MediaType.suggestByteStream(closedStream)).resolves.toBeTruthy();
+      await expect(MediaType.suggestByteStream(errorStream)).rejects.toBeTruthy();
+      await expect(MediaType.suggestByteStream(normalStream)).resolves.toBeTruthy();
+
+      // They are resolved if their streams are closed; otherwise, they will be pending forever.
+      // Don't worry. The unit tests will be timed out on the case.
+      await expect(cancelledStream.getReader().closed).resolves.toBeFalsy();
+      await expect(closedStream.getReader().closed).resolves.toBeFalsy();
+      await expect(normalStream.getReader().closed).resolves.toBeFalsy();
     });
   });
 
@@ -62,72 +132,6 @@ describe('MediaType', () => {
           MediaType.suggestFile(new File([], '.undefined-2')),
         ).resolves.toEqual(new Set());
       });
-    });
-  });
-
-  describe('.suggestStream()', () => {
-    it('It returns an empty set for a cancelled or a closed stream', async () => {
-      const cancelledStream = new ReadableStream({ type: 'bytes' });
-      cancelledStream.cancel();
-      await expect(MediaType.suggestStream(cancelledStream)).resolves.toEqual(
-        new Set(),
-      );
-
-      const closedStream = new ReadableStream({
-        start(controller) {
-          controller.close();
-        },
-        type: 'bytes',
-      });
-      await expect(MediaType.suggestStream(closedStream)).resolves.toEqual(
-        new Set(),
-      );
-    });
-
-    it('It throws if the stream throws an error', async () => {
-      const error = new Error('[Test] Stream error');
-      const errorStream = new ReadableStream({
-        start(controller) {
-          controller.error(error);
-        },
-        type: 'bytes',
-      });
-      await expect(MediaType.suggestStream(errorStream)).rejects.toEqual(error);
-    });
-
-    it('It releases the lock to the received stream', async () => {
-      const closedStream = new ReadableStream({
-        start(controller) {
-          controller.close();
-        },
-        type: 'bytes',
-      });
-      await expect(MediaType.suggestStream(closedStream)).resolves.toBeTruthy();
-      expect(closedStream.locked).toBeFalsy();
-
-      const cancelledStream = new ReadableStream({ type: 'bytes' });
-      cancelledStream.cancel();
-      await expect(MediaType.suggestStream(cancelledStream)).resolves.toBeTruthy();
-      expect(cancelledStream.locked).toBeFalsy();
-
-      const errorStream = new ReadableStream({
-        start(controller) {
-          controller.error(new Error('[Test] Stream error'));
-        },
-        type: 'bytes',
-      });
-      await expect(MediaType.suggestStream(errorStream)).rejects.toBeTruthy();
-      expect(errorStream.locked).toBeFalsy();
-
-      const normalStream = new ReadableStream({
-        start(controller) {
-          controller.enqueue(new Uint8Array(1));
-          controller.close();
-        },
-        type: 'bytes',
-      });
-      await expect(MediaType.suggestStream(normalStream)).resolves.toBeTruthy();
-      expect(normalStream.locked).toBeFalsy();
     });
   });
 });

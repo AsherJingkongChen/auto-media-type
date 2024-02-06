@@ -20,7 +20,7 @@ import { SupportedMediaTypes } from './SupportedMediaTypes';
  * - [LOC Digital Formats](https://www.loc.gov/preservation/digital/formats/fdd/browse_list.shtml)
  * - [Wikipedia - List of file signatures](https://en.wikipedia.org/wiki/List_of_file_signatures)
  */
-export const mediaTypeAndMagicBytesCollection: KeyedSerialCollection = [
+export const mediaTypeAndMagicBytes: KeyedSerialCollection = [
   ['application/gzip', NaN, 0, 0x1f, 0x8b],
   ['application/java-archive', NaN, 0, 0x50, 0x4b, 0x03, 0x04],
   ['application/pdf', NaN, 0, 0x25, 0x50, 0x44, 0x46, 0x2d],
@@ -57,9 +57,6 @@ export const mediaTypeAndMagicBytesCollection: KeyedSerialCollection = [
   ['application/zip', NaN, 0, 0x50, 0x4b, 0x07, 0x08, 0x50, 0x4b, 0x03, 0x04],
   ['application/zip', NaN, 0, 0x50, 0x4b, 0x05, 0x06],
   ['audio/mpeg', NaN, 0, 0x49, 0x44, 0x33],
-  ['audio/mpeg', NaN, 0, 0xff, 0xfb],
-  ['audio/mpeg', NaN, 0, 0xff, 0xfd],
-  ['audio/mpeg', NaN, 0, 0xff, 0xfe],
   ['font/otf', NaN, 0, 0x4f, 0x54, 0x54, 0x4f],
   ['font/otf', NaN, 0, 0x00, 0x01, 0x00, 0x00],
   ['font/ttf', NaN, 0, 0x00, 0x01, 0x00, 0x00],
@@ -156,49 +153,18 @@ export const mediaTypeAndMagicBytesCollection: KeyedSerialCollection = [
 
 /**
  * ## Introduction
- * Pairs of index ranges to cover all magic bytes
- *
- * ## Layout
- * `[number, number][]`
- * - `[number, number]`
- *   + `[begin, end)` is a right-open index range.
- *
- * ## Note
- * - The ranges should be sorted and not overlapping
- *   + in ascending order
- *   + Assertion: `[i][0] < [i][1] <= [i+1][0]`
- * - The ranges should be compatible with `Blob.slice(begin, end)`
- */
-export const magicBytesIndexRanges: [number, number][] = [
-  [0, 12],
-  [20, 23],
-];
-
-/**
- * ## Introduction
- * The maximum index of magic bytes
+ * The end index of magic bytes
  *
  * ## Layout
  * `number`
  */
-export const magicBytesIndexMax =
-  magicBytesIndexRanges[magicBytesIndexRanges.length - 1]![1]!;
+export const magicBytesIndexEnd: number = 23;
 
 /**
  * ## Introduction
- * The minimum index of magic bytes
+ * The start index of magic bytes
  *
  * ## Layout
  * `number`
  */
-export const magicBytesIndexMin = magicBytesIndexRanges[0]![0]!;
-
-/**
- * ## Introduction
- * The index range of magic bytes
- *
- * ## Layout
- * `number`
- * - `magicBytesIndexMax - magicBytesIndexMin`
- */
-export const magicBytesIndexRange = magicBytesIndexMax - magicBytesIndexMin;
+export const magicBytesIndexStart: number = 0;

@@ -1,10 +1,13 @@
-import { matchKeyedSerials } from './core';
+import { matchKeyedSerials, readSerial } from './core';
 import {
   extensionToMediaTypesTable,
-  magicBytesIndexMax,
-  magicBytesIndexMin,
-  magicBytesIndexRange,
-  mediaTypeAndMagicBytesCollection,
+  magicBytesIndexEnd,
+  magicBytesIndexStart,
+  magicMaskBytes,
+  magicMaskBytesIndexStart,
+  magicMaskBytesIndexEnd,
+  mediaTypeAndMagicBytes,
+  mediaTypeAndMagicMaskedBytes,
 } from './preset';
 
 /**
@@ -47,31 +50,12 @@ export namespace guessMediaTypesByMagicBytes {
   export async function forBlob(blob: Blob): Promise<Set<string>> {
     return matchKeyedSerials(
       new Uint8Array(
-        await blob.slice(magicBytesIndexMin, magicBytesIndexMax).arrayBuffer(),
+        await blob
+          .slice(magicBytesIndexStart, magicBytesIndexEnd)
+          .arrayBuffer(),
       ),
-      mediaTypeAndMagicBytesCollection,
+      mediaTypeAndMagicBytes,
     );
-  }
-
-  /**
-   * ## Introduction
-   * Guess media types by the magic bytes for the given byte reader
-   *
-   * ## Parameters
-   * - `byteReader` - `ReadableStreamBYOBReader`
-   *   + The query data as a byte reader
-   *
-   * ## Results
-   * - `Promise<Set<string>>`
-   *   + A set of possible media types
-   */
-  export async function forByteReader(
-    byteReader: ReadableStreamBYOBReader,
-  ): Promise<Set<string>> {
-    const { done, value } = await byteReader.read(
-      new Uint8Array(magicBytesIndexRange),
-    );
-    return done ? new Set() : guessMediaTypesByMagicBytes.forUint8Array(value);
   }
 
   /**
@@ -90,8 +74,63 @@ export namespace guessMediaTypesByMagicBytes {
     uint8Array: Uint8Array,
   ): Promise<Set<string>> {
     return matchKeyedSerials(
-      uint8Array.slice(magicBytesIndexMin, magicBytesIndexMax),
-      mediaTypeAndMagicBytesCollection,
+      uint8Array.slice(magicBytesIndexStart, magicBytesIndexEnd),
+      mediaTypeAndMagicBytes,
     );
+  }
+}
+
+/**
+ * ## Introduction
+ * Guess media types by the magic masked bytes for the given data
+ */
+export namespace guessMediaTypesByMagicMaskedBytes {
+  /**
+   * ## Introduction
+   * Guess media types by the magic masked bytes for the given blob
+   *
+   * ## Parameters
+   * - `blob` - `Blob`
+   *   + The query data as a binary large object
+   *
+   * ## Results
+   * - `Promise<Set<string>>`
+   *   + A set of possible media types
+   */
+  export async function forBlob(blob: Blob): Promise<Set<string>> {
+    const maskedBytes = new Uint8Array(
+      await blob
+        .slice(magicMaskBytesIndexStart, magicMaskBytesIndexEnd)
+        .arrayBuffer(),
+    );
+    for (const [index, mask] of readSerial(magicMaskBytes)) {
+      maskedBytes[index] &= mask;
+    }
+    return matchKeyedSerials(maskedBytes, mediaTypeAndMagicMaskedBytes);
+  }
+
+  /**
+   * ## Introduction
+   * Guess media types by the magic masked bytes for the given uint8 array
+   *
+   * ## Parameters
+   * - `uint8Array` - `Uint8Array`
+   *   + The query data as a typed array of 8-bit unsigned integers
+   *
+   * ## Results
+   * - `Promise<Set<string>>`
+   *   + A set of possible media types
+   */
+  export async function forUint8Array(
+    uint8Array: Uint8Array,
+  ): Promise<Set<string>> {
+    const maskedBytes = uint8Array.slice(
+      magicMaskBytesIndexStart,
+      magicMaskBytesIndexEnd,
+    );
+    for (const [index, mask] of readSerial(magicMaskBytes)) {
+      maskedBytes[index] &= mask;
+    }
+    return matchKeyedSerials(maskedBytes, mediaTypeAndMagicMaskedBytes);
   }
 }

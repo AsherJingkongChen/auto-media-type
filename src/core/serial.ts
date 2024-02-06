@@ -39,30 +39,6 @@ export type Serial = [number, number, ...number[]];
 
 /**
  * ## Introduction
- * Read the serial and yield the scalar and its index
- * 
- * ## Parameters
- * - `serial` - `Serial`
- *   + A serial
- * 
- * ## Yields
- * - `[number, number]`
- *   + A tuple of index and scalar
- */
-export function* readSerial(serial: Serial) {
-  for (let i = 0, index = 0; i < serial.length; i++) {
-    let scalar = serial[i]!;
-    // Move to the next part if NaN
-    if (Number.isNaN(scalar)) {
-      index = serial[++i]!;
-      scalar = serial[++i]!;
-    }
-    yield [index++, scalar] as [number, number];
-  }
-}
-
-/**
- * ## Introduction
  * Compare the target with the serials and collect matched keys
  *
  * ## Parameters
@@ -94,7 +70,7 @@ export function matchKeyedSerials(
 
     // Compare target with all serials
     let matched = true;
-    for (const [index, scalar] of readSerial(entry.slice(1) as Serial)) {
+    for (const [index, scalar] of readKeyedSerial(entry)) {
       if (target[index] !== scalar) {
         matched = false;
         break;
@@ -107,4 +83,70 @@ export function matchKeyedSerials(
     }
   }
   return matches;
+}
+
+/**
+ * ## Introduction
+ * Read a keyed serial and yield its scalar and index
+ *
+ * ## Parameters
+ * - `keyedSerial` - `KeyedSerial`
+ *   + A keyed serial
+ *
+ * ## Yields
+ * - `[number, number]`
+ *   + A tuple of index and scalar
+ */
+export function* readKeyedSerial(
+  keyedSerial: KeyedSerial,
+): Generator<[number, number]> {
+  yield* _readSerial(keyedSerial, 1);
+}
+
+/**
+ * ## Introduction
+ * Read a serial and yield its scalar and index
+ *
+ * ## Parameters
+ * - `serial` - `Serial`
+ *   + A serial
+ *
+ * ## Yields
+ * - `[number, number]`
+ *   + A tuple of index and scalar
+ */
+export function* readSerial(serial: Serial): Generator<[number, number]> {
+  yield* _readSerial(serial, 0);
+}
+
+
+/**
+ * ## Introduction
+ * The implementation of these functions
+ * - `readKeyedSerial`
+ * - `readSerial`
+ *
+ * ## Parameters
+ * - `s` - `(string | number)[]`
+ *   + A serial or keyed serial
+ * - `i` - `number`
+ *   + The index of the initial serial
+ *
+ * ## Yields
+ * - `[number, number]`
+ *   + A tuple of index and scalar
+ */
+function* _readSerial(
+  s: KeyedSerial | Serial,
+  i: number,
+): Generator<[number, number]> {
+  for (let index = 0; i < s.length; i++) {
+    let scalar = s[i]!;
+    // Move to the next part if NaN
+    if (Number.isNaN(scalar)) {
+      index = s[++i]! as number;
+      scalar = s[++i]!;
+    }
+    yield [index++, scalar] as [number, number];
+  }
 }

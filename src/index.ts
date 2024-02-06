@@ -1,7 +1,9 @@
 import {
   guessMediaTypesByExtension,
   guessMediaTypesByMagicBytes,
+  guessMediaTypesByMagicMaskedBytes,
 } from './guess';
+import { magicBytesIndexEnd } from './preset';
 
 /**
  * ## Introduction
@@ -33,8 +35,8 @@ export namespace MediaType {
    *   + `MediaType.suggestArrayBuffer()`
    *   + `MediaType.suggestArrayBufferView()`
    *   + `MediaType.suggestBlob()`
+   *   + `MediaType.suggestByteStream()`
    *   + `MediaType.suggestFile()`
-   *   + `MediaType.suggestStream()`
    */
   export async function suggest(
     data:
@@ -60,7 +62,7 @@ export namespace MediaType {
       return suggestArrayBuffer(data);
     }
     if (data instanceof ReadableStream) {
-      return suggestStream(data);
+      return suggestByteStream(data);
     }
     throw new TypeError('The query data type is not valid');
   }
@@ -80,9 +82,14 @@ export namespace MediaType {
   export async function suggestArrayBuffer(
     arrayBuffer: ArrayBufferLike,
   ): Promise<Set<string>> {
-    return guessMediaTypesByMagicBytes.forUint8Array(
-      new Uint8Array(arrayBuffer),
-    );
+    return new Set([
+      ...(await guessMediaTypesByMagicBytes.forUint8Array(
+        new Uint8Array(arrayBuffer),
+      )),
+      ...(await guessMediaTypesByMagicMaskedBytes.forUint8Array(
+        new Uint8Array(arrayBuffer),
+      )),
+    ]);
   }
 
   /**
@@ -104,13 +111,16 @@ export namespace MediaType {
   export async function suggestArrayBufferView(
     arrayBufferView: ArrayBufferView | DataView | TypedArray,
   ): Promise<Set<string>> {
-    if (arrayBufferView instanceof Uint8Array) {
-      return suggestUint8Array(arrayBufferView);
-    } else {
-      return guessMediaTypesByMagicBytes.forUint8Array(
-        new Uint8Array(arrayBufferView.buffer),
-      );
-    }
+    return arrayBufferView instanceof Uint8Array
+      ? suggestUint8Array(arrayBufferView)
+      : new Set([
+          ...(await guessMediaTypesByMagicBytes.forUint8Array(
+            new Uint8Array(arrayBufferView.buffer),
+          )),
+          ...(await guessMediaTypesByMagicMaskedBytes.forUint8Array(
+            new Uint8Array(arrayBufferView.buffer),
+          )),
+        ]);
   }
 
   /**
@@ -128,7 +138,45 @@ export namespace MediaType {
   export async function suggestBlob(blob: Blob): Promise<Set<string>> {
     // [TODO] Need a working check algorithm
     // return checkMediaTypes(file, await guessMediaTypesByMagicBytes(file));
-    return guessMediaTypesByMagicBytes.forBlob(blob);
+    return new Set([
+      ...(await guessMediaTypesByMagicBytes.forBlob(blob)),
+      ...(await guessMediaTypesByMagicMaskedBytes.forBlob(blob)),
+    ]);
+  }
+
+  /**
+   * ## Introduction
+   * To suggest media types for the given byte stream
+   *
+   * ## Parameters
+   * - `stream` - `ReadableStream<Uint8Array>`
+   *   + The query data as a byte stream
+   *   + The stream will be cancelled after the function call
+   *
+   * ## Results
+   * - `Promise<Set<string>>`
+   *   + A set of possible media types
+   *
+   * ## Note
+   * - This function may also call:
+   *   + `MediaType.suggestUint8Array()`
+   * - The given stream is taken as a disposable resource,
+   *   so no one should use the stream after the function call.
+   */
+  export async function suggestByteStream(
+    stream: ReadableStream<Uint8Array>,
+  ): Promise<Set<string>> {
+    const reader = stream.getReader({ mode: 'byob' });
+    try {
+      // magicBytesIndexEnd should be greater than magicMaskBytesIndexEnd
+      const { done, value } = await reader.read(
+        new Uint8Array(magicBytesIndexEnd),
+      );
+      return done ? new Set() : await suggestUint8Array(value);
+    } finally {
+      reader.releaseLock();
+      await stream.cancel();
+    }
   }
 
   /**
@@ -162,30 +210,8 @@ export namespace MediaType {
     return new Set([
       ...guessMediaTypesByExtension(file.name),
       ...(await guessMediaTypesByMagicBytes.forBlob(file)),
+      ...(await guessMediaTypesByMagicMaskedBytes.forBlob(file)),
     ]);
-  }
-
-  /**
-   * ## Introduction
-   * To suggest media types for the given stream
-   *
-   * ## Parameters
-   * - `stream` - `ReadableStream<Uint8Array>`
-   *   + The query data as a byte stream
-   *
-   * ## Results
-   * - `Promise<Set<string>>`
-   *   + A set of possible media types
-   */
-  export async function suggestStream(
-    stream: ReadableStream<Uint8Array>,
-  ): Promise<Set<string>> {
-    const reader = stream.getReader({ mode: 'byob' });
-    try {
-      return await guessMediaTypesByMagicBytes.forByteReader(reader);
-    } finally {
-      reader.releaseLock();
-    }
   }
 
   /**
@@ -203,7 +229,10 @@ export namespace MediaType {
   export async function suggestUint8Array(
     uint8Array: Uint8Array,
   ): Promise<Set<string>> {
-    return guessMediaTypesByMagicBytes.forUint8Array(uint8Array);
+    return new Set([
+      ...(await guessMediaTypesByMagicBytes.forUint8Array(uint8Array)),
+      ...(await guessMediaTypesByMagicMaskedBytes.forUint8Array(uint8Array)),
+    ]);
   }
 
   /**
