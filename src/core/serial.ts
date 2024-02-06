@@ -39,6 +39,30 @@ export type Serial = [number, number, ...number[]];
 
 /**
  * ## Introduction
+ * Read the serial and yield the scalar and its index
+ * 
+ * ## Parameters
+ * - `serial` - `Serial`
+ *   + A serial
+ * 
+ * ## Yields
+ * - `[number, number]`
+ *   + A tuple of index and scalar
+ */
+export function* readSerial(serial: Serial) {
+  for (let i = 0, index = 0; i < serial.length; i++) {
+    let scalar = serial[i]!;
+    // Move to the next part if NaN
+    if (Number.isNaN(scalar)) {
+      index = serial[++i]!;
+      scalar = serial[++i]!;
+    }
+    yield [index++, scalar] as [number, number];
+  }
+}
+
+/**
+ * ## Introduction
  * Compare the target with the serials and collect matched keys
  *
  * ## Parameters
@@ -69,21 +93,14 @@ export function matchKeyedSerials(
     }
 
     // Compare target with all serials
-    const serial = entry.slice(1) as number[];
     let matched = true;
-    for (let i = 0, index = 0; i < serial.length; i++) {
-      let scalar = serial[i]!;
-      // Move to the next part if NaN
-      if (Number.isNaN(scalar)) {
-        index = serial[++i]!;
-        scalar = serial[++i]!;
-      }
-      // Compare the scalar
-      if (target[index++] !== scalar) {
+    for (const [index, scalar] of readSerial(entry.slice(1) as Serial)) {
+      if (target[index] !== scalar) {
         matched = false;
         break;
       }
     }
+
     // Record the matched key
     if (matched) {
       matches.add(key);
