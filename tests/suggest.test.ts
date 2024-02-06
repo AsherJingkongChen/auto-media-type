@@ -101,10 +101,18 @@ describe('MediaType', () => {
 
       await cancelledStream.cancel();
 
-      await expect(MediaType.suggestByteStream(cancelledStream)).resolves.toBeTruthy();
-      await expect(MediaType.suggestByteStream(closedStream)).resolves.toBeTruthy();
-      await expect(MediaType.suggestByteStream(errorStream)).rejects.toBeTruthy();
-      await expect(MediaType.suggestByteStream(normalStream)).resolves.toBeTruthy();
+      await expect(
+        MediaType.suggestByteStream(cancelledStream),
+      ).resolves.toBeTruthy();
+      await expect(
+        MediaType.suggestByteStream(closedStream),
+      ).resolves.toBeTruthy();
+      await expect(
+        MediaType.suggestByteStream(errorStream),
+      ).rejects.toBeTruthy();
+      await expect(
+        MediaType.suggestByteStream(normalStream),
+      ).resolves.toBeTruthy();
 
       // They are resolved if their streams are closed; otherwise, they will be pending forever.
       // Don't worry. The unit tests will be timed out on the case.

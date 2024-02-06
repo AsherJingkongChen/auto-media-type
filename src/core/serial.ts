@@ -119,7 +119,6 @@ export function* readSerial(serial: Serial): Generator<[number, number]> {
   yield* _readSerial(serial, 0);
 }
 
-
 /**
  * ## Introduction
  * The implementation of these functions
