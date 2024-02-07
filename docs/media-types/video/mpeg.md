@@ -6,13 +6,13 @@
 
 ## Magic Bytes
 
-1. MPEG Video pack header
+1. MPEG-1/2 Part 1 pack header start code
    | Offset | 0 | 1 | 2 | 3 |
    | ---- | ---- | ---- | ---- | ---- |
    | Byte | 0x00 | 0x00 | 0x01 | 0xba |
    | Char | | | | |
 
-2. MPEG Video sequence header
+2. MPEG-1/2 Part 2 sequence header start code
    | Offset | 0 | 1 | 2 | 3 |
    | ---- | ---- | ---- | ---- | ---- |
    | Byte | 0x00 | 0x00 | 0x01 | 0xb3 |
@@ -24,3 +24,4 @@
 - [LOC Digital Formats - MPEG-2](https://www.loc.gov/preservation/digital/formats/fdd/fdd000028.shtml)
 - [Apache HTTP MIME Types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
 - [MPEG Video Headers Quick Reference](https://dvd.sourceforge.net/dvdinfo/mpeghdrs.html)
+- [Treasured - MPEG](https://aeroquartet.com/treasured/mpeg.en.html)

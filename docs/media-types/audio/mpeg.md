@@ -14,7 +14,7 @@
 
 ## Magic Bits
 
-1. MPEG-1/2 audio frame sync
+1. MPEG-1/2 Audio frame sync
    | Offset | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
    | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
    | Bit | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
@@ -24,6 +24,5 @@
 - [Media Type Assignment](https://www.iana.org/assignments/media-types/audio/mpeg)
 - [RFC 3003](https://datatracker.ietf.org/doc/html/rfc3003)
 - [ID3v2.3 Specification](https://id3lib.sourceforge.net/id3/id3v2.3.0.html)
-- [ID3v1 Specification](https://id3lib.sourceforge.net/id3/id3v1.html)
 - [Apache HTTP MIME Types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
 - [MPEG Audio Frame Header](https://www.datavoyage.com/mpgscript/mpeghdr.htm)
