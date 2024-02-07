@@ -47,11 +47,7 @@ export namespace guessMediaTypesByMagicBytes {
    */
   export async function forBlob(blob: Blob): Promise<Set<string>> {
     return matchKeyedSerials(
-      new Uint8Array(
-        await blob
-          .slice(0, magicBytesOffsetEnd)
-          .arrayBuffer(),
-      ),
+      new Uint8Array(await blob.slice(0, magicBytesOffsetEnd).arrayBuffer()),
       mediaTypeAndMagicBytes,
     );
   }
@@ -97,9 +93,7 @@ export namespace guessMediaTypesByMagicMaskedBytes {
    */
   export async function forBlob(blob: Blob): Promise<Set<string>> {
     const maskedBytes = new Uint8Array(
-      await blob
-        .slice(0, magicMaskBytesOffsetEnd)
-        .arrayBuffer(),
+      await blob.slice(0, magicMaskBytesOffsetEnd).arrayBuffer(),
     );
     for (const [offset, mask] of readSerial(magicMaskBytes)) {
       maskedBytes[offset] &= mask;
@@ -122,10 +116,7 @@ export namespace guessMediaTypesByMagicMaskedBytes {
   export async function forUint8Array(
     uint8Array: Uint8Array,
   ): Promise<Set<string>> {
-    const maskedBytes = uint8Array.slice(
-      0,
-      magicMaskBytesOffsetEnd,
-    );
+    const maskedBytes = uint8Array.slice(0, magicMaskBytesOffsetEnd);
     for (const [offset, mask] of readSerial(magicMaskBytes)) {
       maskedBytes[offset] &= mask;
     }
