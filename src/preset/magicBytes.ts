@@ -153,18 +153,9 @@ export const mediaTypeAndMagicBytes: KeyedSerialCollection = [
 
 /**
  * ## Introduction
- * The end index of magic bytes
+ * The end offset of magic bytes
  *
  * ## Layout
  * `number`
  */
-export const magicBytesIndexEnd: number = 23;
-
-/**
- * ## Introduction
- * The start index of magic bytes
- *
- * ## Layout
- * `number`
- */
-export const magicBytesIndexStart: number = 0;
+export const magicBytesOffsetEnd: number = 23;

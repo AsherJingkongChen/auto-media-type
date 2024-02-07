@@ -1,11 +1,9 @@
 import { matchKeyedSerials, readSerial } from './core';
 import {
   extensionToMediaTypesTable,
-  magicBytesIndexEnd,
-  magicBytesIndexStart,
+  magicBytesOffsetEnd,
   magicMaskBytes,
-  magicMaskBytesIndexStart,
-  magicMaskBytesIndexEnd,
+  magicMaskBytesOffsetEnd,
   mediaTypeAndMagicBytes,
   mediaTypeAndMagicMaskedBytes,
 } from './preset';
@@ -51,7 +49,7 @@ export namespace guessMediaTypesByMagicBytes {
     return matchKeyedSerials(
       new Uint8Array(
         await blob
-          .slice(magicBytesIndexStart, magicBytesIndexEnd)
+          .slice(0, magicBytesOffsetEnd)
           .arrayBuffer(),
       ),
       mediaTypeAndMagicBytes,
@@ -74,7 +72,7 @@ export namespace guessMediaTypesByMagicBytes {
     uint8Array: Uint8Array,
   ): Promise<Set<string>> {
     return matchKeyedSerials(
-      uint8Array.slice(magicBytesIndexStart, magicBytesIndexEnd),
+      uint8Array.slice(0, magicBytesOffsetEnd),
       mediaTypeAndMagicBytes,
     );
   }
@@ -100,11 +98,11 @@ export namespace guessMediaTypesByMagicMaskedBytes {
   export async function forBlob(blob: Blob): Promise<Set<string>> {
     const maskedBytes = new Uint8Array(
       await blob
-        .slice(magicMaskBytesIndexStart, magicMaskBytesIndexEnd)
+        .slice(0, magicMaskBytesOffsetEnd)
         .arrayBuffer(),
     );
-    for (const [index, mask] of readSerial(magicMaskBytes)) {
-      maskedBytes[index] &= mask;
+    for (const [offset, mask] of readSerial(magicMaskBytes)) {
+      maskedBytes[offset] &= mask;
     }
     return matchKeyedSerials(maskedBytes, mediaTypeAndMagicMaskedBytes);
   }
@@ -125,11 +123,11 @@ export namespace guessMediaTypesByMagicMaskedBytes {
     uint8Array: Uint8Array,
   ): Promise<Set<string>> {
     const maskedBytes = uint8Array.slice(
-      magicMaskBytesIndexStart,
-      magicMaskBytesIndexEnd,
+      0,
+      magicMaskBytesOffsetEnd,
     );
-    for (const [index, mask] of readSerial(magicMaskBytes)) {
-      maskedBytes[index] &= mask;
+    for (const [offset, mask] of readSerial(magicMaskBytes)) {
+      maskedBytes[offset] &= mask;
     }
     return matchKeyedSerials(maskedBytes, mediaTypeAndMagicMaskedBytes);
   }

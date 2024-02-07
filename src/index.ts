@@ -3,7 +3,7 @@ import {
   guessMediaTypesByMagicBytes,
   guessMediaTypesByMagicMaskedBytes,
 } from './guess';
-import { magicBytesIndexEnd } from './preset';
+import { magicBytesOffsetEnd } from './preset';
 
 /**
  * ## Introduction
@@ -168,9 +168,9 @@ export namespace MediaType {
   ): Promise<Set<string>> {
     const reader = stream.getReader({ mode: 'byob' });
     try {
-      // magicBytesIndexEnd should be greater than magicMaskBytesIndexEnd
+      // magicBytesOffsetEnd should be greater than magicMaskBytesOffsetEnd
       const { done, value } = await reader.read(
-        new Uint8Array(magicBytesIndexEnd),
+        new Uint8Array(magicBytesOffsetEnd),
       );
       return done ? new Set() : await suggestUint8Array(value);
     } finally {

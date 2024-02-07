@@ -35,18 +35,9 @@ export const magicMaskBytes: Serial = [NaN, 0, 0xff, 0xe0];
 
 /**
  * ## Introduction
- * The end index of magic mask(ed) bytes
+ * The end offset of magic mask(ed) bytes
  *
  * ## Layout
  * `number`
  */
-export const magicMaskBytesIndexEnd: number = 2;
-
-/**
- * ## Introduction
- * The start index of magic mask(ed) bytes
- *
- * ## Layout
- * `number`
- */
-export const magicMaskBytesIndexStart: number = 0;
+export const magicMaskBytesOffsetEnd: number = 2;

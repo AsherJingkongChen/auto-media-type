@@ -1,61 +1,53 @@
 import { readKeyedSerial, readSerial } from 'src/core';
 import {
   magicMaskBytes,
-  magicBytesIndexEnd,
-  magicBytesIndexStart,
-  magicMaskBytesIndexEnd,
-  magicMaskBytesIndexStart,
+  magicBytesOffsetEnd,
+  magicMaskBytesOffsetEnd,
   mediaTypeAndMagicBytes,
   mediaTypeAndMagicMaskedBytes,
 } from 'src/preset';
 import { describe, expect, it } from 'vitest';
 
 describe('magicMaskBytes', () => {
-  it('The start and end indexs are correct', () => {
-    function* readAllIndexs() {
-      for (const [index] of readSerial(magicMaskBytes)) {
-        yield index;
+  it('The end offset is correct', () => {
+    function* readAllOffsets() {
+      for (const [offset] of readSerial(magicMaskBytes)) {
+        yield offset;
       }
     }
-    const receivedIndexMax = Math.max(...readAllIndexs());
-    const receivedIndexMin = Math.min(...readAllIndexs());
-    expect(receivedIndexMax + 1).toBe(magicMaskBytesIndexEnd);
-    expect(receivedIndexMin).toBe(magicMaskBytesIndexStart);
+    const receivedOffsetMax = Math.max(...readAllOffsets());
+    expect(receivedOffsetMax + 1).toBe(magicMaskBytesOffsetEnd);
   });
 });
 
 describe('mediaTypeAndMagicBytes', () => {
-  it('The start and end indexs are correct', () => {
-    function* readAllIndexs() {
+  it('The end offset is correct', () => {
+    function* readAllOffsets() {
       for (const entry of mediaTypeAndMagicBytes) {
-        for (const [index] of readKeyedSerial(entry)) {
-          yield index;
+        for (const [offset] of readKeyedSerial(entry)) {
+          yield offset;
         }
       }
     }
-    const receivedIndexMax = Math.max(...readAllIndexs());
-    const receivedIndexMin = Math.min(...readAllIndexs());
-    expect(receivedIndexMax + 1).toBe(magicBytesIndexEnd);
-    expect(receivedIndexMin).toBe(magicBytesIndexStart);
+    const receivedOffsetMax = Math.max(...readAllOffsets());
+    expect(receivedOffsetMax + 1).toBe(magicBytesOffsetEnd);
   });
 });
 
 describe('mediaTypeAndMagicMaskedBytes', () => {
-  it('The start and end indexs are correct', () => {
-    function* readAllIndexs() {
+  it('The end offset is correct', () => {
+    function* readAllOffsets() {
       for (const entry of mediaTypeAndMagicMaskedBytes) {
-        for (const [index] of readKeyedSerial(entry)) {
-          yield index;
+        for (const [offset] of readKeyedSerial(entry)) {
+          yield offset;
         }
       }
     }
-    const receivedIndexMax = Math.max(...readAllIndexs());
-    const receivedIndexMin = Math.min(...readAllIndexs());
-    expect(receivedIndexMax + 1).toBe(magicMaskBytesIndexEnd);
-    expect(receivedIndexMin).toBe(magicMaskBytesIndexStart);
+    const receivedOffsetMax = Math.max(...readAllOffsets());
+    expect(receivedOffsetMax + 1).toBe(magicMaskBytesOffsetEnd);
   });
 });
 
-it('magicBytesIndexEnd > magicMaskBytesIndexEnd', () => {
-  expect(magicBytesIndexEnd).toBeGreaterThan(magicMaskBytesIndexEnd);
+it('magicBytesOffsetEnd > magicMaskBytesOffsetEnd', () => {
+  expect(magicBytesOffsetEnd).toBeGreaterThan(magicMaskBytesOffsetEnd);
 });
