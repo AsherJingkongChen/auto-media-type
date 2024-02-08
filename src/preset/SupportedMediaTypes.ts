@@ -1,13 +1,13 @@
 /**
  * ## Introduction
+ * Supported media types
  * - Supported media types: `38`
  * - Deprecated media types: `2`
  *
  * ## References
  * - [IANA Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml)
  */
-export type SupportedMediaTypes = (typeof SupportedMediaTypes)[number];
-export const SupportedMediaTypes = [
+export const SupportedMediaTypes = new Set([
   'application/gzip',
   'application/java-archive',
   'application/pdf',
@@ -43,9 +43,13 @@ export const SupportedMediaTypes = [
   'image/vnd.wap.wbmp',
   'image/webp',
   'text/html',
-  // 'text/xml', // DEPRECATED by us, in favor of `application/xml`
-  // 'text/xml-external-parsed-entity', // DEPRECATED by us, in favor of `application/xml-external-parsed-entity`
   'video/mj2',
   'video/mp4',
   'video/mpeg',
-] as const;
+] as const);
+
+// 'text/xml', // DEPRECATED by us, in favor of `application/xml`
+// 'text/xml-external-parsed-entity', // DEPRECATED by us, in favor of `application/xml-external-parsed-entity`
+
+export type SupportedMediaTypes =
+  typeof SupportedMediaTypes extends Set<infer X> ? X : never;

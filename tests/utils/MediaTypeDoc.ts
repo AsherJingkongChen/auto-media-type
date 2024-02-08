@@ -1,4 +1,3 @@
-
 import { readdirSync } from 'fs';
 import { dirname, join, relative } from 'path';
 import { fileURLToPath } from 'url';
@@ -33,7 +32,7 @@ export namespace MediaTypeDoc {
    * Walk through all the files in the sample directory
    *
    * ## Parameters
-   * - `filter` - `(type: string) => boolean`
+   * - `filter`: `(type: string) => boolean`
    *   + A function to filter paths by media types
    *
    * ## Results
@@ -45,7 +44,7 @@ export namespace MediaTypeDoc {
   ): Generator<{ path: string; type: string }> {
     const docDir = join(
       dirname(fileURLToPath(import.meta.url)),
-      '../docs/media-types',
+      '../../docs/media-types',
     );
     for (const path of _paths(docDir)) {
       // Skip `../docs/media-types/README.md`

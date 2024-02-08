@@ -42,11 +42,11 @@ export type Serial = [number, number, ...number[]];
  * Compare the target with the serials and collect matched keys
  *
  * ## Parameters
- * - `target` - `Record<number, number>`
+ * - `target`: `Record<number, number>`
  *   + A serial mapping
  *     + The key is an index
  *     + The value is a serial scalar
- * - `collection` - `KeyedSerialCollection`
+ * - `collection`: `KeyedSerialCollection`
  *   + A collection of keyed serials
  *
  * ## Results
@@ -90,7 +90,7 @@ export function matchKeyedSerials(
  * Read a keyed serial and yield its scalar and index
  *
  * ## Parameters
- * - `keyedSerial` - `KeyedSerial`
+ * - `keyedSerial`: `KeyedSerial`
  *   + A keyed serial
  *
  * ## Yields
@@ -108,7 +108,7 @@ export function* readKeyedSerial(
  * Read a serial and yield its scalar and index
  *
  * ## Parameters
- * - `serial` - `Serial`
+ * - `serial`: `Serial`
  *   + A serial
  *
  * ## Yields
@@ -126,9 +126,9 @@ export function* readSerial(serial: Serial): Generator<[number, number]> {
  * - `readSerial`
  *
  * ## Parameters
- * - `s` - `(string | number)[]`
+ * - `s`: `(string | number)[]`
  *   + A serial or keyed serial
- * - `i` - `number`
+ * - `i`: `number`
  *   + The index of the initial serial
  *
  * ## Yields

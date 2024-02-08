@@ -13,7 +13,7 @@ import {
  * Guess media types by the file extension (case-insensitive)
  *
  * ## Parameters
- * - `pathname` - `string`
+ * - `pathname`: `string`
  *   + A file path or name
  *
  * ## Results
@@ -38,7 +38,7 @@ export namespace guessMediaTypesByMagicBytes {
    * Guess media types by the magic bytes for the given blob
    *
    * ## Parameters
-   * - `blob` - `Blob`
+   * - `blob`: `Blob`
    *   + The query data as a binary large object
    *
    * ## Results
@@ -57,7 +57,7 @@ export namespace guessMediaTypesByMagicBytes {
    * Guess media types by the magic bytes for the given uint8 array
    *
    * ## Parameters
-   * - `uint8Array` - `Uint8Array`
+   * - `uint8Array`: `Uint8Array`
    *   + The query data as a typed array of 8-bit unsigned integers
    *
    * ## Results
@@ -84,7 +84,7 @@ export namespace guessMediaTypesByMagicMaskedBytes {
    * Guess media types by the magic masked bytes for the given blob
    *
    * ## Parameters
-   * - `blob` - `Blob`
+   * - `blob`: `Blob`
    *   + The query data as a binary large object
    *
    * ## Results
@@ -106,7 +106,7 @@ export namespace guessMediaTypesByMagicMaskedBytes {
    * Guess media types by the magic masked bytes for the given uint8 array
    *
    * ## Parameters
-   * - `uint8Array` - `Uint8Array`
+   * - `uint8Array`: `Uint8Array`
    *   + The query data as a typed array of 8-bit unsigned integers
    *
    * ## Results

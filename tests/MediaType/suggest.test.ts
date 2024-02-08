@@ -1,4 +1,4 @@
-import { MediaType } from 'src/index';
+import { MediaType } from 'src';
 import { Sample } from 'lots-of-sample-files';
 import { describe, expect, it } from 'vitest';
 
@@ -44,12 +44,12 @@ describe('MediaType', () => {
     });
   });
 
-  describe('.suggestByteStream()', () => {
+  describe('.suggestForByteStream()', () => {
     it('It returns an empty set for a cancelled or a closed stream', async () => {
       const cancelledStream = new ReadableStream({ type: 'bytes' });
       await cancelledStream.cancel();
       await expect(
-        MediaType.suggestByteStream(cancelledStream),
+        MediaType.suggestForByteStream(cancelledStream),
       ).resolves.toEqual(new Set());
 
       const closedStream = new ReadableStream({
@@ -58,9 +58,9 @@ describe('MediaType', () => {
         },
         type: 'bytes',
       });
-      await expect(MediaType.suggestByteStream(closedStream)).resolves.toEqual(
-        new Set(),
-      );
+      await expect(
+        MediaType.suggestForByteStream(closedStream),
+      ).resolves.toEqual(new Set());
     });
 
     it('It throws if the stream throws an error', async () => {
@@ -71,7 +71,7 @@ describe('MediaType', () => {
         },
         type: 'bytes',
       });
-      await expect(MediaType.suggestByteStream(errorStream)).rejects.toEqual(
+      await expect(MediaType.suggestForByteStream(errorStream)).rejects.toEqual(
         error,
       );
     });
@@ -102,16 +102,16 @@ describe('MediaType', () => {
       await cancelledStream.cancel();
 
       await expect(
-        MediaType.suggestByteStream(cancelledStream),
+        MediaType.suggestForByteStream(cancelledStream),
       ).resolves.toBeTruthy();
       await expect(
-        MediaType.suggestByteStream(closedStream),
+        MediaType.suggestForByteStream(closedStream),
       ).resolves.toBeTruthy();
       await expect(
-        MediaType.suggestByteStream(errorStream),
+        MediaType.suggestForByteStream(errorStream),
       ).rejects.toBeTruthy();
       await expect(
-        MediaType.suggestByteStream(normalStream),
+        MediaType.suggestForByteStream(normalStream),
       ).resolves.toBeTruthy();
 
       // They are resolved if their streams are closed; otherwise, they will be pending forever.
@@ -122,22 +122,22 @@ describe('MediaType', () => {
     });
   });
 
-  describe('.suggestFile()', () => {
+  describe('.suggestForFile()', () => {
     describe('It returns an empty set', () => {
       it('for an extensionless file name', async () => {
-        expect(MediaType.suggestFile(new File([], ''))).resolves.toEqual(
+        expect(MediaType.suggestForFile(new File([], ''))).resolves.toEqual(
           new Set(),
         );
         expect(
-          MediaType.suggestFile(new File([], 'an-extensionless-file')),
+          MediaType.suggestForFile(new File([], 'an-extensionless-file')),
         ).resolves.toEqual(new Set());
       });
       it('for an unseen file extension', async () => {
         expect(
-          MediaType.suggestFile(new File([], 'filename.undefined')),
+          MediaType.suggestForFile(new File([], 'filename.undefined')),
         ).resolves.toEqual(new Set());
         expect(
-          MediaType.suggestFile(new File([], '.undefined-2')),
+          MediaType.suggestForFile(new File([], '.undefined-2')),
         ).resolves.toEqual(new Set());
       });
     });
