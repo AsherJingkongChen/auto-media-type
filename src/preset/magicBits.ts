@@ -1,5 +1,5 @@
 import { KeyedSerialCollection, Serial } from '../core';
-import { SupportedMediaTypes } from './SupportedMediaTypes';
+import { SupportedMediaTypes } from './supportedMediaTypes';
 
 /**
  * ## Introduction

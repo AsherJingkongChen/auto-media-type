@@ -1,4 +1,4 @@
-import { SupportedMediaTypes } from './SupportedMediaTypes';
+import { SupportedMediaTypes } from './supportedMediaTypes';
 
 /**
  * ## Introduction
