@@ -3,7 +3,8 @@ import {
   guessMediaTypesByMagicBytes,
   guessMediaTypesByMagicMaskedBytes,
 } from './guess';
-import { SupportedMediaTypes, magicBytesOffsetEnd } from './preset';
+import { SupportedMediaTypes } from './preset';
+import { readMagicalPartForByteStream } from './utils';
 
 /**
  * ## Introduction
@@ -261,15 +262,15 @@ export namespace MediaType {
   export async function suggestForByteStream(
     byteStream: ReadableStream<Uint8Array>,
   ): Promise<Set<string>> {
-    const reader = byteStream.getReader({ mode: 'byob' });
     try {
-      // magicBytesOffsetEnd should be greater than magicMaskBytesOffsetEnd
-      const { done, value } = await reader.read(
-        new Uint8Array(magicBytesOffsetEnd),
+      const bytes = await readMagicalPartForByteStream(byteStream);
+      return new Set(
+        bytes && [
+          ...(await guessMediaTypesByMagicBytes.forUint8Array(bytes)),
+          ...(await guessMediaTypesByMagicMaskedBytes.forUint8Array(bytes)),
+        ],
       );
-      return done ? new Set() : await suggestForUint8Array(value);
     } finally {
-      reader.releaseLock();
       await byteStream.cancel();
     }
   }

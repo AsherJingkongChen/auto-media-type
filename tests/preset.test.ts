@@ -47,7 +47,3 @@ describe('mediaTypeAndMagicMaskedBytes', () => {
     expect(receivedOffsetMax + 1).toBe(magicMaskBytesOffsetEnd);
   });
 });
-
-it('magicBytesOffsetEnd > magicMaskBytesOffsetEnd', () => {
-  expect(magicBytesOffsetEnd).toBeGreaterThan(magicMaskBytesOffsetEnd);
-});
