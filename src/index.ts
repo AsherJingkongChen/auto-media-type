@@ -1,10 +1,10 @@
+import { readByteStream } from './core';
 import {
   guessMediaTypesByExtension,
   guessMediaTypesByMagicBytes,
   guessMediaTypesByMagicMaskedBytes,
 } from './guess';
-import { SupportedMediaTypes } from './preset';
-import { readMagicalPartForByteStream } from './utils';
+import { SupportedMediaTypes, magicalPartByteLength } from './preset';
 
 /**
  * ## Introduction
@@ -263,11 +263,16 @@ export namespace MediaType {
     byteStream: ReadableStream<Uint8Array>,
   ): Promise<Set<string>> {
     try {
-      const bytes = await readMagicalPartForByteStream(byteStream);
+      const magicalPart = await readByteStream(
+        byteStream,
+        magicalPartByteLength,
+      );
       return new Set(
-        bytes && [
-          ...(await guessMediaTypesByMagicBytes.forUint8Array(bytes)),
-          ...(await guessMediaTypesByMagicMaskedBytes.forUint8Array(bytes)),
+        magicalPart && [
+          ...(await guessMediaTypesByMagicBytes.forUint8Array(magicalPart)),
+          ...(await guessMediaTypesByMagicMaskedBytes.forUint8Array(
+            magicalPart,
+          )),
         ],
       );
     } finally {
