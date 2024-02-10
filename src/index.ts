@@ -249,22 +249,24 @@ export namespace MediaType {
    * ## Parameters
    * - `byteStream`: `ReadableStream<Uint8Array>`
    *   + The query data as a byte stream
-   *   + The stream will be cancelled after the function call
+   *   + The stream will be locked after the function call
    *
    * ## Results
    * - `Promise<Set<string>>`
    *   + A set of possible media types
    *
    * ## Note
-   * - The given stream is taken as a disposable resource,
-   *   so no one should use the stream after the function call.
+   * - The given stream is seen as a disposable resource,
+   *   so no one should use it after the function call.
    */
   export async function suggestForByteStream(
     byteStream: ReadableStream<Uint8Array>,
   ): Promise<Set<string>> {
+    const [byteStreamForMagicalPart, byteStreamForOtherParts] =
+      byteStream.tee();
     try {
       const magicalPart = await readByteStream(
-        byteStream,
+        byteStreamForMagicalPart,
         magicalPartByteLength,
       );
       return new Set(
@@ -276,7 +278,10 @@ export namespace MediaType {
         ],
       );
     } finally {
-      await byteStream.cancel();
+      await Promise.all([
+        byteStreamForMagicalPart.cancel(),
+        byteStreamForOtherParts.cancel(),
+      ]);
     }
   }
 

@@ -27,9 +27,9 @@ export async function readByteStream(
   byteLength: number,
   byteOffset: number = 0,
 ): Promise<Uint8Array> {
-  const reader = byteStream.getReader({ mode: 'byob' });
   let buffer = new ArrayBuffer(byteOffset + byteLength);
   let offset = 0;
+  let reader = byteStream.getReader({ mode: 'byob' });
   try {
     while (offset < buffer.byteLength) {
       const { done, value } = await reader.read(
@@ -48,69 +48,3 @@ export async function readByteStream(
   }
   return new Uint8Array(buffer.slice(byteOffset, offset), 0);
 }
-
-// export async function copyFromByteStream(
-//   byteStream: ReadableStream<Uint8Array>,
-//   byteOffset: number,
-//   byteLength: number,
-// ): Promise<[ReadableStream<Uint8Array>, Uint8Array]> {
-//   // Read the data chunk with size `byteOffset + byteLength`
-//   let chunk = new Uint8Array(),
-//     data = chunk;
-//   const reader = byteStream.getReader({ mode: 'byob' });
-//   try {
-//     const { value } = await reader.read(
-//       new Uint8Array(byteOffset + byteLength),
-//     );
-//     // Record the chunk and truncate the data chunk from `byteOffset`
-//     if (value) {
-//       chunk = value.slice(byteOffset);
-//       data = value;
-//     }
-//   } finally {
-//     reader.releaseLock();
-//     console.log({ byteStream, e: 'releasedLock 1' });
-//   }
-
-//   // Create a stream to read the consumed and remaining data
-//   const stream = new ReadableStream({
-//     type: 'bytes',
-//     async start(controller) {
-//       controller.enqueue(data);
-//       const reader = byteStream.getReader({ mode: 'byob' });
-//       try {
-//         while (true) {
-//           const { byobRequest } = controller;
-//           const ownView = byobRequest?.view;
-//           if (ownView) {
-//             const { buffer, byteOffset, byteLength } = ownView;
-//             const { done, value } = await reader.read(
-//               new Uint8Array(buffer, byteOffset, byteLength),
-//             );
-//             if (done) {
-//               break;
-//             }
-//             byobRequest.respondWithNewView(value);
-//           } else {
-//             const { done, value } = await reader.read(new Uint8Array(1024));
-//             if (done) {
-//               break;
-//             }
-//             controller.enqueue(value);
-//           }
-//         }
-//       } catch (error) {
-//         controller.error(error);
-//       } finally {
-//         reader.releaseLock();
-//         controller.close();
-//         console.log({ byteStream, e: 'releasedLock 2' });
-//       }
-//     },
-//   });
-
-//   console.log({ byteStream, stream });
-
-//   // Return the fixed stream and the data chunk
-//   return [stream, chunk];
-// }
