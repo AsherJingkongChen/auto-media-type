@@ -6,7 +6,7 @@
 
 ## What is it for?
 
-With `auto-media-type`, you can complete the missing media type on any `File` instance. It works in modern JavaScript runtimes. Thanks for all great polyfill and bundler contributors.
+With `auto-media-type`, you can complete the missing media type for any data. It works in modern JavaScript runtimes. Thanks for all great polyfill and bundler contributors.
 
 We've provided a simple API for you. You can obtain `auto-media-type` from NPM. Please see the section [`How to Obtain`](#how-to-obtain).
 
