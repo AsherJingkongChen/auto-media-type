@@ -40,13 +40,7 @@ describe('readByteStream', () => {
   });
 
   describe('It returns an empty chunk', async () => {
-    it('for a cancelled stream', async () => {
-      const stream = blob.stream();
-      await stream.cancel();
-      expect(await readByteStream(stream, 1)).toEqual(new Uint8Array());
-    });
-
-    it('for a closed stream', async () => {
+    it('for a stream which is both cancelled and closed', async () => {
       const stream = blob.stream();
       await stream.cancel();
       const reader = stream.getReader();
@@ -65,12 +59,12 @@ describe('readByteStream', () => {
 
   it('It throws if the stream throws an error', async () => {
     const error = new Error('[Test] Stream error');
-    const errorStream = new ReadableStream({
+    const stream = new ReadableStream({
       type: 'bytes',
       start(controller) {
         controller.error(error);
       },
     });
-    await expect(readByteStream(errorStream, 1)).rejects.toEqual(error);
+    await expect(readByteStream(stream, 1)).rejects.toBe(error);
   });
 });
