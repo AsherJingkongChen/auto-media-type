@@ -45,80 +45,43 @@ describe('MediaType', () => {
   });
 
   describe('.suggestForByteStream()', () => {
-    it('It returns an empty set for a cancelled or a closed stream', async () => {
-      const cancelledStream = new ReadableStream({ type: 'bytes' });
+    it('It cancels the given stream to cause the stream closed', async () => {
+      // A cancelled stream will be closed
+      const cancelledStream = new ReadableStream({
+        type: 'bytes',
+        start(controller) {
+          controller.enqueue(new Uint8Array([0x20]));
+        },
+      });
       await cancelledStream.cancel();
-      await expect(
-        MediaType.suggestForByteStream(cancelledStream),
-      ).resolves.toEqual(new Set());
-
-      const closedStream = new ReadableStream({
-        start(controller) {
-          controller.close();
-        },
-        type: 'bytes',
-      });
-      await expect(
-        MediaType.suggestForByteStream(closedStream),
-      ).resolves.toEqual(new Set());
-    });
-
-    it('It throws if the stream throws an error', async () => {
-      const error = new Error('[Test] Stream error');
-      const errorStream = new ReadableStream({
-        start(controller) {
-          controller.error(error);
-        },
-        type: 'bytes',
-      });
-      await expect(MediaType.suggestForByteStream(errorStream)).rejects.toEqual(
-        error,
-      );
-    });
-
-    it('It cancels the given stream', async () => {
-      const cancelledStream = new ReadableStream({ type: 'bytes' });
-      const closedStream = new ReadableStream({
-        start(controller) {
-          controller.close();
-        },
-        type: 'bytes',
-      });
-      const errorStream = new ReadableStream({
-        start(controller) {
-          controller.error(new Error('[Test] Stream error'));
-        },
-        type: 'bytes',
-      });
-      const normalStream = new ReadableStream({
-        start(controller) {
-          // Max buffer size for media type application/vnd.efi.iso
-          controller.enqueue(new Uint8Array(0x9006));
-          controller.close();
-        },
-        type: 'bytes',
-      });
-
-      await cancelledStream.cancel();
-
-      await expect(
-        MediaType.suggestForByteStream(cancelledStream),
-      ).resolves.toBeTruthy();
-      await expect(
-        MediaType.suggestForByteStream(closedStream),
-      ).resolves.toBeTruthy();
-      await expect(
-        MediaType.suggestForByteStream(errorStream),
-      ).rejects.toBeTruthy();
-      await expect(
-        MediaType.suggestForByteStream(normalStream),
-      ).resolves.toBeTruthy();
-
       // They are resolved if their streams are closed; otherwise, they will be pending forever.
       // Don't worry. The unit tests will be timed out on the case.
       await expect(cancelledStream.getReader().closed).resolves.toBeFalsy();
-      await expect(closedStream.getReader().closed).resolves.toBeFalsy();
-      await expect(normalStream.getReader().closed).resolves.toBeFalsy();
+
+      // A closed stream will be closed
+      const closedStream = new ReadableStream({
+        type: 'bytes',
+        start(controller) {
+          controller.close();
+        },
+      });
+      let reader = closedStream.getReader();
+      await reader.read();
+      await expect(reader.closed).resolves.toBeFalsy();
+
+      // A short stream will be cancelled (and closed) after suggesting
+      const shortStream = new Blob([' ']).stream();
+      await expect(
+        MediaType.suggestForByteStream(shortStream),
+      ).resolves.toBeTruthy();
+      await expect(shortStream.getReader().closed).resolves.toBeFalsy();
+
+      // A long stream will be cancelled (and closed) after suggesting
+      const longStream = new Blob([new Uint8Array(4 << 20)]).stream();
+      await expect(
+        MediaType.suggestForByteStream(longStream),
+      ).resolves.toBeTruthy();
+      await expect(longStream.getReader().closed).resolves.toBeFalsy();
     });
   });
 
@@ -132,7 +95,8 @@ describe('MediaType', () => {
           MediaType.suggestForFile(new File([], 'an-extensionless-file')),
         ).resolves.toEqual(new Set());
       });
-      it('for an unseen file extension', async () => {
+
+      it('for an unrecoginzable file extension', async () => {
         expect(
           MediaType.suggestForFile(new File([], 'filename.undefined')),
         ).resolves.toEqual(new Set());

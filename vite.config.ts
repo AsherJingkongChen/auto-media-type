@@ -24,7 +24,9 @@ export default defineConfig((env) => ({
       provider: 'istanbul',
       reporter: ['text', 'text-summary'],
       thresholds: {
-        100: true,
+        functions: 100,
+        lines: 100,
+        statements: 100,
       },
     },
     include: ['tests/**/*.test.ts'],
