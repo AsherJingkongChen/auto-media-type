@@ -57,8 +57,8 @@ describe('MediaType', () => {
         expect(stream.locked).toBeTruthy();
         /**
          * ## Explanation
-         * `ReadableStream.prototype.cancel()` will reject
-         * with a TypeError if the stream is currently locked.
+         * `ReadableStream.prototype.cancel()`
+         * will reject with a TypeError if the stream is currently locked.
          *
          * ## Reference
          * - [WHATWG Streams Specification](https://streams.spec.whatwg.org/#rs-cancel)
