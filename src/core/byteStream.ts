@@ -21,6 +21,9 @@
  * - The remaining data will be left unread,
  *   which means the stream will be left
  *   in a readable state after the function call.
+ * - The function uses a loop to continuously read the chunks from stream,
+ *   because `ReadableStreamBYOBReader.prototype.read(view)` does not neccessarily
+ *   fill the view with data of multiple chunks. The function will resolve it.
  */
 export async function readByteStream(
   byteStream: ReadableStream<Uint8Array>,
@@ -46,5 +49,5 @@ export async function readByteStream(
   } finally {
     reader.releaseLock();
   }
-  return new Uint8Array(buffer.slice(byteOffset, offset), 0);
+  return new Uint8Array(buffer.slice(byteOffset, offset));
 }

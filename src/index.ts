@@ -262,11 +262,10 @@ export namespace MediaType {
   export async function suggestForByteStream(
     byteStream: ReadableStream<Uint8Array>,
   ): Promise<Set<string>> {
-    const [byteStreamForMagicalPart, byteStreamForOtherParts] =
-      byteStream.tee();
+    const byteStreams = byteStream.tee();
     try {
       const magicalPart = await readByteStream(
-        byteStreamForMagicalPart,
+        byteStreams[0],
         magicalPartByteLength,
       );
       return new Set(
@@ -278,10 +277,7 @@ export namespace MediaType {
         ],
       );
     } finally {
-      await Promise.all([
-        byteStreamForMagicalPart.cancel(),
-        byteStreamForOtherParts.cancel(),
-      ]);
+      await Promise.all(byteStreams);
     }
   }
 
