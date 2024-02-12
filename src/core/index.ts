@@ -1,2 +1,2 @@
 export * from './byteStream';
-export * from './serial';
+export * from './sequence';
