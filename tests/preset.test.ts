@@ -1,49 +1,57 @@
-import { readKeyedSerial, readSerial } from 'src/core';
+import { readKeyedSequence, readSequence } from 'src/core';
 import {
-  magicMaskBytes,
   magicBytesOffsetEnd,
-  magicMaskBytesOffsetEnd,
+  magicMasks,
+  magicMaskedBytesOffsetEnd,
   mediaTypeAndMagicBytes,
   mediaTypeAndMagicMaskedBytes,
 } from 'src/preset';
 import { describe, expect, it } from 'vitest';
 
-describe('magicMaskBytes', () => {
-  it('The end offset is correct', () => {
-    function* readAllOffsets() {
-      for (const [offset] of readSerial(magicMaskBytes)) {
-        yield offset;
-      }
-    }
-    const receivedOffsetMax = Math.max(...readAllOffsets());
-    expect(receivedOffsetMax + 1).toBe(magicMaskBytesOffsetEnd);
+describe('Magic bits', () => {
+  it('The offsets of mediaTypeAndMagicMaskedBytes and magicMasks are equal', () => {
+    const mediaTypeAndMagicMaskedBytesOffsets = new Array(
+      (function* () {
+        for (const entry of mediaTypeAndMagicMaskedBytes) {
+          for (const [offset] of readKeyedSequence(entry)) {
+            yield offset;
+          }
+        }
+      })(),
+    ).sort();
+    const magicMasksOffsets = new Array(
+      (function* () {
+        for (const [offset] of readSequence(magicMasks)) {
+          yield offset;
+        }
+      })(),
+    ).sort();
+    expect(mediaTypeAndMagicMaskedBytesOffsets).toEqual(magicMasksOffsets);
+  });
+
+  it('The value of magicMaskedBytesOffsetEnd is correct', () => {
+    const magicMasksOffsetMax = Math.max(
+      ...(function* () {
+        for (const [offset] of readSequence(magicMasks)) {
+          yield offset;
+        }
+      })(),
+    );
+    expect(magicMasksOffsetMax + 1).toBe(magicMaskedBytesOffsetEnd);
   });
 });
 
-describe('mediaTypeAndMagicBytes', () => {
-  it('The end offset is correct', () => {
-    function* readAllOffsets() {
-      for (const entry of mediaTypeAndMagicBytes) {
-        for (const [offset] of readKeyedSerial(entry)) {
-          yield offset;
+describe('Magic bytes', () => {
+  it('The value of magicBytesOffsetEnd is correct', () => {
+    const mediaTypeAndMagicBytesOffsetMax = Math.max(
+      ...(function* () {
+        for (const entry of mediaTypeAndMagicBytes) {
+          for (const [offset] of readKeyedSequence(entry)) {
+            yield offset;
+          }
         }
-      }
-    }
-    const receivedOffsetMax = Math.max(...readAllOffsets());
-    expect(receivedOffsetMax + 1).toBe(magicBytesOffsetEnd);
-  });
-});
-
-describe('mediaTypeAndMagicMaskedBytes', () => {
-  it('The end offset is correct', () => {
-    function* readAllOffsets() {
-      for (const entry of mediaTypeAndMagicMaskedBytes) {
-        for (const [offset] of readKeyedSerial(entry)) {
-          yield offset;
-        }
-      }
-    }
-    const receivedOffsetMax = Math.max(...readAllOffsets());
-    expect(receivedOffsetMax + 1).toBe(magicMaskBytesOffsetEnd);
+      })(),
+    );
+    expect(mediaTypeAndMagicBytesOffsetMax + 1).toBe(magicBytesOffsetEnd);
   });
 });

@@ -1,13 +1,26 @@
-import { KeyedSerialCollection } from '../core';
+/**
+ * ## Introduction
+ * The magic numbers can be used to
+ * guess the possible media types for the given data.
+ *
+ * The magic numbers can be represented in different format.
+ * For convenience, we use the term `magic bytes` for
+ * "the magic numbers represented in bytes".
+ *
+ * Magic bits are implemented using magic bytes with masks applied.
+ */
+declare module './magicNumbers.ts';
+
+import { KeyedSequenceCollection, Sequence } from '../core';
 import { SupportedMediaTypes } from './supportedMediaTypes';
 
 /**
  * ## Introduction
- * A keyed serial collection of media type and magic bytes (or magic numbers)
+ * A keyed sequence collection of media type and magic bytes
  *
  * ## Layout
  * - The key is a media type
- * - The serial are magic bytes with offsets
+ * - The sequence are magic bytes with offsets
  *
  * ## Note
  * - The initialization list should be sorted for maintainability
@@ -20,7 +33,7 @@ import { SupportedMediaTypes } from './supportedMediaTypes';
  * - [LOC Digital Formats](https://www.loc.gov/preservation/digital/formats/fdd/browse_list.shtml)
  * - [Wikipedia - List of file signatures](https://en.wikipedia.org/wiki/List_of_file_signatures)
  */
-export const mediaTypeAndMagicBytes: KeyedSerialCollection = [
+export const mediaTypeAndMagicBytes: KeyedSequenceCollection = [
   ['application/gzip', NaN, 0, 0x1f, 0x8b],
   ['application/java-archive', NaN, 0, 0x50, 0x4b, 0x03, 0x04],
   ['application/pdf', NaN, 0, 0x25, 0x50, 0x44, 0x46, 0x2d],
@@ -159,3 +172,60 @@ export const mediaTypeAndMagicBytes: KeyedSerialCollection = [
  * `number`
  */
 export const magicBytesOffsetEnd: number = 23;
+
+/**
+ * ## Introduction
+ * A keyed sequence collection of media type and magic masked bytes
+ *
+ * ## Layout
+ * - The key is a media type
+ * - The sequence are magic masked bytes with offsets
+ *
+ * ## Note
+ * - The initialization list should be sorted for maintainability
+ *   + in descending order
+ *   + by media type and usage
+ *
+ * ## References
+ * - [Gary Kessler's Library](https://www.garykessler.net/library/file_sigs.html)
+ * - [IANA Media types](https://www.iana.org/assignments/media-types/media-types.xhtml)
+ * - [LOC Digital Formats](https://www.loc.gov/preservation/digital/formats/fdd/browse_list.shtml)
+ * - [Wikipedia - List of file signatures](https://en.wikipedia.org/wiki/List_of_file_signatures)
+ */
+export const mediaTypeAndMagicMaskedBytes: KeyedSequenceCollection = [
+  ['audio/mpeg', NaN, 0, 0xff, 0xe0],
+] satisfies [SupportedMediaTypes, ...any[]][];
+
+/**
+ * ## Introduction
+ * The end offset of magic masked bytes
+ *
+ * ## Layout
+ * `number`
+ */
+export const magicMaskedBytesOffsetEnd: number = 2;
+
+/**
+ * ## Introduction
+ * Magic masks as a byte sequence
+ *
+ * ## Layout
+ * `Sequence`
+ */
+export const magicMasks: Sequence = [NaN, 0, 0xff, 0xe0];
+
+/**
+ * ## Introduction
+ * The end offset of magic numbers.
+ *
+ * ## Layout
+ * - `number`
+ *
+ * ## Note
+ * - The magic numbers contain **magic bytes** and **magic bits**.
+ *   Therefore, the end offset is the maximum of both.
+ */
+export const magicNumbersOffsetEnd: number = Math.max(
+  magicBytesOffsetEnd,
+  magicMaskedBytesOffsetEnd,
+);
