@@ -4,7 +4,7 @@ import {
   guessMediaTypesByMagicBytes,
   guessMediaTypesByMagicMaskedBytes,
 } from './guess';
-import { SupportedMediaTypes, magicalPartByteLength } from './preset';
+import { SupportedMediaTypes, magicNumbersOffsetEnd } from './preset';
 
 /**
  * ## Introduction
@@ -184,14 +184,7 @@ export namespace MediaType {
   export async function suggestForArrayBuffer(
     arrayBuffer: ArrayBufferLike,
   ): Promise<Set<string>> {
-    return new Set([
-      ...(await guessMediaTypesByMagicBytes.forUint8Array(
-        new Uint8Array(arrayBuffer),
-      )),
-      ...(await guessMediaTypesByMagicMaskedBytes.forUint8Array(
-        new Uint8Array(arrayBuffer),
-      )),
-    ]);
+    return suggestForUint8Array(new Uint8Array(arrayBuffer));
   }
 
   /**
@@ -209,16 +202,11 @@ export namespace MediaType {
   export async function suggestForArrayBufferView(
     arrayBufferView: ArrayBufferView | DataView | TypedArray,
   ): Promise<Set<string>> {
-    return arrayBufferView instanceof Uint8Array
-      ? suggestForUint8Array(arrayBufferView)
-      : new Set([
-          ...(await guessMediaTypesByMagicBytes.forUint8Array(
-            new Uint8Array(arrayBufferView.buffer),
-          )),
-          ...(await guessMediaTypesByMagicMaskedBytes.forUint8Array(
-            new Uint8Array(arrayBufferView.buffer),
-          )),
-        ]);
+    return suggestForUint8Array(
+      arrayBufferView instanceof Uint8Array
+        ? arrayBufferView
+        : new Uint8Array(arrayBufferView.buffer),
+    );
   }
 
   /**
@@ -236,10 +224,9 @@ export namespace MediaType {
   export async function suggestForBlob(blob: Blob): Promise<Set<string>> {
     // [TODO] Need a working check algorithm
     // return checkMediaTypes(file, await guessMediaTypesByMagicBytes(file));
-    return new Set([
-      ...(await guessMediaTypesByMagicBytes.forBlob(blob)),
-      ...(await guessMediaTypesByMagicMaskedBytes.forBlob(blob)),
-    ]);
+    return suggestForUint8Array(
+      new Uint8Array(await blob.slice(0, magicNumbersOffsetEnd).arrayBuffer()),
+    );
   }
 
   /**
@@ -264,17 +251,8 @@ export namespace MediaType {
   ): Promise<Set<string>> {
     const byteStreams = byteStream.tee();
     try {
-      const magicalPart = await readByteStream(
-        byteStreams[0],
-        magicalPartByteLength,
-      );
-      return new Set(
-        magicalPart && [
-          ...(await guessMediaTypesByMagicBytes.forUint8Array(magicalPart)),
-          ...(await guessMediaTypesByMagicMaskedBytes.forUint8Array(
-            magicalPart,
-          )),
-        ],
+      return suggestForUint8Array(
+        await readByteStream(byteStreams[0], magicNumbersOffsetEnd),
       );
     } finally {
       await Promise.all(byteStreams);
@@ -311,18 +289,17 @@ export namespace MediaType {
     // return checkMediaTypes(file, await guessMediaTypesByMagicBytes(file));
     return new Set([
       ...guessMediaTypesByExtension(file.name),
-      ...(await guessMediaTypesByMagicBytes.forBlob(file)),
-      ...(await guessMediaTypesByMagicMaskedBytes.forBlob(file)),
+      ...(await suggestForBlob(file)),
     ]);
   }
 
   /**
    * ## Introduction
-   * Suggest media types for the given uint8 array
+   * Suggest media types for the given byte array
    *
    * ## Parameters
    * - `uint8Array`: `Uint8Array`
-   *   + The query data as a typed array of 8-bit unsigned integers
+   *   + The query data as an unsigned byte array
    *
    * ## Results
    * - `Promise<Set<string>>`
@@ -332,8 +309,8 @@ export namespace MediaType {
     uint8Array: Uint8Array,
   ): Promise<Set<string>> {
     return new Set([
-      ...(await guessMediaTypesByMagicBytes.forUint8Array(uint8Array)),
-      ...(await guessMediaTypesByMagicMaskedBytes.forUint8Array(uint8Array)),
+      ...(await guessMediaTypesByMagicBytes(uint8Array)),
+      ...(await guessMediaTypesByMagicMaskedBytes(uint8Array)),
     ]);
   }
 
