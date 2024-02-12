@@ -1,9 +1,8 @@
-import { matchKeyedSerials, readSerial } from './core';
+import { matchKeyedSequences, readSequence } from './core';
 import {
   extensionToMediaTypesTable,
-  magicBytesOffsetEnd,
-  magicMaskBytes,
-  magicMaskBytesOffsetEnd,
+  magicMasks,
+  magicMaskedBytesOffsetEnd,
   mediaTypeAndMagicBytes,
   mediaTypeAndMagicMaskedBytes,
 } from './preset';
@@ -30,96 +29,42 @@ export function guessMediaTypesByExtension(pathname: string): Set<string> {
 
 /**
  * ## Introduction
- * Guess media types by the magic bytes for the given data
+ * Guess media types by the magic bytes for the given byte array
+ *
+ * ## Parameters
+ * - `uint8Array`: `Uint8Array`
+ *   + A byte array
+ *
+ * ## Results
+ * - `Promise<Set<string>>`
+ *   + A set of possible media types
  */
-export namespace guessMediaTypesByMagicBytes {
-  /**
-   * ## Introduction
-   * Guess media types by the magic bytes for the given blob
-   *
-   * ## Parameters
-   * - `blob`: `Blob`
-   *   + The query data as a binary large object
-   *
-   * ## Results
-   * - `Promise<Set<string>>`
-   *   + A set of possible media types
-   */
-  export async function forBlob(blob: Blob): Promise<Set<string>> {
-    return matchKeyedSerials(
-      new Uint8Array(await blob.slice(0, magicBytesOffsetEnd).arrayBuffer()),
-      mediaTypeAndMagicBytes,
-    );
-  }
-
-  /**
-   * ## Introduction
-   * Guess media types by the magic bytes for the given uint8 array
-   *
-   * ## Parameters
-   * - `uint8Array`: `Uint8Array`
-   *   + The query data as a typed array of 8-bit unsigned integers
-   *
-   * ## Results
-   * - `Promise<Set<string>>`
-   *   + A set of possible media types
-   */
-  export async function forUint8Array(
-    uint8Array: Uint8Array,
-  ): Promise<Set<string>> {
-    return matchKeyedSerials(
-      uint8Array.slice(0, magicBytesOffsetEnd),
-      mediaTypeAndMagicBytes,
-    );
-  }
+export async function guessMediaTypesByMagicBytes(
+  uint8Array: Uint8Array,
+): Promise<Set<string>> {
+  return matchKeyedSequences(uint8Array, mediaTypeAndMagicBytes);
 }
 
 /**
  * ## Introduction
- * Guess media types by the magic masked bytes for the given data
+ * Guess media types by the magic masked bytes for the given byte array
+ *
+ * ## Parameters
+ * - `uint8Array`: `Uint8Array`
+ *   + A byte array
+ *
+ * ## Results
+ * - `Promise<Set<string>>`
+ *   + A set of possible media types
  */
-export namespace guessMediaTypesByMagicMaskedBytes {
-  /**
-   * ## Introduction
-   * Guess media types by the magic masked bytes for the given blob
-   *
-   * ## Parameters
-   * - `blob`: `Blob`
-   *   + The query data as a binary large object
-   *
-   * ## Results
-   * - `Promise<Set<string>>`
-   *   + A set of possible media types
-   */
-  export async function forBlob(blob: Blob): Promise<Set<string>> {
-    const maskedBytes = new Uint8Array(
-      await blob.slice(0, magicMaskBytesOffsetEnd).arrayBuffer(),
-    );
-    for (const [offset, mask] of readSerial(magicMaskBytes)) {
-      maskedBytes[offset] &= mask;
-    }
-    return matchKeyedSerials(maskedBytes, mediaTypeAndMagicMaskedBytes);
-  }
+export async function guessMediaTypesByMagicMaskedBytes(
+  uint8Array: Uint8Array,
+): Promise<Set<string>> {
+  // It should clone the given byte array
+  const maskedBytes = uint8Array.slice(0, magicMaskedBytesOffsetEnd);
 
-  /**
-   * ## Introduction
-   * Guess media types by the magic masked bytes for the given uint8 array
-   *
-   * ## Parameters
-   * - `uint8Array`: `Uint8Array`
-   *   + The query data as a typed array of 8-bit unsigned integers
-   *
-   * ## Results
-   * - `Promise<Set<string>>`
-   *   + A set of possible media types
-   */
-  export async function forUint8Array(
-    uint8Array: Uint8Array,
-  ): Promise<Set<string>> {
-    const maskedBytes = uint8Array.slice(0, magicMaskBytesOffsetEnd);
-    for (const [offset, mask] of readSerial(magicMaskBytes)) {
-      maskedBytes[offset] &= mask;
-    }
-    return matchKeyedSerials(maskedBytes, mediaTypeAndMagicMaskedBytes);
+  for (const [offset, mask] of readSequence(magicMasks)) {
+    maskedBytes[offset] &= mask;
   }
+  return matchKeyedSequences(maskedBytes, mediaTypeAndMagicMaskedBytes);
 }
