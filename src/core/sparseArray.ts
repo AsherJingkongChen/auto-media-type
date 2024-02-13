@@ -120,9 +120,9 @@ export function* readKeyedSparseArray(
  *   + The second number is an element
  */
 export function* readSparseArray(
-  sequence: SparseArray,
+  sparseArray: SparseArray,
 ): Generator<[number, number]> {
-  yield* _readSparseArray(sequence, 0);
+  yield* _readSparseArray(sparseArray, 0);
 }
 
 /**
@@ -147,13 +147,11 @@ function* _readSparseArray(
   offset: number,
 ): Generator<[number, number]> {
   for (const end = target.length; offset < end; ) {
-    let index = target[offset]! as number;
-    let length = target[++offset]! as number;
+    let index = target[offset] as number;
+    let length = target[++offset] as number;
     for (const end = offset + ++length; ++offset < end; ) {
-      const element = target[offset]! as number;
+      const element = target[offset] as number;
       yield [index++, element];
     }
   }
-  // [index, length, elem_1, elem_2, elem_3, index, length]
-  // [     ,       , offset,      o,      o,   end,       ]
 }
