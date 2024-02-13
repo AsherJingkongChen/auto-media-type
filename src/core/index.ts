@@ -1,2 +1,2 @@
 export * from './byteStream';
-export * from './sequence';
+export * from './sparseArray';
