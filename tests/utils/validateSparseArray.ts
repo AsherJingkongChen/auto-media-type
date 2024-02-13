@@ -1,16 +1,13 @@
-import {
-  KeyedSparseArray,
-  SparseArray,
-} from 'src/core';
+import { KeyedSparseArray, SparseArray } from 'src/core';
 
 /**
  * ## Introduction
  * Validate a sparse array
- * 
+ *
  * ## Parameters
  * - `target`: `KeyedSparseArray | SparseArray`
  *   + A keyed sparse array or a sparse array
- * 
+ *
  * ## Returns
  * - `number`
  *   + `0` if the sparse array is valid;
