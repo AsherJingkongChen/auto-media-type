@@ -7,6 +7,25 @@ import {
   mediaTypeAndMagicMaskedBytes,
 } from 'src/preset';
 import { describe, expect, it } from 'vitest';
+import { validateSparseArray } from './utils';
+
+describe('validateSparseArray', () => {
+  it('mediaTypeAndMagicBytes is valid', () => {
+    for (const entry of mediaTypeAndMagicBytes) {
+      expect(validateSparseArray(entry)).toBe(0);
+    }
+  });
+
+  it('mediaTypeAndMagicMaskedBytes is valid', () => {
+    for (const entry of mediaTypeAndMagicMaskedBytes) {
+      expect(validateSparseArray(entry)).toBe(0);
+    }
+  });
+
+  it('magicMasks is valid', () => {
+    expect(validateSparseArray(magicMasks)).toBe(0);
+  });
+});
 
 describe('Magic bits', () => {
   it('The offsets of mediaTypeAndMagicMaskedBytes and magicMasks are equal', () => {
