@@ -178,3 +178,6 @@ pnpm-lock.yaml
 
 # Npm lockfile
 package-lock.json
+
+# Vite temporary config files
+vite.config.ts.timestamp-*.mjs

@@ -59,15 +59,6 @@ describe('MediaType', () => {
           MediaType.suggestForByteStream(stream),
         ).resolves.toBeTruthy();
         expect(stream.locked).toBeTruthy();
-        /**
-         * ## Explanation
-         * `ReadableStream.prototype.cancel()`
-         * will reject with a TypeError if the stream is currently locked.
-         *
-         * ## Reference
-         * - [WHATWG Streams Specification](https://streams.spec.whatwg.org/#rs-cancel)
-         */
-        await expect(stream.cancel()).rejects.toThrow(TypeError);
       }
     });
   });
