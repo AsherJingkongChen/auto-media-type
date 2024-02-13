@@ -1,4 +1,4 @@
-import { matchKeyedSequences, readSequence } from './core';
+import { matchKeyedSparseArrayCollection, readSparseArray } from './core';
 import {
   extensionToMediaTypesTable,
   magicMasks,
@@ -15,7 +15,7 @@ import {
  * - `pathname`: `string`
  *   + A file path or name
  *
- * ## Results
+ * ## Returns
  * - `Set<string>`
  *   + A set of possible media types
  */
@@ -35,14 +35,14 @@ export function guessMediaTypesByExtension(pathname: string): Set<string> {
  * - `uint8Array`: `Uint8Array`
  *   + A byte array
  *
- * ## Results
+ * ## Returns
  * - `Promise<Set<string>>`
  *   + A set of possible media types
  */
 export async function guessMediaTypesByMagicBytes(
   uint8Array: Uint8Array,
 ): Promise<Set<string>> {
-  return matchKeyedSequences(uint8Array, mediaTypeAndMagicBytes);
+  return matchKeyedSparseArrayCollection(mediaTypeAndMagicBytes, uint8Array);
 }
 
 /**
@@ -53,7 +53,7 @@ export async function guessMediaTypesByMagicBytes(
  * - `uint8Array`: `Uint8Array`
  *   + A byte array
  *
- * ## Results
+ * ## Returns
  * - `Promise<Set<string>>`
  *   + A set of possible media types
  */
@@ -63,8 +63,11 @@ export async function guessMediaTypesByMagicMaskedBytes(
   // It should clone the given byte array
   const maskedBytes = uint8Array.slice(0, magicMaskedBytesOffsetEnd);
 
-  for (const [offset, mask] of readSequence(magicMasks)) {
+  for (const [offset, mask] of readSparseArray(magicMasks)) {
     maskedBytes[offset] &= mask;
   }
-  return matchKeyedSequences(maskedBytes, mediaTypeAndMagicMaskedBytes);
+  return matchKeyedSparseArrayCollection(
+    mediaTypeAndMagicMaskedBytes,
+    maskedBytes,
+  );
 }

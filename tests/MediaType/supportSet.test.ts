@@ -2,7 +2,7 @@ import { MediaType } from 'src';
 import { describe, expect, it } from 'vitest';
 import mediaTypes from 'iana-media-type';
 import { Sample } from 'lots-of-sample-files';
-import { MediaTypeDoc } from '../utils/MediaTypeDoc';
+import { MediaTypeDoc } from '../utils';
 
 describe('MediaType.supportSet', () => {
   it('They are all contained in IANA media types', () => {

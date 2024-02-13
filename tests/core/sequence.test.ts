@@ -1,67 +1,81 @@
 import {
-  KeyedSequenceCollection,
-  matchKeyedSequences,
-  readKeyedSequence,
-  readSequence,
+  KeyedSparseArrayCollection,
+  matchKeyedSparseArrayCollection,
+  readKeyedSparseArray,
+  readSparseArray,
 } from 'src/core';
 import { describe, expect, it } from 'vitest';
 
-describe('matchKeyedSequences', () => {
-  it('It compares target with all parts of sequences', () => {
-    const collection: KeyedSequenceCollection = [
-      ['a', NaN, 0, 0x1, 0x1, 0x2],
-      ['b', NaN, 0, 0x1, 0x1, 0x2, NaN, 3, 0xa, 0xb],
+describe('matchKeyedSparseArrayCollection', () => {
+  it('It searches the entire collection', () => {
+    const collection: KeyedSparseArrayCollection = [
+      ['a', 0, 3, 0x1, 0x1, 0x2],
+      ['b', 0, 3, 0x1, 0x1, 0x2, 4, 2, 0xa, 0xb],
     ];
-    const target = [];
+    const pattern = [];
 
-    target.push(0x1);
-    expect(matchKeyedSequences(target, collection)).toEqual(new Set());
-    target.push(0x1);
-    expect(matchKeyedSequences(target, collection)).toEqual(new Set());
-    target.push(0x2);
-    expect(matchKeyedSequences(target, collection)).toEqual(new Set(['a']));
-    target.push(0xa);
-    expect(matchKeyedSequences(target, collection)).toEqual(new Set(['a']));
-    target.push(0xb);
-    expect(matchKeyedSequences(target, collection)).toEqual(
+    pattern.push(0x1);
+    expect(matchKeyedSparseArrayCollection(collection, pattern)).toEqual(
+      new Set(),
+    );
+    pattern.push(0x1);
+    expect(matchKeyedSparseArrayCollection(collection, pattern)).toEqual(
+      new Set(),
+    );
+    pattern.push(0x2);
+    expect(matchKeyedSparseArrayCollection(collection, pattern)).toEqual(
+      new Set(['a']),
+    );
+    pattern.push(0xf);
+    expect(matchKeyedSparseArrayCollection(collection, pattern)).toEqual(
+      new Set(['a']),
+    );
+    pattern.push(0xa);
+    expect(matchKeyedSparseArrayCollection(collection, pattern)).toEqual(
+      new Set(['a']),
+    );
+    pattern.push(0xb);
+    expect(matchKeyedSparseArrayCollection(collection, pattern)).toEqual(
       new Set(['a', 'b']),
     );
-    target.push(0x0);
-    expect(matchKeyedSequences(target, collection)).toEqual(
+    pattern.push(0x0);
+    expect(matchKeyedSparseArrayCollection(collection, pattern)).toEqual(
       new Set(['a', 'b']),
     );
   });
 
-  it('It compares target with all sequences', () => {
-    const collection: KeyedSequenceCollection = [
-      ['Sam', NaN, 0, 0x1],
-      ['Sam', NaN, 0, 0x3],
+  it('It accepts the collection with a same key appeared multiple times', () => {
+    const collection: KeyedSparseArrayCollection = [
+      ['Sam', 0, 1, 0x1],
+      ['Sam', 0, 1, 0x3],
     ];
-    expect(matchKeyedSequences([], collection)).toEqual(new Set());
-    expect(matchKeyedSequences([0x1], collection)).toEqual(new Set(['Sam']));
-    expect(matchKeyedSequences([0x3], collection)).toEqual(new Set(['Sam']));
+    expect(matchKeyedSparseArrayCollection(collection, [])).toEqual(new Set());
+    expect(matchKeyedSparseArrayCollection(collection, [0x1])).toEqual(
+      new Set(['Sam']),
+    );
+    expect(matchKeyedSparseArrayCollection(collection, [0x2])).toEqual(
+      new Set([]),
+    );
+    expect(matchKeyedSparseArrayCollection(collection, [0x3])).toEqual(
+      new Set(['Sam']),
+    );
   });
 });
 
-describe('readKeyedSequence', () => {
+describe('readKeyedSparseArray', () => {
   it('It yields the index and element correctly', () => {
     expect([
-      ...readKeyedSequence([
-        'Roll',
-        NaN,
+      ...readKeyedSparseArray([
+        'Rolling',
         0,
-        0x1,
-        0x1,
-        0x2,
-        NaN,
         3,
-        0xa,
-        0xb,
-        NaN,
+        ...[0x1, 0x1, 0x2],
+        3,
+        2,
+        ...[0xa, 0xb],
         6,
-        -0x1,
-        -0x2,
-        -0x3,
+        4,
+        ...[-0x1, -0x2, -0x3, -0x4],
       ]),
     ]).toEqual([
       [0, 0x1],
@@ -72,28 +86,24 @@ describe('readKeyedSequence', () => {
       [6, -0x1],
       [7, -0x2],
       [8, -0x3],
+      [9, -0x4],
     ]);
   });
 });
 
-describe('readSequence', () => {
+describe('readSparseArray', () => {
   it('It yields the index and element correctly', () => {
     expect([
-      ...readSequence([
-        NaN,
+      ...readSparseArray([
         0,
-        0x1,
-        0x1,
-        0x2,
-        NaN,
         3,
-        0xa,
-        0xb,
-        NaN,
+        ...[0x1, 0x1, 0x2],
+        3,
+        2,
+        ...[0xa, 0xb],
         -6,
-        -0x1,
-        -0x2,
-        -0x3,
+        3,
+        ...[-0x1, -0x2, -0x3],
       ]),
     ]).toEqual([
       [0, 0x1],

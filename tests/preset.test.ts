@@ -1,4 +1,4 @@
-import { readKeyedSequence, readSequence } from 'src/core';
+import { readKeyedSparseArray, readSparseArray } from 'src/core';
 import {
   magicBytesOffsetEnd,
   magicMasks,
@@ -13,7 +13,7 @@ describe('Magic bits', () => {
     const mediaTypeAndMagicMaskedBytesOffsets = new Array(
       (function* () {
         for (const entry of mediaTypeAndMagicMaskedBytes) {
-          for (const [offset] of readKeyedSequence(entry)) {
+          for (const [offset] of readKeyedSparseArray(entry)) {
             yield offset;
           }
         }
@@ -21,7 +21,7 @@ describe('Magic bits', () => {
     ).sort();
     const magicMasksOffsets = new Array(
       (function* () {
-        for (const [offset] of readSequence(magicMasks)) {
+        for (const [offset] of readSparseArray(magicMasks)) {
           yield offset;
         }
       })(),
@@ -32,7 +32,7 @@ describe('Magic bits', () => {
   it('The value of magicMaskedBytesOffsetEnd is correct', () => {
     const magicMasksOffsetMax = Math.max(
       ...(function* () {
-        for (const [offset] of readSequence(magicMasks)) {
+        for (const [offset] of readSparseArray(magicMasks)) {
           yield offset;
         }
       })(),
@@ -46,7 +46,7 @@ describe('Magic bytes', () => {
     const mediaTypeAndMagicBytesOffsetMax = Math.max(
       ...(function* () {
         for (const entry of mediaTypeAndMagicBytes) {
-          for (const [offset] of readKeyedSequence(entry)) {
+          for (const [offset] of readKeyedSparseArray(entry)) {
             yield offset;
           }
         }

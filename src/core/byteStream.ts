@@ -12,7 +12,7 @@
  *   + The chunk offset in byte
  *   + The default value is `0`
  *
- * ## Results
+ * ## Returns
  * - `Promise<Uint8Array>`
  *   + The chunk read from the stream
  *

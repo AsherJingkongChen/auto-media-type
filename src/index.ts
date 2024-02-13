@@ -24,9 +24,9 @@ export namespace MediaType {
    * - `file`: `File`
    *   + The query data as a file reference
    *
-   * ## Results
+   * ## Returns
    * - `Promise<Set<string>>`
-   *   + A set of possible media types
+   *   + Possible media types
    */
   export async function suggest(file: File): Promise<Set<string>>;
 
@@ -38,9 +38,9 @@ export namespace MediaType {
    * - `blob`: `Blob`
    *   + The query data as a binary large object
    *
-   * ## Results
+   * ## Returns
    * - `Promise<Set<string>>`
-   *   + A set of possible media types
+   *   + Possible media types
    */
   export async function suggest(blob: Blob): Promise<Set<string>>;
 
@@ -52,9 +52,9 @@ export namespace MediaType {
    * - `typedArray`: `TypedArray`
    *   + The query data as a typed array
    *
-   * ## Results
+   * ## Returns
    * - `Promise<Set<string>>`
-   *   + A set of possible media types
+   *   + Possible media types
    */
   export async function suggest(typedArray: TypedArray): Promise<Set<string>>;
 
@@ -66,9 +66,9 @@ export namespace MediaType {
    * - `dataView`: `DataView`
    *   + The query data as a data view
    *
-   * ## Results
+   * ## Returns
    * - `Promise<Set<string>>`
-   *   + A set of possible media types
+   *   + Possible media types
    */
   export async function suggest(dataView: DataView): Promise<Set<string>>;
 
@@ -80,9 +80,9 @@ export namespace MediaType {
    * - `arrayBufferView`: `ArrayBufferView`
    *   + The query data as an array buffer view
    *
-   * ## Results
+   * ## Returns
    * - `Promise<Set<string>>`
-   *   + A set of possible media types
+   *   + Possible media types
    */
   export async function suggest(
     arrayBufferView: ArrayBufferView,
@@ -96,9 +96,9 @@ export namespace MediaType {
    * - `arrayBuffer`: `ArrayBufferLike`
    *   + The query data as an array buffer like object
    *
-   * ## Results
+   * ## Returns
    * - `Promise<Set<string>>`
-   *   + A set of possible media types
+   *   + Possible media types
    */
   export async function suggest(
     arrayBuffer: ArrayBufferLike,
@@ -113,9 +113,9 @@ export namespace MediaType {
    *   + The query data as a byte stream
    *   + The stream will be cancelled after the function call
    *
-   * ## Results
+   * ## Returns
    * - `Promise<Set<string>>`
-   *   + A set of possible media types
+   *   + Possible media types
    *
    * ## Note
    * - The given stream is taken as a disposable resource,
@@ -136,9 +136,9 @@ export namespace MediaType {
    *     ReadableStream<Uint8Array> | TypedArray`
    *   + The query data
    *
-   * ## Results
+   * ## Returns
    * - `Promise<Set<string>>`
-   *   + A set of possible media types
+   *   + Possible media types
    */
   export async function suggest(
     data:
@@ -177,9 +177,9 @@ export namespace MediaType {
    * - `arrayBuffer`: `ArrayBufferLike`
    *   + The query data as an array buffer like object
    *
-   * ## Results
+   * ## Returns
    * - `Promise<Set<string>>`
-   *   + A set of possible media types
+   *   + Possible media types
    */
   export async function suggestForArrayBuffer(
     arrayBuffer: ArrayBufferLike,
@@ -195,9 +195,9 @@ export namespace MediaType {
    * - `arrayBufferView`: `ArrayBufferView | DataView | TypedArray`
    *   + The query data as an array buffer view
    *
-   * ## Results
+   * ## Returns
    * - `Promise<Set<string>>`
-   *   + A set of possible media types
+   *   + Possible media types
    */
   export async function suggestForArrayBufferView(
     arrayBufferView: ArrayBufferView | DataView | TypedArray,
@@ -217,9 +217,9 @@ export namespace MediaType {
    * - `blob`: `Blob`
    *   + The query data as a binary large object
    *
-   * ## Results
+   * ## Returns
    * - `Promise<Set<string>>`
-   *   + A set of possible media types
+   *   + Possible media types
    */
   export async function suggestForBlob(blob: Blob): Promise<Set<string>> {
     // [TODO] Need a working check algorithm
@@ -238,9 +238,9 @@ export namespace MediaType {
    *   + The query data as a byte stream
    *   + The stream will be locked after the function call
    *
-   * ## Results
+   * ## Returns
    * - `Promise<Set<string>>`
-   *   + A set of possible media types
+   *   + Possible media types
    *
    * ## Note
    * - The given stream is seen as a disposable resource,
@@ -267,9 +267,9 @@ export namespace MediaType {
    * - `file`: `File`
    *   + The query data as a file reference
    *
-   * ## Results
+   * ## Returns
    * - `Promise<Set<string>>`
-   *   + A set of possible media types
+   *   + Possible media types
    *
    * ## Note
    * This function has 3 stages:
@@ -301,9 +301,9 @@ export namespace MediaType {
    * - `uint8Array`: `Uint8Array`
    *   + The query data as an unsigned byte array
    *
-   * ## Results
+   * ## Returns
    * - `Promise<Set<string>>`
-   *   + A set of possible media types
+   *   + Possible media types
    */
   export async function suggestForUint8Array(
     uint8Array: Uint8Array,

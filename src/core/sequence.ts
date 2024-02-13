@@ -1,63 +1,65 @@
 /**
  * ## Introduction
- * A collection of keyed sequences
+ * A collection of keyed sparse arrays
  *
  * ## Layout
- * `KeyedSequence[]`
- * - An array of keyed sequences
+ * `KeyedSparseArray[]`
+ * - An array of keyed sparse arrays
  *
  * ## Note
  * - A key can appear multiple times
  */
-export type KeyedSequenceCollection = KeyedSequence[];
+export type KeyedSparseArrayCollection = KeyedSparseArray[];
 
 /**
  * ## Introduction
- * A sequence with a key
+ * A sparse array with a key
  *
  * ## Layout
- * `[string, ...Sequence]`
+ * `[string, ...SparseArray]`
  * - `string`
  *   + A key
- * - `...Sequence`
- *   + A sequence
+ * - `...SparseArray`
+ *   + A sparse array
  */
-export type KeyedSequence = [string, ...Sequence];
+export type KeyedSparseArray = [string, ...SparseArray];
 
 /**
  * ## Introduction
- * A series of numbers
+ * An array with potentially many missing elements
+ * represented in a compressed format.
  *
  * ## Layout
  * `[number, number, ...number[]]`
- * - The first number is the marker with value `NaN`
- * - The second number is the offset
- * - The rest numbers are the sequence
- *   - The number with value `NaN` is the marker of the next part
+ * - An array splitted into one or more sections
+ * - For each section:
+ *   + The first number is the start index
+ *   + The second number is the length
+ *   + The rest numbers are the elements
  */
-export type Sequence = [number, number, ...number[]];
+export type SparseArray = [number, number, ...number[]];
 
 /**
  * ## Introduction
- * Compare the target with the sequences and collect matched keys
+ * Match the keyed sparse array collection with an array pattern,
+ * and collect the matched keys.
  *
  * ## Parameters
- * - `target`: `Record<number, number>`
- *   + A sequence mapping
+ * - `collection`: `KeyedSparseArrayCollection`
+ *   + A collection of keyed sparse arrays
+ * - `pattern`: `Record<number, number>`
+ *   + An array pattern
  *     + The key is an index
- *     + The value is a sequence element
- * - `collection`: `KeyedSequenceCollection`
- *   + A collection of keyed sequences
+ *     + The value is an element
  *
- * ## Results
+ * ## Returns
  * - `Set<string>`
- *   + Matched sequence keys
+ *   + Keys of the matches
  */
-export function matchKeyedSequences(
-  target: Record<number, number>,
-  collection: KeyedSequenceCollection,
+export function matchKeyedSparseArrayCollection(
+  collection: KeyedSparseArrayCollection,
+  pattern: Record<number, number>,
 ): Set<string> {
-  // Collect the matched sequence keys
   const matches = new Set<string>();
   for (let i = 0; i < collection.length; i++) {
     const entry = collection[i]!;
@@ -68,16 +70,16 @@ export function matchKeyedSequences(
       continue;
     }
 
-    // Compare target with all sequences
+    // Search for the pattern
     let matched = true;
-    for (const [index, element] of readKeyedSequence(entry)) {
-      if (target[index] !== element) {
+    for (const [index, element] of readKeyedSparseArray(entry)) {
+      if (pattern[index] !== element) {
         matched = false;
         break;
       }
     }
 
-    // Record the matched key
+    // Record the key if matched
     if (matched) {
       matches.add(key);
     }
@@ -87,66 +89,71 @@ export function matchKeyedSequences(
 
 /**
  * ## Introduction
- * Read a keyed sequence and yield its index and element
+ * Read a keyed sparse array and yield its index and element
  *
  * ## Parameters
- * - `keyedSequence`: `KeyedSequence`
- *   + A keyed sequence
+ * - `keyedSparseArray`: `KeyedSparseArray`
+ *   + A keyed sparse array
  *
  * ## Yields
  * - `[number, number]`
  *   + The first number is an index
  *   + The second number is an element
  */
-export function* readKeyedSequence(
-  keyedSequence: KeyedSequence,
+export function* readKeyedSparseArray(
+  keyedSparseArray: KeyedSparseArray,
 ): Generator<[number, number]> {
-  yield* _readSequence(keyedSequence, 1);
+  yield* _readSparseArray(keyedSparseArray, 1);
 }
 
 /**
  * ## Introduction
- * Read a sequence and yield its index and element
+ * Read a sparse array and yield its index and element
  *
  * ## Parameters
- * - `sequence`: `Sequence`
- *   + A sequence
+ * - `sparseArray`: `SparseArray`
+ *   + A sparse array
  *
  * ## Yields
  * - `[number, number]`
- *   + A tuple of index and element
+ *   + The first number is an index
+ *   + The second number is an element
  */
-export function* readSequence(sequence: Sequence): Generator<[number, number]> {
-  yield* _readSequence(sequence, 0);
+export function* readSparseArray(
+  sequence: SparseArray,
+): Generator<[number, number]> {
+  yield* _readSparseArray(sequence, 0);
 }
 
 /**
  * ## Introduction
- * The implementation of these functions
- * - `readKeyedSequence`
- * - `readSequence`
+ * The implementation of these functions:
+ * - `readKeyedSparseArray`
+ * - `readSparseArray`
  *
  * ## Parameters
- * - `s`: `(string | number)[]`
- *   + A sequence or keyed sequence
- * - `i`: `number`
- *   + The index of the initial sequence
+ * - `target`: `KeyedSparseArray | SparseArray`
+ *   + A keyed sparse array or a sparse array
+ * - `offset`: `number`
+ *   + The offset of the sparse array
  *
  * ## Yields
  * - `[number, number]`
- *   + A tuple of index and element
+ *   + The first number is an index
+ *   + The second number is an element
  */
-function* _readSequence(
-  s: KeyedSequence | Sequence,
-  i: number,
+function* _readSparseArray(
+  target: KeyedSparseArray | SparseArray,
+  offset: number,
 ): Generator<[number, number]> {
-  for (let index = 0; i < s.length; i++) {
-    let element = s[i]!;
-    // Move to the next part if NaN
-    if (Number.isNaN(element)) {
-      index = s[++i]! as number;
-      element = s[++i]!;
+  for (const end = target.length; offset < end; ) {
+    let index = target[offset]! as number;
+    let length = target[++offset]! as number;
+    for (const end = offset + ++length; ++offset < end; ) {
+      const element = target[offset]! as number;
+      yield [index++, element];
     }
-    yield [index++, element] as [number, number];
   }
+  // [index, length, elem_1, elem_2, elem_3, index, length]
+  // [     ,       , offset,      o,      o,   end,       ]
 }
