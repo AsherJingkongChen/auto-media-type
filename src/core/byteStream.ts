@@ -13,7 +13,7 @@
  *   + The default value is `0`
  *
  * ## Results
- * - `Promise<Uint8Array | undefined>`
+ * - `Promise<Uint8Array>`
  *   + The chunk read from the stream
  *
  * ## Note
@@ -30,13 +30,14 @@ export async function readByteStream(
   byteLength: number,
   byteOffset: number = 0,
 ): Promise<Uint8Array> {
-  let buffer = new ArrayBuffer(byteOffset + byteLength);
+  const bufferByteLength = byteOffset + byteLength;
+  let buffer = new ArrayBuffer(bufferByteLength);
   let offset = 0;
   let reader = byteStream.getReader({ mode: 'byob' });
   try {
-    while (offset < buffer.byteLength) {
+    while (offset < bufferByteLength) {
       const { done, value } = await reader.read(
-        new Uint8Array(buffer, offset, buffer.byteLength - offset),
+        new Uint8Array(buffer, offset, bufferByteLength - offset),
       );
       if (value) {
         buffer = value.buffer;

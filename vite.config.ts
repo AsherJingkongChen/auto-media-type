@@ -1,7 +1,7 @@
 /// <reference types="vitest" />
 
 import { PluginOption, defineConfig } from 'vite';
-import { default as ViteDtsPlugin } from 'vite-plugin-dts';
+import ViteDtsPlugin from 'vite-plugin-dts';
 
 export default defineConfig((env) => ({
   build: {

@@ -13,6 +13,7 @@ describe('readByteStream', () => {
 
   it('It returns the correct chunk', async () => {
     const stream = blob.stream();
+
     await expect(readByteStream(stream, 12)).resolves.toEqual(
       new Uint8Array([
         0x00, 0x00, 0x02, 0x0a, 0x08, 0x32, 0x00, 0x0d, 0x09, 0x56, 0x0a, 0x20,
