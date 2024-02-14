@@ -4,43 +4,45 @@ import { describe, expect, it } from 'vitest';
 
 describe('MediaType', () => {
   describe('.suggest()', () => {
-    it('It always contains the closest media type for array buffers and views', async () => {
-      for (const file of Sample.files()) {
-        const bufferPromise = file.arrayBuffer();
-        await expect(bufferPromise).resolves.toBeTruthy();
+    describe('It contains the closest media type for all sample files', () => {
+      it('It accepts array buffers and views', async () => {
+        for (const file of Sample.files()) {
+          const bufferPromise = file.arrayBuffer();
+          await expect(bufferPromise).resolves.toBeTruthy();
 
-        await expect(MediaType.suggest(await bufferPromise)).resolves.toContain(
-          file.type,
-        );
-        await expect(
-          MediaType.suggest(new Uint8Array(await bufferPromise)),
-        ).resolves.toContain(file.type);
-        await expect(
-          MediaType.suggest(new DataView(await bufferPromise)),
-        ).resolves.toContain(file.type);
-      }
-    });
+          await expect(
+            MediaType.suggest(await bufferPromise),
+          ).resolves.toContain(file.type);
+          await expect(
+            MediaType.suggest(new Uint8Array(await bufferPromise)),
+          ).resolves.toContain(file.type);
+          await expect(
+            MediaType.suggest(new DataView(await bufferPromise)),
+          ).resolves.toContain(file.type);
+        }
+      });
 
-    it('It always contains the closest media type for blobs', async () => {
-      for (const file of Sample.files()) {
-        await expect(MediaType.suggest(file.slice())).resolves.toContain(
-          file.type,
-        );
-      }
-    });
+      it('It accepts blobs', async () => {
+        for (const file of Sample.files()) {
+          await expect(MediaType.suggest(file.slice())).resolves.toContain(
+            file.type,
+          );
+        }
+      });
 
-    it('It always contains the closest media type for byte streams', async () => {
-      for (const file of Sample.files()) {
-        await expect(MediaType.suggest(file.stream())).resolves.toContain(
-          file.type,
-        );
-      }
-    });
+      it('It accepts byte streams', async () => {
+        for (const file of Sample.files()) {
+          await expect(MediaType.suggest(file.stream())).resolves.toContain(
+            file.type,
+          );
+        }
+      });
 
-    it('It always contains the closest media type for files', async () => {
-      for (const file of Sample.files()) {
-        await expect(MediaType.suggest(file)).resolves.toContain(file.type);
-      }
+      it('It accepts files', async () => {
+        for (const file of Sample.files()) {
+          await expect(MediaType.suggest(file)).resolves.toContain(file.type);
+        }
+      });
     });
 
     it('It throws if the data type is not valid', async () => {
