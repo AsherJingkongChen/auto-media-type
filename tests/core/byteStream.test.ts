@@ -58,11 +58,18 @@ describe('readByteStream', () => {
       );
     });
 
-    it('for an overflow range', async () => {
+    it('when out of range', async () => {
       const stream = blob.stream();
       await expect(
         readByteStream(stream, blob.size, blob.size),
       ).resolves.toEqual(new Uint8Array());
+    });
+
+    it('for an empty stream', async () => {
+      const stream = new Blob([]).stream();
+      await expect(readByteStream(stream, 1)).resolves.toEqual(
+        new Uint8Array(),
+      );
     });
   });
 
