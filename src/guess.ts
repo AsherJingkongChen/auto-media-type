@@ -12,19 +12,18 @@ import {
  * Guess media types by the file extension (case-insensitive)
  *
  * ## Parameters
- * - `pathname`: `string`
- *   + A file path or name
+ * - `name`: `string`
+ *   + A file name
  *
  * ## Returns
  * - `Set<string>`
- *   + A set of possible media types
+ *   + Possible media types
  */
-export function guessMediaTypesByExtension(pathname: string): Set<string> {
-  const extension = /\.([^\.]+)$/.exec(pathname)?.[1]?.toLowerCase();
-  if (extension) {
-    return new Set(extensionToMediaTypesTable[extension] ?? []);
-  }
-  return new Set();
+export function guessMediaTypesByExtension(name: string): Set<string> {
+  const extension = /\.([^\.]+)$/.exec(name)?.[1]?.toLowerCase();
+  return new Set(
+    extension ? extensionToMediaTypesTable[extension] ?? [] : undefined,
+  );
 }
 
 /**
@@ -37,7 +36,7 @@ export function guessMediaTypesByExtension(pathname: string): Set<string> {
  *
  * ## Returns
  * - `Promise<Set<string>>`
- *   + A set of possible media types
+ *   + Possible media types
  */
 export async function guessMediaTypesByMagicBytes(
   uint8Array: Uint8Array,
@@ -55,7 +54,7 @@ export async function guessMediaTypesByMagicBytes(
  *
  * ## Returns
  * - `Promise<Set<string>>`
- *   + A set of possible media types
+ *   + Possible media types
  */
 export async function guessMediaTypesByMagicMaskedBytes(
   uint8Array: Uint8Array,

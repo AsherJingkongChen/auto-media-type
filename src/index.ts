@@ -27,6 +27,9 @@ export namespace MediaType {
    * ## Returns
    * - `Promise<Set<string>>`
    *   + Possible media types
+   *
+   * ## Note
+   * - This function will suggest media types by the file name and content.
    */
   export async function suggest(file: File): Promise<Set<string>>;
 
@@ -43,34 +46,6 @@ export namespace MediaType {
    *   + Possible media types
    */
   export async function suggest(blob: Blob): Promise<Set<string>>;
-
-  /**
-   * ## Introduction
-   * Suggest media types for the given typed array
-   *
-   * ## Parameters
-   * - `typedArray`: `TypedArray`
-   *   + The query data as a typed array
-   *
-   * ## Returns
-   * - `Promise<Set<string>>`
-   *   + Possible media types
-   */
-  export async function suggest(typedArray: TypedArray): Promise<Set<string>>;
-
-  /**
-   * ## Introduction
-   * Suggest media types for the given data view
-   *
-   * ## Parameters
-   * - `dataView`: `DataView`
-   *   + The query data as a data view
-   *
-   * ## Returns
-   * - `Promise<Set<string>>`
-   *   + Possible media types
-   */
-  export async function suggest(dataView: DataView): Promise<Set<string>>;
 
   /**
    * ## Introduction
@@ -109,20 +84,22 @@ export namespace MediaType {
    * Suggest media types for the given byte stream
    *
    * ## Parameters
-   * - `byteStream`: `ReadableStream<Uint8Array>`
+   * - `byteStream`: `ReadableStream<ArrayBufferView>`
    *   + The query data as a byte stream
-   *   + The stream will be cancelled after the function call
+   *   + The stream will be locked after the function call
    *
    * ## Returns
    * - `Promise<Set<string>>`
    *   + Possible media types
    *
    * ## Note
-   * - The given stream is taken as a disposable resource,
-   *   so no one should use the stream after the function call.
+   * - The given stream is seen as a disposable resource,
+   *   so no one should use it after the function call.
+   * - The given stream will be cloned using `ReadableStream.prototype.tee()`
+   *   in the implementation.
    */
   export async function suggest(
-    byteStream: ReadableStream<Uint8Array>,
+    byteStream: ReadableStream<ArrayBufferView>,
   ): Promise<Set<string>>;
 
   /**
@@ -132,8 +109,7 @@ export namespace MediaType {
    * ## Parameters
    * - `data`: `
    *     ArrayBufferLike | ArrayBufferView |
-   *     Blob | DataView | File |
-   *     ReadableStream<Uint8Array> | TypedArray`
+   *     Blob | File | ReadableStream<ArrayBufferView>`
    *   + The query data
    *
    * ## Returns
@@ -145,10 +121,8 @@ export namespace MediaType {
       | ArrayBufferLike
       | ArrayBufferView
       | Blob
-      | DataView
       | File
-      | ReadableStream<Uint8Array>
-      | TypedArray,
+      | ReadableStream<ArrayBufferView>,
   ): Promise<Set<string>> {
     if (data instanceof File) {
       return suggestForFile(data);
@@ -192,15 +166,18 @@ export namespace MediaType {
    * Suggest media types for the given array buffer view
    *
    * ## Parameters
-   * - `arrayBufferView`: `ArrayBufferView | DataView | TypedArray`
+   * - `arrayBufferView`: `ArrayBufferView`
    *   + The query data as an array buffer view
    *
    * ## Returns
    * - `Promise<Set<string>>`
    *   + Possible media types
+   *
+   * ## Note
+   * - Typed arrays like `Uint8Array` and `DataView` are `ArrayBufferView`.
    */
   export async function suggestForArrayBufferView(
-    arrayBufferView: ArrayBufferView | DataView | TypedArray,
+    arrayBufferView: ArrayBufferView,
   ): Promise<Set<string>> {
     return suggestForUint8Array(
       arrayBufferView instanceof Uint8Array
@@ -234,7 +211,7 @@ export namespace MediaType {
    * Suggest media types for the given byte stream
    *
    * ## Parameters
-   * - `byteStream`: `ReadableStream<Uint8Array>`
+   * - `byteStream`: `ReadableStream<ArrayBufferView>`
    *   + The query data as a byte stream
    *   + The stream will be locked after the function call
    *
@@ -245,9 +222,11 @@ export namespace MediaType {
    * ## Note
    * - The given stream is seen as a disposable resource,
    *   so no one should use it after the function call.
+   * - The given stream will be cloned using `ReadableStream.prototype.tee()`
+   *   in the implementation.
    */
   export async function suggestForByteStream(
-    byteStream: ReadableStream<Uint8Array>,
+    byteStream: ReadableStream<ArrayBufferView>,
   ): Promise<Set<string>> {
     const byteStreams = byteStream.tee();
     try {
@@ -272,10 +251,7 @@ export namespace MediaType {
    *   + Possible media types
    *
    * ## Note
-   * This function has 3 stages:
-   * 1. Guess media types by file extension
-   * 2. Guess media types by magic bytes
-   * 3. Collect and return the guessed media types
+   * - This function will suggest media types by the file name and content.
    */
   export async function suggestForFile(file: File): Promise<Set<string>> {
     // [TODO] Need a working check algorithm
@@ -326,35 +302,3 @@ export namespace MediaType {
   export const supportSet = SupportedMediaTypes;
   export type supportSet = SupportedMediaTypes;
 }
-
-/**
- * ## Introduction
- * A ***TypedArray*** object describes an array-like view of an underlying
- * [binary data buffer](
- *   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer
- * ).
- * There is no global property named `TypedArray`,
- * nor is there a directly visible `TypedArray` constructor.
- * Instead, there are a number of different global properties,
- * whose values are typed array constructors for specific element types,
- * listed below.
- *
- * ## Note
- * - `TypedArray` is a union type of all typed array types.
- * - `TypedArray` is a subtype of [`ArrayBufferView`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer/isView).
- *
- * ## References
- * [MDN - TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)
- */
-export type TypedArray =
-  | BigInt64Array
-  | BigUint64Array
-  | Float32Array
-  | Float64Array
-  | Int8Array
-  | Int16Array
-  | Int32Array
-  | Uint8Array
-  | Uint8ClampedArray
-  | Uint16Array
-  | Uint32Array;

@@ -66,7 +66,7 @@ describe('readByteStream', () => {
     });
   });
 
-  it('It throws if the stream throws an error', async () => {
+  it('It throws if the stream sends an error', async () => {
     const error = new Error('[Test] Stream error');
     const stream = new ReadableStream({
       type: 'bytes',
