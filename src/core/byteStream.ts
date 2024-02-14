@@ -24,8 +24,8 @@
  *   because `ReadableStreamBYOBReader.prototype.read(view)`
  *   does not neccessarily fill the view. The function will resolve it.
  */
-export async function readByteStream(
-  byteStream: ReadableStream<ArrayBufferView>,
+export async function readByteStream<R extends ArrayBufferView>(
+  byteStream: ReadableStream<R>,
   byteLength: number,
   byteOffset: number = 0,
 ): Promise<Uint8Array> {
