@@ -18,37 +18,6 @@ import { SupportedMediaTypes, magicNumbersOffsetEnd } from './preset';
 export namespace MediaType {
   /**
    * ## Introduction
-   * Suggest media types for the given file
-   *
-   * ## Parameters
-   * - `file`: `File`
-   *   + The query data as a file reference
-   *
-   * ## Returns
-   * - `Promise<Set<string>>`
-   *   + Possible media types
-   *
-   * ## Note
-   * - This function will suggest media types by the file name and content.
-   */
-  export async function suggest(file: File): Promise<Set<string>>;
-
-  /**
-   * ## Introduction
-   * Suggest media types for the given blob
-   *
-   * ## Parameters
-   * - `blob`: `Blob`
-   *   + The query data as a binary large object
-   *
-   * ## Returns
-   * - `Promise<Set<string>>`
-   *   + Possible media types
-   */
-  export async function suggest(blob: Blob): Promise<Set<string>>;
-
-  /**
-   * ## Introduction
    * Suggest media types for the given array buffer view
    *
    * ## Parameters
@@ -81,6 +50,76 @@ export namespace MediaType {
 
   /**
    * ## Introduction
+   * Suggest media types for the given file
+   *
+   * ## Parameters
+   * - `file`: `File`
+   *   + The query data as a file reference
+   *
+   * ## Returns
+   * - `Promise<Set<string>>`
+   *   + Possible media types
+   *
+   * ## Note
+   * - This function will suggest media types by the file name and content.
+   */
+  export async function suggest(file: File): Promise<Set<string>>;
+
+  /**
+   * ## Introduction
+   * Suggest media types for the given blob
+   *
+   * ## Parameters
+   * - `blob`: `Blob`
+   *   + The query data as a binary large object
+   *
+   * ## Returns
+   * - `Promise<Set<string>>`
+   *   + Possible media types
+   */
+  export async function suggest(blob: Blob): Promise<Set<string>>;
+
+  /**
+   * ## Introduction
+   * Suggest media types for the given response
+   *
+   * ## Parameters
+   * - `response`: `Response`
+   *   + The query data as a response
+   *
+   * ## Returns
+   * - `Promise<Set<string>>`
+   *   + Possible media types
+   *
+   * ## Note
+   * - The given response will be cloned using `Response.prototype.clone()`
+   * - Don't call with a response using the GET or HEAD method
+   *   since it doesn't have a body.
+   */
+  export async function suggest(response: Response): Promise<Set<string>>;
+
+  /**
+   * ## Introduction
+   * Suggest media types for the given request
+   *
+   * ## Parameters
+   * - `request`: `Request`
+   *   + The query data as a request
+   *
+   * ## Returns
+   * - `Promise<Set<string>>`
+   *   + Possible media types
+   *
+   * ## Note
+   * - The given request will be cloned using `Request.prototype.clone()`
+   * - The request body must be provided.
+   *   + Don't call with a request using the GET or HEAD method
+   *     since it doesn't have a body.
+   */
+  export async function suggest(request: Request): Promise<Set<string>>;
+
+  /**
+   * ## Introduction
    * Suggest media types for the given byte stream
    *
    * ## Parameters
@@ -107,40 +146,52 @@ export namespace MediaType {
    * Suggest media types for the given data
    *
    * ## Parameters
-   * - `data`: `
-   *     ArrayBufferLike | ArrayBufferView |
-   *     Blob | File | ReadableStream<ArrayBufferView>`
+   * - `data`: `unknown`
    *   + The query data
    *
    * ## Returns
    * - `Promise<Set<string>>`
    *   + Possible media types
    */
-  export async function suggest(
-    data:
-      | ArrayBufferLike
-      | ArrayBufferView
-      | Blob
-      | File
-      | ReadableStream<ArrayBufferView>,
-  ): Promise<Set<string>> {
-    if (data instanceof File) {
-      return suggestForFile(data);
-    } else if (data instanceof Blob) {
-      return suggestForBlob(data);
+  export async function suggest(data: unknown): Promise<Set<string>> {
+    if (data && typeof data === 'object') {
+      // `suggestForArrayBuffer`
+      // `suggestForArrayBufferView`
+      if ('byteLength' in data) {
+        if (ArrayBuffer.isView(data)) {
+          return suggestForArrayBufferView(data);
+        }
+        if (data instanceof ArrayBuffer || data instanceof SharedArrayBuffer) {
+          return suggestForArrayBuffer(data);
+        }
+      }
+
+      // `suggestForBlob`
+      // `suggestForFile`
+      if (data instanceof Blob) {
+        if (data instanceof File) {
+          return suggestForFile(data);
+        }
+        return suggestForBlob(data);
+      }
+
+      // `suggestForResponse`
+      // `suggestForRequest`
+      if ('body' in data) {
+        if (data instanceof Response) {
+          return suggestForResponse(data);
+        }
+        if (data instanceof Request) {
+          return suggestForRequest(data);
+        }
+      }
+
+      // `suggestForByteStream`
+      if (data instanceof ReadableStream) {
+        return suggestForByteStream(data);
+      }
     }
-    if (ArrayBuffer.isView(data)) {
-      return suggestForArrayBufferView(data);
-    } else if (
-      data instanceof ArrayBuffer ||
-      data instanceof SharedArrayBuffer
-    ) {
-      return suggestForArrayBuffer(data);
-    }
-    if (data instanceof ReadableStream) {
-      return suggestForByteStream(data);
-    }
-    throw new TypeError('The query data type is not valid');
+    throw new TypeError('The data type is not valid');
   }
 
   /**
@@ -267,6 +318,58 @@ export namespace MediaType {
       ...guessMediaTypesByExtension(file.name),
       ...(await suggestForBlob(file)),
     ]);
+  }
+
+  /**
+   * ## Introduction
+   * Suggest media types for the given response
+   *
+   * ## Parameters
+   * - `response`: `Response`
+   *   + The query data as a response
+   *
+   * ## Returns
+   * - `Promise<Set<string>>`
+   *   + Possible media types
+   *
+   * ## Note
+   * - The given response will be cloned using `Response.prototype.clone()`
+   * - Don't call with a response using the GET or HEAD method
+   *   since it doesn't have a body.
+   */
+  export async function suggestForResponse(
+    response: Response,
+  ): Promise<Set<string>> {
+    if (!response.body) {
+      throw new TypeError('The response does not have a body');
+    }
+    return suggestForBlob(await response.clone().blob());
+  }
+
+  /**
+   * ## Introduction
+   * Suggest media types for the given request
+   *
+   * ## Parameters
+   * - `request`: `Request`
+   *   + The query data as a request
+   *
+   * ## Returns
+   * - `Promise<Set<string>>`
+   *   + Possible media types
+   *
+   * ## Note
+   * - The given request will be cloned using `Request.prototype.clone()`
+   * - Don't call with a request using the GET or HEAD method
+   *   since it doesn't have a body.
+   */
+  export async function suggestForRequest(
+    request: Request,
+  ): Promise<Set<string>> {
+    if (!request.body) {
+      throw new TypeError('The request does not have a body');
+    }
+    return suggestForBlob(await request.clone().blob());
   }
 
   /**
