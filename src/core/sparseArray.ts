@@ -1,31 +1,5 @@
 /**
  * ## Introduction
- * A collection of keyed sparse arrays
- *
- * ## Layout
- * `KeyedSparseArray[]`
- * - An array of keyed sparse arrays
- *
- * ## Note
- * - A key can appear multiple times
- */
-export type KeyedSparseArrayCollection = KeyedSparseArray[];
-
-/**
- * ## Introduction
- * A sparse array with a key
- *
- * ## Layout
- * `[string, ...SparseArray]`
- * - `string`
- *   + A key
- * - `...SparseArray`
- *   + A sparse array
- */
-export type KeyedSparseArray = [string, ...SparseArray];
-
-/**
- * ## Introduction
  * An array with potentially many missing elements
  * represented in a compressed format.
  *
@@ -41,12 +15,25 @@ export type SparseArray = [number, number, ...number[]];
 
 /**
  * ## Introduction
- * Match the keyed sparse array collection with an array pattern,
- * and collect the matched keys.
+ * A collection of sparse arrays
+ *
+ * ## Layout
+ * `[string, SparseArray][]`
+ * - An array of pairs
+ * - For each pair:
+ *   + The first element is a key
+ *   + The second element is a sparse array
+ */
+export type SparseArrayCollection = [string, SparseArray][];
+
+/**
+ * ## Introduction
+ * Match a collection of sparse arrays with an array pattern,
+ * and collect keys of the matches.
  *
  * ## Parameters
- * - `collection`: `KeyedSparseArrayCollection`
- *   + A collection of keyed sparse arrays
+ * - `collection`: `SparseArrayCollection`
+ *   + A collection of sparse arrays
  * - `pattern`: `Record<number, number>`
  *   + An array pattern
  *     + The key is an index
@@ -55,15 +42,17 @@ export type SparseArray = [number, number, ...number[]];
  * ## Returns
  * - `Set<string>`
  *   + Keys of the matches
+ *
+ * ## Note
+ * - A key can have multiple sparse arrays
  */
-export function matchKeyedSparseArrayCollection(
-  collection: KeyedSparseArrayCollection,
+export function matchSparseArrayCollection(
+  collection: SparseArrayCollection,
   pattern: Record<number, number>,
 ): Set<string> {
   const matches = new Set<string>();
-  for (let i = 0; i < collection.length; i++) {
-    const entry = collection[i]!;
-    const key = entry[0];
+  for (let i = 0, end = collection.length; i < end; i++) {
+    const [key, target] = collection[i]!;
 
     // Skip if the key is already recorded
     if (matches.has(key)) {
@@ -72,7 +61,7 @@ export function matchKeyedSparseArrayCollection(
 
     // Search for the pattern
     let matched = true;
-    for (const [index, element] of readKeyedSparseArray(entry)) {
+    for (const [index, element] of readSparseArray(target)) {
       if (pattern[index] !== element) {
         matched = false;
         break;
@@ -89,29 +78,10 @@ export function matchKeyedSparseArrayCollection(
 
 /**
  * ## Introduction
- * Read a keyed sparse array and yield its index and element
- *
- * ## Parameters
- * - `keyedSparseArray`: `KeyedSparseArray`
- *   + A keyed sparse array
- *
- * ## Yields
- * - `[number, number]`
- *   + The first number is an index
- *   + The second number is an element
- */
-export function* readKeyedSparseArray(
-  keyedSparseArray: KeyedSparseArray,
-): Generator<[number, number]> {
-  yield* _readSparseArray(keyedSparseArray, 1);
-}
-
-/**
- * ## Introduction
  * Read a sparse array and yield its index and element
  *
  * ## Parameters
- * - `sparseArray`: `SparseArray`
+ * - `source`: `SparseArray`
  *   + A sparse array
  *
  * ## Yields
@@ -120,37 +90,13 @@ export function* readKeyedSparseArray(
  *   + The second number is an element
  */
 export function* readSparseArray(
-  sparseArray: SparseArray,
+  source: SparseArray,
 ): Generator<[number, number]> {
-  yield* _readSparseArray(sparseArray, 0);
-}
-
-/**
- * ## Introduction
- * The implementation of these functions:
- * - `readKeyedSparseArray`
- * - `readSparseArray`
- *
- * ## Parameters
- * - `target`: `KeyedSparseArray | SparseArray`
- *   + A keyed sparse array or a sparse array
- * - `offset`: `number`
- *   + The offset of the sparse array
- *
- * ## Yields
- * - `[number, number]`
- *   + The first number is an index
- *   + The second number is an element
- */
-function* _readSparseArray(
-  target: KeyedSparseArray | SparseArray,
-  offset: number,
-): Generator<[number, number]> {
-  for (const end = target.length; offset < end; ) {
-    let index = target[offset] as number;
-    let length = target[++offset] as number;
-    for (const end = offset + ++length; ++offset < end; ) {
-      const element = target[offset] as number;
+  for (let i = 0, end = source.length; i < end; ) {
+    let index = source[i] as number;
+    let length = source[++i] as number;
+    for (const end = i + ++length; ++i < end; ) {
+      const element = source[i] as number;
       yield [index++, element];
     }
   }

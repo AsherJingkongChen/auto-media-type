@@ -1,4 +1,4 @@
-import { matchKeyedSparseArrayCollection, readSparseArray } from './core';
+import { matchSparseArrayCollection, readSparseArray } from './core';
 import {
   extensionToMediaTypesTable,
   magicMasks,
@@ -41,7 +41,7 @@ export function guessMediaTypesByExtension(name: string): Set<string> {
 export async function guessMediaTypesByMagicBytes(
   uint8Array: Uint8Array,
 ): Promise<Set<string>> {
-  return matchKeyedSparseArrayCollection(mediaTypeAndMagicBytes, uint8Array);
+  return matchSparseArrayCollection(mediaTypeAndMagicBytes, uint8Array);
 }
 
 /**
@@ -65,8 +65,5 @@ export async function guessMediaTypesByMagicMaskedBytes(
   for (const [offset, mask] of readSparseArray(magicMasks)) {
     maskedBytes[offset] &= mask;
   }
-  return matchKeyedSparseArrayCollection(
-    mediaTypeAndMagicMaskedBytes,
-    maskedBytes,
-  );
+  return matchSparseArrayCollection(mediaTypeAndMagicMaskedBytes, maskedBytes);
 }

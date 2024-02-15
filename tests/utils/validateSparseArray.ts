@@ -1,43 +1,30 @@
-import { KeyedSparseArray, SparseArray } from 'src/core';
+import { SparseArray } from 'src/core';
 
 /**
  * ## Introduction
  * Validate a sparse array
  *
  * ## Parameters
- * - `target`: `KeyedSparseArray | SparseArray`
- *   + A keyed sparse array or a sparse array
+ * - `target`: `SparseArray`
+ *   + A sparse array
  *
  * ## Returns
  * - `number`
  *   + `0` if the sparse array is valid;
  *     otherwise, a negative number is returned
  */
-export function validateSparseArray(
-  target: KeyedSparseArray | SparseArray,
-): number {
-  let offset: number | undefined;
-  switch (typeof target[0]) {
-    case 'string':
-      offset = 1;
-      break;
-    case 'number':
-      offset = 0;
-      break;
-    default:
-      return -1;
-  }
-  for (const end = target.length; offset < end; ) {
-    let index = target[offset];
-    let length = target[++offset];
+export function validateSparseArray(target: SparseArray): number {
+  for (let i = 0, end = target.length; i < end; ) {
+    let index = target[i];
+    let length = target[++i];
     if (typeof index !== 'number' || typeof length !== 'number') {
       return -2;
     }
     if (length < 0) {
       return -3;
     }
-    for (const end = offset + ++length; ++offset < end; ) {
-      const element = target[offset];
+    for (const end = i + ++length; ++i < end; ) {
+      const element = target[i];
       if (typeof element !== 'number') {
         return -4;
       }
