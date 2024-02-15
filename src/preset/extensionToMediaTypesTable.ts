@@ -2,7 +2,7 @@ import { SupportedMediaTypes } from './supportedMediaTypes';
 
 /**
  * ## Introduction
- * A lookup table to find media types by file extension
+ * A lookup table to guess media types by file extension
  *
  * ## Layout
  * `Record<string, string[]>`
