@@ -12,7 +12,7 @@
 declare module './magicNumbers.ts';
 
 import { SparseArray, SparseArrayCollection } from '../core';
-import { SupportedMediaTypes } from './supportedMediaTypes';
+import { SupportedMediaTypes } from './SupportedMediaTypes';
 
 /**
  * ## Introduction
