@@ -53,3 +53,5 @@ export const SupportedMediaTypes = new Set([
 
 export type SupportedMediaTypes =
   typeof SupportedMediaTypes extends Set<infer X> ? X : never;
+
+export namespace SupportedMediaTypes {}

@@ -68,7 +68,7 @@ describe('MediaType', () => {
     });
   });
 
-  describe('suggestForByteStream()', () => {
+  describe('suggest.forByteStream()', () => {
     it('It locks the given stream', async () => {
       for (const stream of [
         new Blob([]).stream(),
@@ -76,63 +76,63 @@ describe('MediaType', () => {
         new Blob([new Uint8Array(4 << 20)]).stream(),
       ]) {
         await expect(
-          MediaType.suggestForByteStream(stream),
+          MediaType.suggest.forByteStream(stream),
         ).resolves.toBeTruthy();
         expect(stream.locked).toBeTruthy();
       }
     });
   });
 
-  describe('suggestForFile()', () => {
+  describe('suggest.forFile()', () => {
     describe('It returns an empty set', () => {
       it('for an extensionless file name', async () => {
-        expect(MediaType.suggestForFile(new File([], ''))).resolves.toEqual(
+        expect(MediaType.suggest.forFile(new File([], ''))).resolves.toEqual(
           new Set(),
         );
         expect(
-          MediaType.suggestForFile(new File([], 'an-extensionless-file')),
+          MediaType.suggest.forFile(new File([], 'an-extensionless-file')),
         ).resolves.toEqual(new Set());
       });
 
       it('for an unrecoginzable file extension', async () => {
         expect(
-          MediaType.suggestForFile(new File([], 'filename.undefined')),
+          MediaType.suggest.forFile(new File([], 'filename.undefined')),
         ).resolves.toEqual(new Set());
         expect(
-          MediaType.suggestForFile(new File([], '.undefined-2')),
+          MediaType.suggest.forFile(new File([], '.undefined-2')),
         ).resolves.toEqual(new Set());
       });
     });
   });
 
-  describe('suggestForResponse()', () => {
+  describe('suggest.forResponse()', () => {
     it('It clones the given response', async () => {
       const response = new Response(new Uint8Array(1));
       await expect(
-        MediaType.suggestForResponse(response),
+        MediaType.suggest.forResponse(response),
       ).resolves.toBeTruthy();
       expect(response.bodyUsed).toBeFalsy();
     });
 
     it('It throws if the body is empty', async () => {
       const response = new Response();
-      await expect(MediaType.suggestForResponse(response)).rejects.toThrow();
+      await expect(MediaType.suggest.forResponse(response)).rejects.toThrow();
     });
   });
 
-  describe('suggestForRequest()', () => {
+  describe('suggest.forRequest()', () => {
     it('It clones the given request', async () => {
       const request = new Request('http://localhost', {
         body: new Uint8Array(1),
         method: 'POST',
       });
-      await expect(MediaType.suggestForRequest(request)).resolves.toBeTruthy();
+      await expect(MediaType.suggest.forRequest(request)).resolves.toBeTruthy();
       expect(request.bodyUsed).toBeFalsy();
     });
 
     it('It throws if the request body is empty', async () => {
       const request = new Request('http://localhost');
-      await expect(MediaType.suggestForRequest(request)).rejects.toThrow();
+      await expect(MediaType.suggest.forRequest(request)).rejects.toThrow();
     });
   });
 });

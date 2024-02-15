@@ -2,19 +2,19 @@ import { MediaType } from 'src';
 import { describe, expect, it } from 'vitest';
 import mediaTypes from 'iana-media-type';
 import { Sample } from 'lots-of-sample-files';
-import { MediaTypeDoc } from '../utils';
+import { MediaTypeDoc } from '../../utils';
 
-describe('MediaType.supportSet', () => {
+describe('MediaType.supported', () => {
   it('They are all contained in IANA media types', () => {
     const ianaMediaTypes = new Set(mediaTypes);
-    for (const mediaType of MediaType.supportSet) {
+    for (const mediaType of MediaType.supported) {
       expect(ianaMediaTypes).toContain(mediaType);
     }
   });
 
   it('It contains the media type of all sample files', () => {
     for (const { type } of Sample.paths()) {
-      expect(MediaType.supportSet).toContain(type);
+      expect(MediaType.supported).toContain(type);
     }
   });
 
@@ -22,6 +22,6 @@ describe('MediaType.supportSet', () => {
     const docTitles = new Set(
       [...MediaTypeDoc.paths()].map(({ type }) => type),
     );
-    expect(MediaType.supportSet).toEqual(docTitles);
+    expect(MediaType.supported).toEqual(docTitles);
   });
 });
