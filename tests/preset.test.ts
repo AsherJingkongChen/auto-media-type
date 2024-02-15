@@ -7,7 +7,7 @@ import {
   mediaTypeAndMagicMaskedBytes,
 } from 'src/preset';
 import { describe, expect, it } from 'vitest';
-import { validateSparseArray } from './utils';
+import { validateSparseArray } from './testUtils';
 
 describe('validateSparseArray', () => {
   it('mediaTypeAndMagicBytes is valid', () => {
