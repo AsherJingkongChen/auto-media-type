@@ -53,6 +53,17 @@ describe('matchSparseArrayCollection', () => {
       new Set(['Sam']),
     );
   });
+
+  it('An empty sparse array matches any pattern', () => {
+    const collection: SparseArrayCollection = [['e', [0, 0]]];
+    expect(matchSparseArrayCollection(collection, [])).toEqual(new Set(['e']));
+    expect(matchSparseArrayCollection(collection, [0x1])).toEqual(
+      new Set(['e']),
+    );
+    expect(matchSparseArrayCollection(collection, [0x2])).toEqual(
+      new Set(['e']),
+    );
+  });
 });
 
 describe('readSparseArray', () => {
