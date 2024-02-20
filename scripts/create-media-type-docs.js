@@ -15,7 +15,7 @@ if (argv.length < 3) {
 const mediaTypes = argv.slice(2);
 
 Promise.all(
-  mediaTypes.map(async function run(mediaType) {
+  mediaTypes.map(async (mediaType) => {
     const docsDir = join(dirname(fileURLToPath(import.meta.url)), '../docs');
     const docFilePath = join(docsDir, `media-types/${mediaType}.md`);
     const templateFilePath = join(docsDir, 'templates/media-type.md');
