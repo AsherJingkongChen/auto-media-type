@@ -13,12 +13,13 @@ if (argv.length < 3) {
 }
 
 const mediaTypes = argv.slice(2);
-Promise.all(mediaTypes.map(createMediaTypeDoc));
 
-async function createMediaTypeDoc(mediaType) {
-  const docsDir = join(dirname(fileURLToPath(import.meta.url)), '../docs');
-  const docFilePath = join(docsDir, `media-types/${mediaType}.md`);
-  const templateFilePath = join(docsDir, 'templates/media-type.md');
+Promise.all(
+  mediaTypes.map(async function run(mediaType) {
+    const docsDir = join(dirname(fileURLToPath(import.meta.url)), '../docs');
+    const docFilePath = join(docsDir, `media-types/${mediaType}.md`);
+    const templateFilePath = join(docsDir, 'templates/media-type.md');
 
-  await cp(templateFilePath, docFilePath, { recursive: true });
-}
+    await cp(templateFilePath, docFilePath, { recursive: true });
+  }),
+);
