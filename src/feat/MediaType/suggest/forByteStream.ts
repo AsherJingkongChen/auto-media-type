@@ -30,7 +30,7 @@ export async function suggestMediaTypesForByteStream(
       await readByteStream(streams[0], magicNumbersOffsetEnd),
     );
   } finally {
-    await Promise.all(streams);
+    await Promise.all(streams.map((s) => s.cancel()));
   }
 }
 
